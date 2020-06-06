@@ -1,16 +1,53 @@
-import React, {Component} from 'react';
+import React, { Component, useState } from "react";
+// import { useState } from "react-hooks";
+import {
+  Button,
+  AppBar,
+  Tabs,
+  Tab,
+  Typography,
+  SvgIcon,
+} from "@material-ui/core";
+import Home from "./components/Home.jsx";
+import Login from "./components/Login.jsx";
+import HomeIcon from "@material-ui/icons/Home";
+import GetStarted from "./components/GetStarted.jsx";
+import {
+  Switch,
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect,
+} from "react-router-dom";
 
-class App extends Component {
-  constructor() {
-    super();
-  }
+const App = () => {
+  return (
+    <div>
+      <AppBar position="static">
+        <Tabs>
+          <HomeIcon />
+        </Tabs>
+      </AppBar>
+      <Router>
+        <Link to="/home">go to home</Link>
+        <Link to="/">go to login page</Link>
+        <Link to="/getstarted">go to get started</Link>
 
-  render() {
-    return(
-      <div>hello world</div>
-      );
-  }
-}
+        <Switch>
+          <Route exact path="/getstarted">
+            <GetStarted />
+          </Route>
+          <Route exact path="/home">
+            <Home />
+          </Route>
 
+          <Route exact path="/">
+            <Login />
+          </Route>
+        </Switch>
+      </Router>
+    </div>
+  );
+};
 
 export default App;
