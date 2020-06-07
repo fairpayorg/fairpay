@@ -27,12 +27,21 @@ app.post('/api/user', fairpayController.createUser, (req, res) => {
   //res.status(200).json(res.locals.userData);
 });
 
-app.get(
+app.use(
   '/api/company/:linkedin_user_id',
   fairpayController.getCurrentUser,
   fairpayController.getCompanyData,
+  fairpayController.getRaceStats,
+  fairpayController.getAgeStats,
+  fairpayController.getGenderStats,
   (req, res) => {
-    res.status(200).json([res.locals.currentUser, res.locals.companyData.rows]);
+    res.status(200).json({
+      currentUser: res.locals.currentUser,
+      companyData: res.locals.companyData.rows,
+      raceStats: res.locals.raceStats,
+      ageStats: res.locals.ageStats,
+      genderStats: res.locals.genderStats,
+    });
   }
 );
 
