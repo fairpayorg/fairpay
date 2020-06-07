@@ -74,6 +74,12 @@ function Home(props) {
           </Tabs>
         </AppBar>
       </Container>
+      <div>
+        <h2>
+          We'll display the user information here and consistently for every
+          view (or maybe not up for discussion)
+        </h2>
+      </div>
       <Container>
         <CompanyComparison
           view={view}

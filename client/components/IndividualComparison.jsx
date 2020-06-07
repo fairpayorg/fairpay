@@ -9,9 +9,10 @@ function IndividualComparison(props) {
       <Container>
         <div hidden={props.view !== props.index} id="individual_comparison_div">
           {/* render the array of employees here */}
+          <h2>We first display the user's information here</h2>
           <h2>
-            this would be a list of all employees with the same title/position
-            at same company
+            Then this would be a list of all employees with the same
+            title/position at same company
           </h2>
         </div>
       </Container>
