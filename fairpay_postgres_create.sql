@@ -3,7 +3,7 @@
 CREATE TABLE public.users
 (
   "_id" serial,
-  "linkedin_user_id" varchar, -- user id provided from linked in Oauth
+  "linkedin_user_id" varchar, -- user id provided from linked
   "name" varchar,
   "company_id" bigint, -- foreign key refers to company table _id
   "salary" bigint, -- foreign key refers to salary table _id
@@ -21,7 +21,7 @@ CREATE TABLE public.users
   CONSTRAINT "users_pk" PRIMARY KEY ("_id"),
   CONSTRAINT "users_fk0" FOREIGN KEY ("company_id") REFERENCES public.company("_id"),
   CONSTRAINT "users_fk1" FOREIGN KEY ("salary") REFERENCES public.salary("_id"),
-  CONSTRAINT "unique_linkedin_user_id" UNIQUE ("linkedin_user_id"),
+  CONSTRAINT "unique_linkedin_user_id" UNIQUE ("linkedin_user_id"), -- sets the linkedin_user_id as a unique identifier this is needed because ?
 )
 WITH (
   OIDS=FALSE
@@ -51,7 +51,7 @@ WITH (
 CREATE TABLE public.company
 (
   "_id" serial,
-  "linkedin_id" varchar,
+  "linkedin_id" varchar, -- company name given to us by linkedin
   "name" varchar,
   "city" varchar,
   "industry" varchar,
@@ -82,6 +82,7 @@ INSERT INTO salary (company_id, job_title, employee_type, years_at_company, year
 INSERT INTO salary (company_id, job_title, employee_type, years_at_company, years_of_experience, base_salary, annual_bonus, stock_options, signing_bonus, full_time_status, active) VALUES (3, 'Software Developer', 'Salary', 1, 1, 140000, 10000, 0, 15000, 'yes', 'true');
 INSERT INTO salary (company_id, job_title, employee_type, years_at_company, years_of_experience, base_salary, annual_bonus, stock_options, signing_bonus, full_time_status, active) VALUES (2, 'Mobile Developer', 'Hourly', 1, 1, 125000, 15000, 0, 14000, 'yes', 'true');
 INSERT INTO salary (company_id, job_title, employee_type, years_at_company, years_of_experience, base_salary, annual_bonus, stock_options, signing_bonus, full_time_status, active) VALUES (3, 'Mobile Developer', 'Hourly', 1, 1, 115000, 10000, 0, 16000, 'yes', 'true');
+INSERT INTO salary (company_id, job_title, employee_type, years_at_company, years_of_experience, base_salary, annual_bonus, stock_options, signing_bonus, full_time_status, active) VALUES (2, 'Software Engineer', 'Salary', 1, 1, 150000, 10000, 0, 10000, 'yes', 'true');
 
 INSERT INTO users (linkedin_user_id, name, company_id, salary, sexuality, age, gender, race, city, state, email, oauthtoken, refreshtoken, expiresin, zipcode) VALUES ('andrew-cho-37990193', 'Andrew Cho', 1, 1, 'Straight', 36, 'male', 'asian', 'Sherman Oaks', 'California', 'andrewjcho84@gmail.com', 'oauthtoken1', 'refreshtoken1', 10000, '91411');
 INSERT INTO users (linkedin_user_id, name, company_id, salary, sexuality, age, gender, race, city, state, email, oauthtoken, refreshtoken, expiresin, zipcode) VALUES ('carlos-perez-01894592', 'Carlos Perez', 2, 2, 'Straight', 33, 'male', 'hispanic', 'Santa Monica', 'California', 'crperez@gmail.com', 'oauthtoken2', 'refreshtoken2', 10000, '90404');
@@ -90,3 +91,4 @@ INSERT INTO users (linkedin_user_id, name, company_id, salary, sexuality, age, g
 INSERT INTO users (linkedin_user_id, name, company_id, salary, sexuality, age, gender, race, city, state, email, oauthtoken, refreshtoken, expiresin, zipcode) VALUES ('tyler-sullberg-19847523', 'Tyler Sullberg', 3, 5, 'Straight', 28, 'male', 'caucasian', 'Los Angeles', 'California', 'tysullberg@gmail.com', 'oauthtoken5', 'refreshtoken5', 10000, '90008');
 INSERT INTO users (linkedin_user_id, name, company_id, salary, sexuality, age, gender, race, city, state, email, oauthtoken, refreshtoken, expiresin, zipcode) VALUES ('reid-klarsfeld-09845136', 'Reid Klarsfeld', 2, 6, 'Straight', 35, 'male', 'caucasian', 'Venice', 'California', 'reidklarsfeld@gmail.com', 'oauthtoken6', 'refreshtoken6', 10000, '90292');
 INSERT INTO users (linkedin_user_id, name, company_id, salary, sexuality, age, gender, race, city, state, email, oauthtoken, refreshtoken, expiresin, zipcode) VALUES ('vivian-cermeno-76589495', 'Vivan Cermeno', 3, 7, 'Straight', 29, 'female', 'hispanic', 'Rowland Heights', 'California', 'viviancermeno@gmail.com', 'oauthtoken7', 'refreshtoken7', 10000, '91748');
+INSERT INTO users (linkedin_user_id, name, company_id, salary, sexuality, age, gender, race, city, state, email, oauthtoken, refreshtoken, expiresin, zipcode) VALUES ('bren-yamaguchi-56179413', 'Bren Yamaguchi', 2, 8, 'Straight', 35, 'male', 'asian', 'Torrance', 'California', 'brenyamaguchi@gmail.com', 'oauthtoken8', 'refreshtoken8', 10000, '90505');

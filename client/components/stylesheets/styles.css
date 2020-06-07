@@ -1,0 +1,20 @@
+#comparison_tabs {
+  width: 33em;
+}
+
+#company_container {
+  width: 15em;
+  display: flex;
+  float: left;
+  justify-content: flex-start;
+}
+
+#company_comparison_div {
+  width: 13em;
+}
+
+.data_display_div {
+  display: flex;
+  background-color: red;
+  flex-wrap: wrap;
+}

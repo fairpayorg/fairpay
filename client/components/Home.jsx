@@ -11,10 +11,16 @@ import CompanyComparison from "./CompanyComparison.jsx";
 import IndividualComparison from "./IndividualComparison.jsx";
 // import { useState } from "react-hooks";
 
+const styles = {
+  tab: {
+    width: 50 + "%",
+  },
+};
+
 function Home(props) {
   // this is the hook that toggles the different comparison views
   // defaults to company comparison view
-  const [view, setView] = useState(0);
+  const [view, setView] = useState(null);
   const handleComparison = (e, view) => {
     setView(view);
   };
@@ -43,7 +49,8 @@ function Home(props) {
   const [signingBonus, setSigningBonus] = useState(6000000);
   const [ftStatus, setFtStatus] = useState("full-time");
 
-  //provide company_linkedin_id, and send in body of request to get /api/company
+  // provide company_linkedin_id, and send in body of request to get /api/company
+  // need to give company name and position title
   //   useEffect(() => {
   //     // fetch call to /api/company/user_linkedin_id when you get it
   //     fetch("/api/company")
@@ -55,15 +62,26 @@ function Home(props) {
 
   return (
     <React.Fragment>
-      <Container>
-        <AppBar id="company_individual_toggle" position="static">
-          <Tabs view={view} onChange={handleComparison}>
+      <Container id="comparison_tabs">
+        <AppBar
+          //   style={styles.tab}
+          id="company_individual_toggle"
+          position="static"
+        >
+          <Tabs view={view} onChange={handleComparison} centered>
             <Tab label="Company Wide Comparison" />
             <Tab label="Individual Comparison" />
           </Tabs>
         </AppBar>
+      </Container>
+      <div>
+        <h2>
+          We'll display the user information here and consistently for every
+          view (or maybe not up for discussion)
+        </h2>
+      </div>
+      <Container>
         <CompanyComparison
-          type="company"
           view={view}
           index={0}
           name={name}
@@ -82,7 +100,6 @@ function Home(props) {
           ftStatus={ftStatus}
         />
         <IndividualComparison
-          type="individual"
           view={view}
           index={1}
           name={name}
