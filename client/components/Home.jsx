@@ -12,7 +12,8 @@ import IndividualComparison from "./IndividualComparison.jsx";
 // import { useState } from "react-hooks";
 
 function Home(props) {
-  // this is the hook that toggles the different comparisons
+  // this is the hook that toggles the different comparison views
+  // defaults to company comparison view
   const [view, setView] = useState(0);
   const handleComparison = (e, view) => {
     setView(view);
@@ -20,6 +21,7 @@ function Home(props) {
 
   // this is name of employee
   const [name, setName] = useState("saejin kang");
+
   // this is job title
   const [jobTitle, setJobTitle] = useState(
     "lead senior software engineer of the world"
@@ -28,9 +30,9 @@ function Home(props) {
   const [age, setAge] = useState("24");
   const [gender, setGender] = useState("male");
   const [race, setRace] = useState("asian ");
-  // salary vs hourly
+  // salary vs hourly employee
   const [employeeType, setEmployeeType] = useState("salary");
-  // years of experience in field
+  // years of experience in field/position
   const [yrsExperience, setYrsExperience] = useState("100");
   // years at current company
   const [yrsCompany, setYrsCompany] = useState("200");
