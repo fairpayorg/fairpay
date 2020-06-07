@@ -26,49 +26,111 @@ function Home(props) {
   };
 
   // this is name of employee
-  const [name, setName] = useState("saejin kang");
+  const [name, setName] = useState(null);
+
+  const [company, setCompany] = useState(null);
 
   // this is job title
-  const [jobTitle, setJobTitle] = useState(
-    "lead senior software engineer of the world"
-  );
-  const [sexuality, setSexuality] = useState("straight");
-  const [age, setAge] = useState("24");
-  const [gender, setGender] = useState("male");
-  const [race, setRace] = useState("asian ");
+  const [jobTitle, setJobTitle] = useState(null);
+  const [sexuality, setSexuality] = useState(null);
+  const [age, setAge] = useState(null);
+  const [gender, setGender] = useState();
+  const [race, setRace] = useState();
   // salary vs hourly employee
-  const [employeeType, setEmployeeType] = useState("salary");
+  const [employeeType, setEmployeeType] = useState();
   // years of experience in field/position
-  const [yrsExperience, setYrsExperience] = useState("100");
+  const [yrsExperience, setYrsExperience] = useState();
   // years at current company
-  const [yrsCompany, setYrsCompany] = useState("200");
-  const [baseSalary, setBaseSalary] = useState(1000000000);
-  const [annualBonus, setAnnualBonus] = useState(34000000);
+  const [yrsCompany, setYrsCompany] = useState();
+  const [baseSalary, setBaseSalary] = useState();
+  const [annualBonus, setAnnualBonus] = useState();
   // total invested and uninvested
-  const [stockOptions, setStockOptions] = useState(50000);
-  const [signingBonus, setSigningBonus] = useState(6000000);
-  const [ftStatus, setFtStatus] = useState("full-time");
+  const [stockOptions, setStockOptions] = useState();
+  const [signingBonus, setSigningBonus] = useState();
+  const [ftStatus, setFtStatus] = useState();
+
+  const [allNames, setAllNames] = useState([]);
+  const [allSexes, setAllSexes] = useState([]);
+  const [allAges, setAllAges] = useState([]);
+  const [allTypes, setAllTypes] = useState([]);
+  const [allYrsExperience, setAllYrsExperience] = useState([]);
+  const [allYrsCompany, setAllYrsCompany] = useState([]);
+  const [allBaseSalary, setAllBaseSalary] = useState([]);
+  const [allAnnualBonus, setAllAnnualBonus] = useState([]);
+  const [allStockOptions, setAllStockOptions] = useState([]);
+  const [allSigningBonuses, setAllSigningBonuses] = useState([]);
+  const [allFtStatuses, setAllFtStatuses] = useState([]);
+
+  const employeesNames = [];
+  const employeesSexuality = [];
+  const employeesAge = [];
+  const employeesType = [];
+  const employeesYrsExperience = [];
+  const employeesYrsCompany = [];
+  const employeesBaseSalary = [];
+  const employeesAnnualBonus = [];
+  const employeesStockOptions = [];
+  const employeesSigningBonus = [];
+  const employeesFtStatus = [];
 
   // provide company_linkedin_id, and send in body of request to get /api/company
   // need to give company name and position title
   useEffect(() => {
     // fetch call to /api/company/user_linkedin_id when you get it
-    fetch("/api/company/bren-yamaguchi-56179413" /*put user_linkedin_id here */)
+    fetch("/api/company/bren-yamaguchi-56179413") /*put user_linkedin_id here */
       .then((res) => res.json())
       .then((data) => {
         // with this data, setState for each hook and prop drill to appropriate components
-        console.log("data ", data);
+        const current = data.currentUser;
+
+        // setting state for current logged in user
+        setName(current.name);
+        setCompany(current.linkedin_id);
+        setJobTitle(current.job_title);
+        setSexuality(current.sexuality);
+        setAge(current.age);
+        setGender(current.gender);
+        setRace(current.race);
+        setEmployeeType(current.employee_type);
+        setYrsExperience(current.years_of_experience);
+        setYrsCompany(current.years_at_company);
+        setBaseSalary(current.base_salary);
+        setAnnualBonus(current.annual_bonus);
+        setStockOptions(current.stock_options);
+        setSigningBonus(current.signing_bonus);
+        setFtStatus(current.full_time_status);
+        const list = data.companyData;
+
+        // setting state for individual comparisons
+        list.forEach((employee) => {
+          employeesNames.push(employee.name);
+          employeesAge.push(employee.age);
+          employeesSexuality.push(employee.sexuality);
+          employeesType.push(employee.employee_type);
+          employeesYrsExperience.push(employee.years_of_experience);
+          employeesYrsCompany.push(employee.years_at_company);
+          employeesBaseSalary.push(employee.base_salary);
+          // employeesAnnualBonus.push(employee.annual_bonus);
+          // employeesStockOptions.push(employee.stock_options);
+          // employeesSigningBonus.push(employee.signing_bonus);
+          employeesFtStatus.push(employee.full_time_status);
+        });
+        setAllNames(employeesNames);
+        setAllAges(employeesAge);
+        setAllSexes(employeesSexuality);
+        setAllTypes(employeesType);
+        setAllYrsExperience(employeesYrsExperience);
+        setAllYrsCompany(employeesYrsCompany);
+        setAllBaseSalary(employeesBaseSalary);
+        setAllFtStatuses(employeesFtStatus);
+        // setting state for company stats
       });
-  });
+  }, []);
 
   return (
     <React.Fragment>
       <Container id="comparison_tabs">
-        <AppBar
-          //   style={styles.tab}
-          id="company_individual_toggle"
-          position="static"
-        >
+        <AppBar id="company_individual_toggle" position="static">
           <Tabs view={view} onChange={handleComparison} centered>
             <Tab label="Company Wide Comparison" />
             <Tab label="Individual Comparison" />
@@ -76,16 +138,17 @@ function Home(props) {
         </AppBar>
       </Container>
       <div>
-        <h2>
-          We'll display the user information here and consistently for every
-          view (or maybe not up for discussion)
-        </h2>
+        <h2>Hello {name}</h2>
+        <label>
+          {jobTitle} at {company}
+        </label>
       </div>
       <Container>
         <CompanyComparison
           view={view}
           index={0}
           name={name}
+          company={company}
           jobTitle={jobTitle}
           sexuality={sexuality}
           age={age}
@@ -104,6 +167,7 @@ function Home(props) {
           view={view}
           index={1}
           name={name}
+          company={company}
           jobTitle={jobTitle}
           sexuality={sexuality}
           age={age}
@@ -117,6 +181,13 @@ function Home(props) {
           stockOptions={stockOptions}
           signingBonus={signingBonus}
           ftStatus={ftStatus}
+          allNames={allNames}
+          allAges={allAges}
+          allSexes={allSexes}
+          allTypes={allTypes}
+          allYrsExperience={allYrsExperience}
+          allYrsCompany={allYrsCompany}
+          allBaseSalary={allBaseSalary}
         />
       </Container>
     </React.Fragment>
