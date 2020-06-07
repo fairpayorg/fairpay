@@ -19,12 +19,19 @@
   },
   "homepage": "https://github.com/wundercodes/fairpay#readme",
   "dependencies": {
+<<<<<<< HEAD
+=======
+    "@material-ui/core": "^4.10.1",
+    "@material-ui/icons": "^4.9.1",
+    "concurrently": "^5.2.0",
+>>>>>>> master
     "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "pg": "^8.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-hooks": "^1.0.1",
     "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
@@ -33,8 +40,16 @@
     "@babel/preset-react": "^7.10.1",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.1.0",
+<<<<<<< HEAD
     "concurrently": "^5.2.0",
     "nodemon": "^2.0.4",
+=======
+    "css-loader": "^3.5.3",
+    "node-sass": "^4.14.1",
+    "nodemon": "^2.0.4",
+    "sass-loader": "^8.0.2",
+    "style-loader": "^1.2.1",
+>>>>>>> master
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.11.0"
