@@ -4,15 +4,29 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 
+const dotenv = require('dotenv');
+dotenv.config();
+
+const fairpayController = require('./controllers/fairpayControllers')
+
 app.use(express.json());
+
 
 if (process.env.NODE_ENV === 'production') {
 
     app.use('/build', express.static(path.resolve(__dirname, '../build')))
     
     app.get('/', (req, res) => res.status(200).sendFile(path.resolve(__dirname, '../index.html')));
+
 }
 
+app.get('/api/test', fairpayController.getUser, (req, res) => {
+    res.status(200).json(res.locals.userData);
+});
+
+app.post('/api/user', fairpayController.createUser, (req, res) => {
+  //res.status(200).json(res.locals.userData);
+});
 
 
 
@@ -30,7 +44,7 @@ app.use((err, req, res, next) => {
         }
     };
     const errorObj = Object.assign({}, defaultErr)
-    console.log(errObj.log);
+    console.log(errorObj.log);
     return res.status(errorObj.status).json(errorObj.message);
 })
 
