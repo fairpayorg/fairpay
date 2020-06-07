@@ -3,10 +3,10 @@
 CREATE TABLE public.users
 (
   "_id" serial,
-  "linkedin_user_id" varchar,
+  "linkedin_user_id" varchar, -- user id provided from linked in Oauth
   "name" varchar,
-  "company_id" bigint,
-  "salary" bigint,
+  "company_id" bigint, -- foreign key refers to company table _id
+  "salary" bigint, -- foreign key refers to salary table _id
   "sexuality" varchar,
   "age" integer,
   "gender" varchar,
@@ -27,9 +27,9 @@ WITH (
 CREATE TABLE public.salary
 (
   "_id" serial,
-  "company_id" bigint,
-  "job_title" varchar,
-  "employee_type" varchar,
+  "company_id" bigint, -- foreign key refers to company table _id
+  "job_title" varchar, -- job title at company
+  "employee_type" varchar, -- salary or hourly
   "years_at_company" integer,
   "years_of_experience" integer,
   "base_salary" integer,
@@ -65,8 +65,8 @@ ALTER TABLE public.users ADD CONSTRAINT "users_fk1" FOREIGN KEY ("salary") REFER
 ALTER TABLE public.salary ADD CONSTRAINT "salary_fk0" FOREIGN KEY ("company_id") REFERENCES public.company("_id");
 
 -- add default test data starting with company table
-INSERT INTO public.company VALUES (1, 'Codesmith-LLC', 'Codesmith', 'Venice', 'Software Engineering Boot Camp', 'West Coast', '90291');
+INSERT INTO public.company VALUES (1, 'Codesmith-LLC', 'Codesmith', 'Venice', 'Software Engineering Boot Camp', 'West Coast USA', '90291');
 
-INSERT INTO public.salary VALUES (1, 1, 'Resident', 'Full-Time', 1, 1, 100000, 0, 0, 0, 'yes');
+INSERT INTO public.salary VALUES (1, 1, 'Resident', 'Salary', 1, 1, 100000, 0, 0, 0, 'yes');
 
 INSERT INTO public.users VALUES (1, 'andrew-cho-37990193', 'Andrew Cho', 1, 1, 'Heterosexual', 36, 'male', 'asian', 'Sherman Oaks', 'California', 'andrewjcho84@gmail.com', 'oauthtoken1', 'refreshtoken1', 10000, '91411')
