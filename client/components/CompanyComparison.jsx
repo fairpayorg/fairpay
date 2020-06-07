@@ -11,7 +11,7 @@ function CompanyComparison(props) {
   const changeGraph = (e, newValue) => {
     setValue(newValue);
   };
-  console.log("props in company", props);
+
   return (
     <React.Fragment>
       <Container id="company_container">
@@ -32,20 +32,10 @@ function CompanyComparison(props) {
       </Container>
 
       <Box>
-        <Total_Company
-          view={props.view}
-          value={value}
-          index={0}
-          graph={props.type}
-        />
+        <Total_Company view={props.view} value={value} index={0} />
       </Box>
       <Box>
-        <Race_Company
-          view={props.view}
-          value={value}
-          index={1}
-          graph={props.type}
-        />
+        <Race_Company view={props.view} value={value} index={1} />
       </Box>
       <Box>
         <Age_Company

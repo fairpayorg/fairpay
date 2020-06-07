@@ -49,7 +49,8 @@ function Home(props) {
   const [signingBonus, setSigningBonus] = useState(6000000);
   const [ftStatus, setFtStatus] = useState("full-time");
 
-  //provide company_linkedin_id, and send in body of request to get /api/company
+  // provide company_linkedin_id, and send in body of request to get /api/company
+  // need to give company name and position title
   //   useEffect(() => {
   //     // fetch call to /api/company/user_linkedin_id when you get it
   //     fetch("/api/company")
@@ -75,7 +76,6 @@ function Home(props) {
       </Container>
       <Container>
         <CompanyComparison
-          type="company"
           view={view}
           index={0}
           name={name}
@@ -94,7 +94,6 @@ function Home(props) {
           ftStatus={ftStatus}
         />
         <IndividualComparison
-          type="individual"
           view={view}
           index={1}
           name={name}
