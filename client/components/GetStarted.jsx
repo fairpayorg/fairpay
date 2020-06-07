@@ -1,5 +1,5 @@
-import React, { useState, setState } from 'react';
-import { render } from 'react-dom';
+import React, { useState, setState } from "react";
+import { render } from "react-dom";
 import {
   Button,
   Container,
@@ -9,18 +9,18 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
-} from '@material-ui/core';
+} from "@material-ui/core";
 // import e from 'express';
 
 function GetStarted(props) {
-  const [step, setStep] = useState('intro');
+  const [step, setStep] = useState("intro");
   const [employeeType, setEmployeeType] = useState(null);
 
-  const steps = ['intro', 'income', 'personal', 'complete'];
+  const steps = ["intro", "income", "personal", "complete"];
 
   function moveToNextStep() {
     setStep(steps[steps.indexOf(step) + 1]);
-    if (step === 'complete') {
+    if (step === "complete") {
       // TBD
     }
   }
@@ -29,13 +29,13 @@ function GetStarted(props) {
   function handleChange(event) {
     const { name, value } = event.target;
     // setState(prevState => ({ ...prevState, [name]: value }));
-    console.log('name: ', name, 'value: ', value);
+    console.log("name: ", name, "value: ", value);
     setEmployeeType(value);
     console.log(employeeType);
   }
 
   function renderIncomeQuestions() {
-    if (employeeType === 'Salary') {
+    if (employeeType === "Salary") {
       return (
         <React.Fragment>
           {/* Text input for annual salary*/}
@@ -73,7 +73,7 @@ function GetStarted(props) {
           />
         </React.Fragment>
       );
-    } else if (employeeType === 'Hourly') {
+    } else if (employeeType === "Hourly") {
       return (
         <React.Fragment>
           <br />
@@ -115,7 +115,7 @@ function GetStarted(props) {
 
   function renderNextStep() {
     // Intro step is basic user education about what this app does
-    if (step === 'intro') {
+    if (step === "intro") {
       return (
         <React.Fragment>
           <h1>How this works</h1>
@@ -123,7 +123,7 @@ function GetStarted(props) {
             We're about to ask you for deeply personal information, including
             your income, gender, race, and sexuality <br />
             <br />
-            All data is encryptypted and will only be viewable by individuals at
+            All data is encrypted and will only be viewable by individuals at
             your company with your same title <br />
             <br />
             Keeping your information personally identifiable is crucial for
@@ -136,7 +136,7 @@ function GetStarted(props) {
       );
     }
     // Income step is to gather income data for the user's current role
-    else if (step === 'income') {
+    else if (step === "income") {
       return (
         <React.Fragment>
           <form autoComplete="off">
@@ -189,7 +189,7 @@ function GetStarted(props) {
           </form>
         </React.Fragment>
       );
-    } else if (step === 'income') {
+    } else if (step === "income") {
       return <div>In the income step</div>;
     }
   }
