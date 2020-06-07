@@ -20,6 +20,8 @@ import {
   Redirect,
 } from "react-router-dom";
 
+import "./stylesheets/styles.css";
+
 const App = () => {
   return (
     <div>
