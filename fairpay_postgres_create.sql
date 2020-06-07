@@ -37,6 +37,7 @@ CREATE TABLE public.salary
   "stock_options" integer,
   "signing_bonus" integer,
   "full_time_status" varchar,
+  "active" boolean,
   CONSTRAINT "salary_pk" PRIMARY KEY ("_id")
 )
 WITH (
@@ -69,4 +70,4 @@ INSERT INTO public.company VALUES (1, 'Codesmith-LLC', 'Codesmith', 'Venice', 'S
 
 INSERT INTO public.salary VALUES (1, 1, 'Resident', 'Salary', 1, 1, 100000, 0, 0, 0, 'yes');
 
-INSERT INTO public.users VALUES (1, 'andrew-cho-37990193', 'Andrew Cho', 1, 1, 'Heterosexual', 36, 'male', 'asian', 'Sherman Oaks', 'California', 'andrewjcho84@gmail.com', 'oauthtoken1', 'refreshtoken1', 10000, '91411')
+INSERT INTO public.users VALUES (1, 'andrew-cho-37990193', 'Andrew Cho', 1, 1, 'Straight', 36, 'male', 'asian', 'Sherman Oaks', 'California', 'andrewjcho84@gmail.com', 'oauthtoken1', 'refreshtoken1', 10000, '91411')
