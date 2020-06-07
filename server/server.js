@@ -27,7 +27,7 @@ app.post('/api/user', fairpayController.createUser, (req, res) => {
   //res.status(200).json(res.locals.userData);
 });
 
-app.get(
+app.use(
   '/api/company/:linkedin_user_id',
   fairpayController.getCurrentUser,
   fairpayController.getCompanyData,

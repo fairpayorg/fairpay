@@ -109,7 +109,7 @@ fairpayController.updateUser = (req, res, next) => {};
 // get /api/company/:linkedin_user_id retrieves current user data to be used in subsequent middleware that will retrieve company data
 fairpayController.getCurrentUser = (req, res, next) => {
   const { linkedin_user_id } = req.params;
-  let queryString = `select u.name, s.job_title, c.linkedin_id, u.sexuality, u.age, u.gender, u.race, s.employee_type, s.years_at_company, s.years_of_experience, s.base_salary, s.full_time_status from salary s inner join company c on s.company_id = c._id inner join users u on s._id = u.salary where u.linkedin_user_id = '${linkedin_user_id}'`;
+  let queryString = `select u.name, s.job_title, c.linkedin_id, u.sexuality, u.age, u.gender, u.race, s.employee_type, s.years_at_company, s.years_of_experience, s.base_salary, s.full_time_status, s.annual_bonus, s.stock_options, s.signing_bonus from salary s inner join company c on s.company_id = c._id inner join users u on s._id = u.salary where u.linkedin_user_id = '${linkedin_user_id}'`;
   db.query(queryString, (err, response) => {
     if (err) {
       return next({
@@ -131,12 +131,12 @@ fairpayController.getCurrentUser = (req, res, next) => {
 fairpayController.getCompanyData = (req, res, next) => {
   const { job_title, linkedin_id } = res.locals.currentUser;
   console.log(
-    'inside getcompanydata, res.locals.currentUser.rows is',
-    res.locals.currentUser.rows
+    'inside getcompanydata, res.locals.currentUser is',
+    res.locals.currentUser
   );
   const params = [job_title, linkedin_id];
   console.log('params is', params);
-  let queryString = `select u.name, s.job_title, c.linkedin_id, u.sexuality, u.age, u.gender, u.race, s.employee_type, s.years_at_company, s.years_of_experience, s.base_salary, s.full_time_status from salary s inner join company c on s.job_title = $1 and c.linkedin_id = $2 and s.company_id = c._id inner join users u on s._id = u.salary`;
+  let queryString = `select u.name, s.job_title, c.linkedin_id, u.sexuality, u.age, u.gender, u.race, s.employee_type, s.years_at_company, s.years_of_experience, s.base_salary, s.full_time_status, s.annual_bonus, s.stock_options, s.signing_bonus from salary s inner join company c on s.job_title = $1 and c.linkedin_id = $2 and s.company_id = c._id inner join users u on s._id = u.salary`;
   db.query(queryString, params, (err, response) => {
     console.log('inside get company, rows is ', response.rows);
     if (err) {
