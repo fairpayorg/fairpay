@@ -6,7 +6,7 @@ export default function Age(props) {
     <React.Fragment>
       <div
         hidden={props.value !== props.index || props.view === 1}
-        id="age_comparison_div"
+        className="data_display_div"
       >
         <h1>inside age comparison</h1>
         <h1>{props.graph}</h1>
