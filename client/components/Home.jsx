@@ -51,14 +51,15 @@ function Home(props) {
 
   // provide company_linkedin_id, and send in body of request to get /api/company
   // need to give company name and position title
-  //   useEffect(() => {
-  //     // fetch call to /api/company/user_linkedin_id when you get it
-  //     fetch("/api/company")
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         // with this data, setState for each hook and prop drill to appropriate components
-  //       });
-  //   });
+  useEffect(() => {
+    // fetch call to /api/company/user_linkedin_id when you get it
+    fetch("/api/company/bren-yamaguchi-56179413" /*put user_linkedin_id here */)
+      .then((res) => res.json())
+      .then((data) => {
+        // with this data, setState for each hook and prop drill to appropriate components
+        console.log("data ", data);
+      });
+  });
 
   return (
     <React.Fragment>
