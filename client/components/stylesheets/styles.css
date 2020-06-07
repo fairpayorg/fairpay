@@ -13,9 +13,8 @@
   width: 13em;
 }
 
-#company_data {
+.data_display_div {
   display: flex;
-  float: right;
-  width: 100em;
-  justify-content: flex-start;
+  background-color: red;
+  flex-wrap: wrap;
 }
