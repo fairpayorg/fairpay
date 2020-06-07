@@ -68,6 +68,6 @@ ALTER TABLE public.salary ADD CONSTRAINT "salary_fk0" FOREIGN KEY ("company_id")
 -- add default test data starting with company table
 INSERT INTO public.company VALUES (1, 'Codesmith-LLC', 'Codesmith', 'Venice', 'Software Engineering Boot Camp', 'West Coast USA', '90291');
 
-INSERT INTO public.salary VALUES (1, 1, 'Resident', 'Salary', 1, 1, 100000, 0, 0, 0, 'yes');
+INSERT INTO public.salary VALUES (1, 1, 'Resident', 'Salary', 1, 1, 100000, 0, 0, 0, 'yes', 'true');
 
 INSERT INTO public.users VALUES (1, 'andrew-cho-37990193', 'Andrew Cho', 1, 1, 'Straight', 36, 'male', 'asian', 'Sherman Oaks', 'California', 'andrewjcho84@gmail.com', 'oauthtoken1', 'refreshtoken1', 10000, '91411')
