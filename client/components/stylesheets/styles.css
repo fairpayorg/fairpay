@@ -3,7 +3,7 @@
 }
 
 body {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   background-color: #eeeeee;
   color: #424242;
 }
@@ -67,4 +67,9 @@ body {
 #appBar {
   background-color: #ff8f00;
   justify-content: space-between;
+}
+
+#linkedinButton {
+  width: 203px;
+  height: 49px;
 }
