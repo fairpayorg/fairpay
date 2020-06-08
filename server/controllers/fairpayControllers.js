@@ -84,7 +84,7 @@ fairpayController.onboardUser = async (req, res, next) => {
       next();
     })
     .catch((err) =>
-      console.log("Error in query for creating new user entry:\n", err)
+      console.log('Error in query for creating new user entry:\n', err)
     );
 };
 
@@ -108,7 +108,7 @@ fairpayController.getCurrentUser = (req, res, next) => {
   });
 };
 
-// second middleware to fire after get to /api/company/:linkedin_user_id; sends company data with all same job titles at same company of user
+// second middleware to fire after get to /api/company/:linkedin_user_id; sends company data of users with all same job titles at same company of user
 
 fairpayController.getCompanyData = (req, res, next) => {
   const { job_title, linkedin_id } = res.locals.currentUser;
@@ -138,7 +138,7 @@ fairpayController.getCompanyData = (req, res, next) => {
 // middleware gets avg stats of current user's job title in company
 fairpayController.getJobStats = (req, res, next) => {
   const { linkedin_id, job_title } = res.locals.currentUser;
-  const queryString = `select s.job_title, round(avg(s.base_salary), 0) as avg_salary, round(avg(s.annual_bonus), 0) as avg_bonus, round(avg(s.stock_options), 0) as avg_stock_options from salary s left join users u on s._id = u.salary left join company c on c._id = s.company_id where c.linkedin_id = '${linkedin_id}' and s.active = 'true' and s.job_title = '${job_title}' group by s.job_title order by s.job_title`;
+  const queryString = `select s.job_title, round(avg(s.base_salary), 0) as avg_salary, round(avg(s.annual_bonus), 0) as avg_bonus, round(avg(s.stock_options), 0) as avg_stock_options, count(*) from salary s left join users u on s._id = u.salary left join company c on c._id = s.company_id where c.linkedin_id = '${linkedin_id}' and s.active = 'true' and s.job_title = '${job_title}' group by s.job_title order by s.job_title`;
   db.query(queryString, (err, response) => {
     if (err) {
       return next({
@@ -157,8 +157,8 @@ fairpayController.getJobStats = (req, res, next) => {
 
 // middleware gets avg race stats of current user's company
 fairpayController.getRaceStats = (req, res, next) => {
-  const { linkedin_id } = res.locals.currentUser;
-  const queryString = `select u.race, round(avg(s.base_salary), 0) as avg_salary, round(avg(s.annual_bonus), 0) as avg_bonus, round(avg(s.stock_options), 0) as avg_stock_options from salary s left join users u on s._id = u.salary left join company c on c._id = s.company_id where c.linkedin_id = '${linkedin_id}' and s.active = 'true' group by u.race order by u.race`;
+  const { linkedin_id, job_title } = res.locals.currentUser;
+  const queryString = `select u.race, round(avg(s.base_salary), 0) as avg_salary, round(avg(s.annual_bonus), 0) as avg_bonus, round(avg(s.stock_options), 0) as avg_stock_options, count(*) from salary s left join users u on s._id = u.salary left join company c on c._id = s.company_id where c.linkedin_id = '${linkedin_id}' and s.active = 'true' and s.job_title = '${job_title}' group by u.race order by u.race`;
   db.query(queryString, (err, response) => {
     if (err) {
       return next({
@@ -170,15 +170,15 @@ fairpayController.getRaceStats = (req, res, next) => {
       });
     }
     res.locals.raceStats = response.rows;
-    //console.log('response.rows in getracestats', response.rows);
+    console.log('response.rows in getracestats', response.rows);
     return next();
   });
 };
 
 // middleware gets avg age stats of current user's company
 fairpayController.getAgeStats = (req, res, next) => {
-  const { linkedin_id } = res.locals.currentUser;
-  const queryString = `select u.age, round(avg(s.base_salary), 0) as avg_salary, round(avg(s.annual_bonus), 0) as avg_bonus, round(avg(s.stock_options), 0) as avg_stock_options from salary s left join users u on s._id = u.salary left join company c on c._id = s.company_id where c.linkedin_id = '${linkedin_id}' and s.active = 'true' group by u.age order by u.age`;
+  const { linkedin_id, job_title } = res.locals.currentUser;
+  const queryString = `select u.age, round(avg(s.base_salary), 0) as avg_salary, round(avg(s.annual_bonus), 0) as avg_bonus, round(avg(s.stock_options), 0) as avg_stock_options, count(*) from salary s left join users u on s._id = u.salary left join company c on c._id = s.company_id where c.linkedin_id = '${linkedin_id}' and s.active = 'true' and s.job_title = '${job_title}' group by u.age order by u.age`;
   db.query(queryString, (err, response) => {
     if (err) {
       return next({
@@ -197,8 +197,8 @@ fairpayController.getAgeStats = (req, res, next) => {
 
 // middleware gets avg gender stats of current user's company
 fairpayController.getGenderStats = (req, res, next) => {
-  const { linkedin_id } = res.locals.currentUser;
-  const queryString = `select u.gender, round(avg(s.base_salary), 0) as avg_salary, round(avg(s.annual_bonus), 0) as avg_bonus, round(avg(s.stock_options), 0) as avg_stock_options from salary s left join users u on s._id = u.salary left join company c on c._id = s.company_id where c.linkedin_id = '${linkedin_id}' and s.active = 'true' group by u.gender order by u.gender`;
+  const { linkedin_id, job_title } = res.locals.currentUser;
+  const queryString = `select u.gender, round(avg(s.base_salary), 0) as avg_salary, round(avg(s.annual_bonus), 0) as avg_bonus, round(avg(s.stock_options), 0) as avg_stock_options, count(*) from salary s left join users u on s._id = u.salary left join company c on c._id = s.company_id where c.linkedin_id = '${linkedin_id}' and s.job_title = '${job_title}' and s.active = 'true' group by u.gender order by u.gender`;
   db.query(queryString, (err, response) => {
     if (err) {
       return next({
