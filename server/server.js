@@ -30,6 +30,7 @@ app.post('/api/onboardUser', fairpayController.onboardUser, (req, res) => {
   res.status(200).json(res.locals.userData);
 });
 
+
 // Returns a list of all job titles of users in the platform associated with
 // a particular company. Used for display a list for the user to select his/her
 // job title.
@@ -41,6 +42,25 @@ app.post('/api/company/jobTitles', fairpayController.getCommonJobTitles, (req, r
 //   res.status(200).json(res.locals.userData);
 // });
 
+app.use(
+  '/api/company/:linkedin_user_id',
+  fairpayController.getCurrentUser,
+  fairpayController.getCompanyData,
+  fairpayController.getJobStats,
+  fairpayController.getRaceStats,
+  fairpayController.getAgeStats,
+  fairpayController.getGenderStats,
+  (req, res) => {
+    res.status(200).json({
+      currentUser: res.locals.currentUser,
+      companyData: res.locals.companyData.rows,
+      jobStats: res.locals.jobStats,
+      raceStats: res.locals.raceStats,
+      ageStats: res.locals.ageStats,
+      genderStats: res.locals.genderStats,
+    });
+  }
+);
 
 // route error handler
 app.use('*', (req, res) => res.sendStatus(404));
