@@ -15,13 +15,13 @@ fairpayController.getUser = (req, res, next) => {
                     ON u.company_id = c._id
                     LEFT OUTER JOIN public.salary AS s
                     ON u.salary = s._id
-                    WHERE u.linkedin_user_id = $1;`
+                    WHERE u.linkedin_user_id = $1;`;
 
   let params = [req.body.linkedin_user_id];
   
   db.query(queryString, params, (err, response) => {
     console.log('checking for error in query response');
-    if(err) {
+    if (err) {
       console.log('Error in query for user: ', err);
     }
     console.log('in query handler');
@@ -29,7 +29,7 @@ fairpayController.getUser = (req, res, next) => {
     console.log('Added new user:\n', res.locals.userData);
     next();
   });
-}
+};
 
 // POST /api/company/jobTitles
 fairpayController.getCommonJobTitles = async (req, res, next) => {
@@ -71,9 +71,28 @@ fairpayController.onboardUser = async (req, res, next) => {
 }
 
 fairpayController.getCompanyData = (req, res, next) => {
-  const { user_linkedin_id } = req.params;
-  const params = [user_linkedin_id]
-  let queryString = `select u.gender from user u `
-}
+  const { job_title, linkedin_id } = res.locals.currentUser;
+  console.log(
+    'inside getcompanydata, res.locals.currentUser is',
+    res.locals.currentUser
+  );
+  const params = [job_title, linkedin_id];
+  console.log('params is', params);
+  let queryString = `select u.name, s.job_title, c.linkedin_id, u.sexuality, u.age, u.gender, u.race, s.employee_type, s.years_at_company, s.years_of_experience, s.base_salary, s.full_time_status, s.annual_bonus, s.stock_options, s.signing_bonus from salary s inner join company c on s.job_title = $1 and c.linkedin_id = $2 and s.company_id = c._id inner join users u on s._id = u.salary`;
+  db.query(queryString, params, (err, response) => {
+    console.log('inside get company, rows is ', response.rows);
+    if (err) {
+      return next({
+        log: `fairpayController.getCompanyData: ERROR: ${err}`,
+        message: {
+          err:
+            'fairpayController.getCompanyData: ERROR: Check server logs for details',
+        },
+      });
+    }
+    res.locals.companyData = response;
+    return next();
+  });
+};
 
 module.exports = fairpayController;
