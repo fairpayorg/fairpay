@@ -8,6 +8,12 @@ const fairpayController = {};
 
 // GET /api/user: responds with all user data
 fairpayController.getUser = (req, res, next) => {
+  let userId;
+  if (!req.body.linkedin_user_id) {
+    userId = req.user.id;
+  } else {
+    userId = req.body.linkedin_user_id;
+  }
   let queryString = `SELECT *, c.linkedin_id AS company_linkedin_id, c.name AS company_name, c.city AS company_city, c.zipcode AS company_zipcode
                     FROM public.users AS u
                     LEFT OUTER JOIN public.company AS c
@@ -16,13 +22,14 @@ fairpayController.getUser = (req, res, next) => {
                     ON u.salary = s._id
                     WHERE u.linkedin_user_id = $1;`;
 
-  let params = [req.body.linkedin_user_id];
+  let params = [userId];
 
   db.query(queryString, params, (err, response) => {
     if (err) {
       console.log("Error in query for user: ", err);
     }
 
+    console.log("response in getUser", response.rows);
     res.locals.userData = response.rows;
 
     next();
@@ -84,7 +91,7 @@ fairpayController.onboardUser = async (req, res, next) => {
       next();
     })
     .catch((err) =>
-      console.log('Error in query for creating new user entry:\n', err)
+      console.log("Error in query for creating new user entry:\n", err)
     );
 };
 
@@ -117,7 +124,7 @@ fairpayController.getCompanyData = (req, res, next) => {
   //   res.locals.currentUser
   // );
   const params = [job_title, linkedin_id];
-  console.log("params is", params);
+  //console.log("params is", params);
   let queryString = `select u.name, s.job_title, c.linkedin_id, u.sexuality, u.age, u.gender, u.race, s.employee_type, s.years_at_company, s.years_of_experience, s.base_salary, s.full_time_status, s.annual_bonus, s.stock_options, s.signing_bonus from salary s inner join company c on s.job_title = $1 and c.linkedin_id = $2 and s.company_id = c._id inner join users u on s._id = u.salary`;
   db.query(queryString, params, (err, response) => {
     // console.log('inside get company, rows is ', response.rows);
@@ -170,7 +177,7 @@ fairpayController.getRaceStats = (req, res, next) => {
       });
     }
     res.locals.raceStats = response.rows;
-    console.log('response.rows in getracestats', response.rows);
+    //console.log('response.rows in getracestats', response.rows);
     return next();
   });
 };

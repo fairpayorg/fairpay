@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component, useState } from 'react';
 // import { useState } from "react-hooks";
 import {
   Button,
@@ -7,27 +7,29 @@ import {
   Tab,
   Typography,
   SvgIcon,
-} from "@material-ui/core";
-import Home from "./components/Home.jsx";
-import Login from "./components/Login.jsx";
-import HomeIcon from "@material-ui/icons/Home";
-import GetStarted from "./components/GetStarted.jsx";
+} from '@material-ui/core';
+import Home from './components/Home.jsx';
+import Login from './components/Login.jsx';
+import GraphicEqRoundedIcon from '@material-ui/icons/GraphicEqRounded';
+import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
+import GetStarted from './components/GetStarted.jsx';
 import {
   Switch,
   BrowserRouter as Router,
   Route,
   Link,
   Redirect,
-} from "react-router-dom";
+} from 'react-router-dom';
 
-import "./components/stylesheets/styles.css";
+import './components/stylesheets/styles.css';
 
 const App = () => {
   return (
     <div>
-      <AppBar position="static">
-        <Tabs>
-          <HomeIcon />
+      <AppBar position="static" id="appBar">
+        <Tabs variant="fullWidth">
+          <Tab label="FairPay" icon={<GraphicEqRoundedIcon />} />
+          <Tab label="User" icon={<PersonRoundedIcon />} />
         </Tabs>
       </AppBar>
       <Router>

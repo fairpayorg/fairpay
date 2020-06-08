@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 // import { useState } from "react-hooks";
 
 function Login(props) {
@@ -12,7 +12,7 @@ function Login(props) {
         coworkers are being discriminated against
       </h2>
       {/* TODO: link to LinkedIn OAuth*/}
-      <button>Sign in with LinkedIn</button>
+      <a href="/auth/linkedin">Sign in with LinkedIn</a>
     </div>
   );
 }
