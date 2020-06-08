@@ -1,14 +1,13 @@
-const db = require('../models/payfairModels');
+const db = require("../models/payfairModels");
 
-const getCommonJobTitles = require('../helpers/getCommonJobTitles');
-const upsertCompany = require('../helpers/upsertCompany');
-const insertSalary = require('../helpers/insertSalary');
+const getCommonJobTitles = require("../helpers/getCommonJobTitles");
+const upsertCompany = require("../helpers/upsertCompany");
+const insertSalary = require("../helpers/insertSalary");
 
 const fairpayController = {};
 
 // GET /api/user: responds with all user data
 fairpayController.getUser = (req, res, next) => {
-  console.log('creating query');
   let queryString = `SELECT *, c.linkedin_id AS company_linkedin_id, c.name AS company_name, c.city AS company_city, c.zipcode AS company_zipcode
                     FROM public.users AS u
                     LEFT OUTER JOIN public.company AS c
@@ -20,13 +19,12 @@ fairpayController.getUser = (req, res, next) => {
   let params = [req.body.linkedin_user_id];
 
   db.query(queryString, params, (err, response) => {
-    console.log('checking for error in query response');
     if (err) {
-      console.log('Error in query for user: ', err);
+      console.log("Error in query for user: ", err);
     }
-    console.log('in query handler');
+
     res.locals.userData = response.rows;
-    console.log('Added new user:\n', res.locals.userData);
+
     next();
   });
 };
@@ -39,7 +37,7 @@ fairpayController.getCommonJobTitles = async (req, res, next) => {
 
 // POST /api/user
 fairpayController.onboardUser = async (req, res, next) => {
-  console.log('creating user, verifying if request is proper');
+  console.log("creating user, verifying if request is proper");
   //if (!req.body.linkedin_user_id || !req.body.name || !req.body.company_name || !req.body.job_title || !req.body.company_linkedin_id) {
   if (!req.body.linkedin_user_id) {
     res
@@ -100,7 +98,7 @@ fairpayController.getCurrentUser = (req, res, next) => {
         log: `fairpayController.getCurrentUser: ERROR: ${err}`,
         message: {
           err:
-            'fairpayController.getCurrentUser: ERROR: Check server logs for details',
+            "fairpayController.getCurrentUser: ERROR: Check server logs for details",
         },
       });
     }
@@ -119,7 +117,7 @@ fairpayController.getCompanyData = (req, res, next) => {
   //   res.locals.currentUser
   // );
   const params = [job_title, linkedin_id];
-  console.log('params is', params);
+  console.log("params is", params);
   let queryString = `select u.name, s.job_title, c.linkedin_id, u.sexuality, u.age, u.gender, u.race, s.employee_type, s.years_at_company, s.years_of_experience, s.base_salary, s.full_time_status, s.annual_bonus, s.stock_options, s.signing_bonus from salary s inner join company c on s.job_title = $1 and c.linkedin_id = $2 and s.company_id = c._id inner join users u on s._id = u.salary`;
   db.query(queryString, params, (err, response) => {
     // console.log('inside get company, rows is ', response.rows);
@@ -128,7 +126,7 @@ fairpayController.getCompanyData = (req, res, next) => {
         log: `fairpayController.getCompanyData: ERROR: ${err}`,
         message: {
           err:
-            'fairpayController.getCompanyData: ERROR: Check server logs for details',
+            "fairpayController.getCompanyData: ERROR: Check server logs for details",
         },
       });
     }
@@ -147,7 +145,7 @@ fairpayController.getJobStats = (req, res, next) => {
         log: `fairpayController.getJobStats: ERROR: ${err}`,
         message: {
           err:
-            'fairpayController.getJobStats: ERROR: Check server logs for details',
+            "fairpayController.getJobStats: ERROR: Check server logs for details",
         },
       });
     }
@@ -167,7 +165,7 @@ fairpayController.getRaceStats = (req, res, next) => {
         log: `fairpayController.getRaceStats: ERROR: ${err}`,
         message: {
           err:
-            'fairpayController.getRaceStats: ERROR: Check server logs for details',
+            "fairpayController.getRaceStats: ERROR: Check server logs for details",
         },
       });
     }
@@ -187,7 +185,7 @@ fairpayController.getAgeStats = (req, res, next) => {
         log: `fairpayController.getAgeStats: ERROR: ${err}`,
         message: {
           err:
-            'fairpayController.getAgeStats: ERROR: Check server logs for details',
+            "fairpayController.getAgeStats: ERROR: Check server logs for details",
         },
       });
     }
@@ -207,7 +205,7 @@ fairpayController.getGenderStats = (req, res, next) => {
         log: `fairpayController.getGenderStats: ERROR: ${err}`,
         message: {
           err:
-            'fairpayController.getGenderStats: ERROR: Check server logs for details',
+            "fairpayController.getGenderStats: ERROR: Check server logs for details",
         },
       });
     }
