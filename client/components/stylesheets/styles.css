@@ -3,7 +3,7 @@
 }
 
 body {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   background-color: #eeeeee;
   color: #424242;
 }
@@ -63,6 +63,11 @@ body {
 
 #comparison_tabs {
   margin-top: 2rem;
+}
+
+#linkedinButton {
+  width: 203px;
+  height: 49px;
 }
 
 #appBar {
