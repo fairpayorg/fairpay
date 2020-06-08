@@ -11,7 +11,7 @@ import {
 
 function Race(props) {
   const sliced = props.raceList;
-
+  console.log(sliced);
   return (
     <React.Fragment>
       <div hidden={props.value !== props.index || props.view === 1}>

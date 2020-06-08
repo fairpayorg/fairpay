@@ -185,9 +185,9 @@ function Home(props) {
         </AppBar>
       </Container>
       {loading ? (
-        <h2>Loading Data...</h2>
+        <h2 centered>Loading Data...</h2>
       ) : (
-        <div>
+        <div centered>
           <h2>Hello {name}</h2>
           <label>
             {jobTitle} at {company}

@@ -1,8 +1,12 @@
 const db = require("../models/payfairModels");
 
+const getCommonJobTitles = require("../helpers/getCommonJobTitles");
+const upsertCompany = require("../helpers/upsertCompany");
+const insertSalary = require("../helpers/insertSalary");
+
 const fairpayController = {};
 
-// responds to GET /api/user with all user data
+// GET /api/user: responds with all user data
 fairpayController.getUser = (req, res, next) => {
   let queryString = `SELECT *, c.linkedin_id AS company_linkedin_id, c.name AS company_name, c.city AS company_city, c.zipcode AS company_zipcode
                     FROM public.users AS u
@@ -25,83 +29,64 @@ fairpayController.getUser = (req, res, next) => {
   });
 };
 
-// POST /api/user
-fairpayController.createUser = (req, res, next) => {
-  if (
-    !req.body.linkedin_user_id ||
-    !req.body.name ||
-    !req.body.company_name ||
-    !req.body.job_title ||
-    req.body.company_linkedin_id
-  ) {
-    res.status(418).json(`Invalid create user request: must include 
-                          linkedin_user_id, name, company_name, and job_title`);
-  }
-
-  let companyKey;
-  let salaryKey;
-  // upsert company into company table
-  let queryString = `INSERT INTO company (linkedin_id, name, city, industry, region, zipcode) 
-                      VALUES($1, $2, $3, $4, $5, $6) 
-                      ON CONFLICT (linkedin_id) 
-                      DO UPDATE SET 
-                        name=EXCLUDED.name
-                      RETURNING _id as key`;
-  let params = [
-    req.body.company_linkedin_id,
-    req.body.company_name,
-    req.body.company_city,
-    req.body.industry,
-    req.body.region,
-    req.body.company_zipcode,
-  ];
-  db.query(queryString, params, (err, response) => {
-    if (err) {
-      console.log("Error in query for creating new company: ", err);
-    }
-    companyKey = response.rows[0].key;
-    // insert new job_title into salary table
-    queryString = `INSERT INTO salary (company_id, job_title)
-                   VALUES ($1, $2)
-                   RETURNING _id as key`;
-    let params = [companyKey, req.body.job_title];
-    db.query(queryString, params, (err, response) => {
-      if (err) {
-        console.log("Error in query for creating new salary entry: ", err);
-      }
-      salaryKey = response.rows[0].key;
-
-      // then insert user into user table, including name, company foreign key and salary foreign key
-      queryString = `INSERT INTO users (name, linkedin_user_id, company_id, salary)
-                     VALUES ($1, $2, $3, $4)
-                     RETURNING *`;
-      let params = [
-        req.body.name,
-        req.body.linkedin_user_id,
-        companyKey,
-        salaryKey,
-      ];
-      db.query(queryString, params, (err, response) => {
-        if (err) {
-          console.log("Error in query for creating new user entry: ", err);
-        }
-        res.locals.insertedUser = response.rows;
-        next();
-      });
-    });
-  });
-
-  db.query(queryString, params, (err, response) => {
-    if (err) {
-      console.log("Error in query for user: ", err);
-    }
-    res.locals.userData = response.rows;
-    next();
-  });
+// POST /api/company/jobTitles
+fairpayController.getCommonJobTitles = async (req, res, next) => {
+  res.locals.commonJobTitles = await getCommonJobTitles.get(req);
+  next();
 };
 
-//PUT /api/user
-fairpayController.updateUser = (req, res, next) => {};
+// POST /api/user
+fairpayController.onboardUser = async (req, res, next) => {
+  console.log("creating user, verifying if request is proper");
+  //if (!req.body.linkedin_user_id || !req.body.name || !req.body.company_name || !req.body.job_title || !req.body.company_linkedin_id) {
+  if (!req.body.linkedin_user_id) {
+    res
+      .status(418)
+      .json(`Invalid create user request: must include linkedin_user_id`);
+  }
+
+  let companyKey = await upsertCompany.upsert(req, res);
+
+  let salaryKey = await insertSalary.insert(req, res, companyKey);
+
+  // then insert user into user table, including name, company foreign key and salary foreign key
+  let {
+    linkedin_user_id,
+    sexuality,
+    age,
+    gender,
+    race,
+    city,
+    state,
+  } = req.body;
+  queryString = `UPDATE users 
+                SET company_id=$1, salary=$2, sexuality=$3,
+                    age=$4, gender=$5, race=$6,
+                    city=$7, state=$8
+                WHERE linkedin_user_id=$9
+                RETURNING *`;
+
+  let params = [
+    companyKey,
+    salaryKey,
+    sexuality,
+    age,
+    gender,
+    race,
+    city,
+    state,
+    linkedin_user_id,
+  ];
+
+  db.query(queryString, params)
+    .then((response) => {
+      res.locals.userData = response.rows[0];
+      next();
+    })
+    .catch((err) =>
+      console.log("Error in query for creating new user entry:\n", err)
+    );
+};
 
 // get /api/company/:linkedin_user_id retrieves current user data to be used in subsequent middleware that will retrieve company data
 fairpayController.getCurrentUser = (req, res, next) => {
@@ -132,7 +117,7 @@ fairpayController.getCompanyData = (req, res, next) => {
   //   res.locals.currentUser
   // );
   const params = [job_title, linkedin_id];
-
+  console.log("params is", params);
   let queryString = `select u.name, s.job_title, c.linkedin_id, u.sexuality, u.age, u.gender, u.race, s.employee_type, s.years_at_company, s.years_of_experience, s.base_salary, s.full_time_status, s.annual_bonus, s.stock_options, s.signing_bonus from salary s inner join company c on s.job_title = $1 and c.linkedin_id = $2 and s.company_id = c._id inner join users u on s._id = u.salary`;
   db.query(queryString, params, (err, response) => {
     // console.log('inside get company, rows is ', response.rows);
@@ -146,6 +131,26 @@ fairpayController.getCompanyData = (req, res, next) => {
       });
     }
     res.locals.companyData = response;
+    return next();
+  });
+};
+
+// middleware gets avg stats of current user's job title in company
+fairpayController.getJobStats = (req, res, next) => {
+  const { linkedin_id, job_title } = res.locals.currentUser;
+  const queryString = `select s.job_title, round(avg(s.base_salary), 0) as avg_salary, round(avg(s.annual_bonus), 0) as avg_bonus, round(avg(s.stock_options), 0) as avg_stock_options from salary s left join users u on s._id = u.salary left join company c on c._id = s.company_id where c.linkedin_id = '${linkedin_id}' and s.active = 'true' and s.job_title = '${job_title}' group by s.job_title order by s.job_title`;
+  db.query(queryString, (err, response) => {
+    if (err) {
+      return next({
+        log: `fairpayController.getJobStats: ERROR: ${err}`,
+        message: {
+          err:
+            "fairpayController.getJobStats: ERROR: Check server logs for details",
+        },
+      });
+    }
+    res.locals.jobStats = response.rows;
+    //console.log('response.rows in getracestats', response.rows);
     return next();
   });
 };
