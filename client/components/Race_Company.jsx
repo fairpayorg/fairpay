@@ -17,7 +17,7 @@ function Race(props) {
       <div hidden={props.value !== props.index || props.view === 1}>
         <div className="data_display_div">
           <TableContainer component={Paper}>
-            <Table>
+            <Table className="table_displays">
               <TableHead>
                 <TableRow>
                   <TableCell>Race</TableCell>
