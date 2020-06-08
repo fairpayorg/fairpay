@@ -13,7 +13,8 @@ import IndividualComparison from "./IndividualComparison.jsx";
 
 const styles = {
   tabBar: {
-    backgroundColor: "#ffb300",
+    backgroundColor: "#ffe082",
+    color: "rgb(102, 102, 102)",
   },
 };
 function Home(props) {
