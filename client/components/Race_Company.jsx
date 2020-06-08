@@ -30,9 +30,9 @@ function Race(props) {
                 {sliced.map((row) => (
                   <TableRow key={row.race}>
                     <TableCell>{row.race}</TableCell>
-                    <TableCell align="right">{row.avg_salary}</TableCell>
-                    <TableCell align="right">{row.avg_bonus}</TableCell>
-                    <TableCell align="right">{row.avg_stock}</TableCell>
+                    <TableCell align="right">${row.avg_salary}</TableCell>
+                    <TableCell align="right">${row.avg_bonus}</TableCell>
+                    <TableCell align="right">${row.avg_stock}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

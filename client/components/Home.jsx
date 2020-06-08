@@ -9,13 +9,6 @@ import {
 } from "@material-ui/core";
 import CompanyComparison from "./CompanyComparison.jsx";
 import IndividualComparison from "./IndividualComparison.jsx";
-// import { useState } from "react-hooks";
-
-const styles = {
-  tab: {
-    width: 50 + "%",
-  },
-};
 
 function Home(props) {
   // this is the hook that toggles the different comparison views
