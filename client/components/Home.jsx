@@ -201,6 +201,14 @@ function Home(props) {
   const { classes } = props;
   return (
     <React.Fragment>
+      {loading ? null : (
+        <div className="current_user_header">
+          <h2 id="current_user_name">Hello {name}</h2>
+          <label id="current_user_label">
+            {jobTitle} at {company}
+          </label>
+        </div>
+      )}
       <Container id="comparison_tabs">
         <AppBar
           className={classes.tabBar}
@@ -217,12 +225,6 @@ function Home(props) {
         <h2 className="current_user_header">Loading Data...</h2>
       ) : (
         <div>
-          <div className="current_user_header">
-            <h2 id="current_user_name">Hello {name}</h2>
-            <label id="current_user_label">
-              {jobTitle} at {company}
-            </label>
-          </div>
           <div id="tables_div">
             <Container>
               <CompanyComparison
