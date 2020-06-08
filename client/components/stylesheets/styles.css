@@ -3,7 +3,7 @@
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   background-color: #fff8e1;
   color: #424242;
 }
@@ -34,12 +34,12 @@ body {
 #linkedinButton {
   width: 174px;
   height: 42px;
-  .current_user_header {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
+}
+.current_user_header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #current_user_name {
