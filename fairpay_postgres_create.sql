@@ -3,6 +3,7 @@
 CREATE TABLE public.users (
   "_id" serial,
   "linkedin_user_id" varchar, -- user id provided from linked
+  "image_url" varchar,
   "name" varchar,
   "company_id" bigint, -- foreign key refers to company table _id
   "salary" bigint, -- foreign key refers to salary table _id

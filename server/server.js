@@ -1,16 +1,13 @@
 const path = require('path');
 const express = require('express');
 const passport = require('passport');
+const authRouter = require('./routes/auth.js');
+const fairpayController = require('./controllers/fairpayControllers');
 const cookieSession = require('cookie-session');
 require('./passport-setup');
 
 const app = express();
 const PORT = 3000;
-
-// routers
-const authRouter = require('./routes/auth.js');
-// controllers
-const fairpayController = require('./controllers/fairpayControllers');
 
 app.use(express.json());
 
@@ -23,11 +20,6 @@ app.use(cookieSession({
 // initializes passport and passport sessions
 app.use(passport.initialize());
 app.use(passport.session());
-
-if (process.env.NODE_ENV === 'production') {
-    app.use('/build', express.static(path.resolve(__dirname, '../build')))  
-    app.get('/', (req, res) => res.status(200).sendFile(path.resolve(__dirname, '../index.html')));
-} 
 
 // route handlers
 app.use('/auth', authRouter);
