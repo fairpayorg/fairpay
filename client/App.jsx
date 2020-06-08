@@ -10,8 +10,9 @@ import {
 } from '@material-ui/core';
 import Home from './components/Home.jsx';
 import Login from './components/Login.jsx';
-import HomeIcon from '@material-ui/icons/Home';
+import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import GetStarted from './components/GetStarted.jsx';
+import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 import {
   Switch,
   BrowserRouter as Router,
@@ -27,8 +28,8 @@ const App = () => {
     <div>
       <AppBar position="static" id="appBar">
         <Tabs>
-          <Tab icon={<HomeIcon />} />
-          <Tab />
+          <Tab icon={<HomeRoundedIcon style={{ fontSize: 30 }} />} />
+          <Tab icon={<PersonRoundedIcon style={{ fontSize: 30 }} />} />
         </Tabs>
       </AppBar>
       <Router>
