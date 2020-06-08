@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component, useState } from 'react';
 // import { useState } from "react-hooks";
 import {
   Button,
@@ -7,27 +7,28 @@ import {
   Tab,
   Typography,
   SvgIcon,
-} from "@material-ui/core";
-import Home from "./components/Home.jsx";
-import Login from "./components/Login.jsx";
-import HomeIcon from "@material-ui/icons/Home";
-import GetStarted from "./components/GetStarted.jsx";
+} from '@material-ui/core';
+import Home from './components/Home.jsx';
+import Login from './components/Login.jsx';
+import HomeIcon from '@material-ui/icons/Home';
+import GetStarted from './components/GetStarted.jsx';
 import {
   Switch,
   BrowserRouter as Router,
   Route,
   Link,
   Redirect,
-} from "react-router-dom";
+} from 'react-router-dom';
 
-import "./components/stylesheets/styles.css";
+import './components/stylesheets/styles.css';
 
 const App = () => {
   return (
     <div>
-      <AppBar position="static">
+      <AppBar position="static" id="appBar">
         <Tabs>
-          <HomeIcon />
+          <Tab icon={<HomeIcon />} />
+          <Tab />
         </Tabs>
       </AppBar>
       <Router>

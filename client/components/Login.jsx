@@ -1,5 +1,6 @@
-import React from "react";
+import React from 'react';
 // import { useState } from "react-hooks";
+import Button from '@material-ui/core/Button';
 
 function Login(props) {
   //   console.log("props vs index", props.value, props.index);
@@ -12,7 +13,10 @@ function Login(props) {
         coworkers are being discriminated against
       </h2>
       {/* TODO: link to LinkedIn OAuth*/}
-      <button>Sign in with LinkedIn</button>
+      <img
+        src="https://taggbox.com/blog/wp-content/uploads/2018/09/Signin-with-LinkedIn.png"
+        id="linkedinButton"
+      />
     </div>
   );
 }
