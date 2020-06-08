@@ -46,7 +46,8 @@ fairpayController.getCommonJobTitles = async (req, res, next) => {
 fairpayController.onboardUser = async (req, res, next) => {
   console.log("creating user, verifying if request is proper");
   //if (!req.body.linkedin_user_id || !req.body.name || !req.body.company_name || !req.body.job_title || !req.body.company_linkedin_id) {
-  if (!req.body.linkedin_user_id) {
+  let userId = jwt.verify(req.cookies.jsonToken, process.env.LINKEDIN_SECRET) 
+  if (!userId) {
     res
       .status(418)
       .json(`Invalid create user request: must include linkedin_user_id`);
@@ -58,7 +59,7 @@ fairpayController.onboardUser = async (req, res, next) => {
 
   // then insert user into user table, including name, company foreign key and salary foreign key
   let {
-    linkedin_user_id,
+    userId,
     sexuality,
     age,
     gender,
@@ -82,7 +83,7 @@ fairpayController.onboardUser = async (req, res, next) => {
     race,
     city,
     state,
-    linkedin_user_id,
+    userId,
   ];
 
   db.query(queryString, params)

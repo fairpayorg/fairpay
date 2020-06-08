@@ -12,10 +12,12 @@ const PORT = 3000;
 app.use(express.json());
 
 // set up session cookies
-app.use(cookieSession({
+app.use(
+  cookieSession({
     maxAge: 24 * 60 * 60 * 1000,
-    keys: ['wonderpus']
-}));
+    keys: ['wonderpus'],
+  })
+);
 
 // initializes passport and passport sessions
 app.use(passport.initialize());
@@ -43,15 +45,16 @@ app.get('/api/user', fairpayController.getUser, (req, res) => {
 // Updates user with his/her personal, salary, and company information
 // If company does not exists in company table, it gets added
 app.post('/api/onboardUser', fairpayController.onboardUser, (req, res) => {
-  res.status(200).json(res.locals.userData);
+  //res.status(200).json(res.locals.userData);
+  res.status(200).redirect("http://localhost:3000/home");
 });
 
 // Returns a list of all job titles of users in the platform associated with
 // a particular company. Used for display a list for the user to select his/her
 // job title.
-app.post('/api/company/jobTitles', fairpayController.getCommonJobTitles, (req, res) => {
+app.post('/api/jobTitles', fairpayController.getCommonJobTitles, (req, res) => {
   res.status(200).json(res.locals.commonJobTitles);
-})
+});
 
 // app.put('/api/user', fairpayController.updateUser, (req, res) => {
 //   res.status(200).json(res.locals.userData);

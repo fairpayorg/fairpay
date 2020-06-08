@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { render } from 'react-dom';
+import TitleCount from './TitleCount.jsx';
 import {
   Button,
   Container,
@@ -19,18 +20,42 @@ function GetStarted(props) {
   // every time we udpate inputs, we'll use the setInput functio
   const [inputs, setInputs] = useState({});
   const [errors, setErrors] = useState({});
+  const [titleCount, setTitleCount] = useState(null);
   const [currentStepComplete, updateStepCompletionStatus] = useState(false);
 
   const steps = ['intro', 'company', 'title', 'income', 'personal', 'complete'];
 
+  // function is called each time user clicks  'next'
   function moveToNextStep() {
-    setStep(steps[steps.indexOf(step) + 1]);
-    if (step === "complete") {
-      // TBD
+    if (step === 'company') {
+      console.log(inputs.company);
+      getRoleCount(inputs.company);
     }
+    setStep(steps[steps.indexOf(step) + 1]);
   }
 
-  // update inputs
+  // returns array of counts for each title at a given company
+  function getRoleCount(company) {
+    const data = { company_name: company };
+
+    fetch('/api/jobTitles', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then((data) => {
+        return data.json();
+      })
+      .then((res) => setTitleCount(res))
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+
+  // called each time an input changes
+  // updates state, checks for validation errors, and updates disable status of button
   function handleChange(event) {
     const { name, value } = event.target;
     setInputs((prevState) => ({ ...prevState, [name]: value }));
@@ -70,7 +95,7 @@ function GetStarted(props) {
     let isIncomplete = false;
     let reqQuestions;
 
-    // determine required steps
+    // determine required questions for a given step
     if (
       step === 'income' &&
       (!inputs.employeeType || inputs.employeeType === 'Salary')
@@ -95,7 +120,6 @@ function GetStarted(props) {
     if (Object.keys(errors).length > 0) {
       hasError = true;
     }
-    console.log('req question is ', reqQuestions);
 
     if (reqQuestions) {
       for (let i = 0; i <= reqQuestions.length - 1; i++) {
@@ -106,15 +130,12 @@ function GetStarted(props) {
         }
       }
     }
-    console.log('has error ', hasError, ' is incomplete: ', isIncomplete);
     // if theres an error or incomplete form but the step is set as complete, set to false
     if ((hasError || isIncomplete) && currentStepComplete) {
       updateStepCompletionStatus(false);
     } else if (!hasError && !isIncomplete && !currentStepComplete) {
       updateStepCompletionStatus(true);
     }
-    console.log(errors);
-    console.log('current step complete :', currentStepComplete);
   }
 
   function submitForm() {
@@ -280,7 +301,7 @@ function GetStarted(props) {
 
   function renderNextStep() {
     // Intro step is basic user education about what this app does
-    if (step === "intro") {
+    if (step === 'intro') {
       return (
         <React.Fragment>
           <h1>How this works</h1>
@@ -315,6 +336,7 @@ function GetStarted(props) {
           <TextField
             required
             id="company"
+            key="company"
             label="Company"
             // helperText="Incorrect entry."
             variant="outlined"
@@ -330,6 +352,7 @@ function GetStarted(props) {
           <TextField
             required
             id="state"
+            key="state"
             label="State"
             // helperText="Incorrect entry."
             variant="outlined"
@@ -354,10 +377,10 @@ function GetStarted(props) {
     } else if (step === 'title') {
       return (
         <React.Fragment>
-          {/* <p>Please give a sense a of your total experience</p> */}
           <TextField
             required
             id="years-experience-input"
+            key="years-experience-input"
             label="# years in this industry"
             // helperText="Incorrect entry."
             variant="outlined"
@@ -375,6 +398,7 @@ function GetStarted(props) {
           <TextField
             required
             id="years-tenure"
+            key="years-tenure"
             label="# years at company"
             // helperText="Incorrect entry."
             variant="outlined"
@@ -387,10 +411,19 @@ function GetStarted(props) {
           />
           <br />
           <br />
+          <p>
+            {' '}
+            You'll only be compared to people at your company with your same
+            title. Here are the titles that other employees at your company have
+            used:
+          </p>
+          <TitleCount titles={titleCount} />
+          <br />
           <TextField
             required
             id="title"
             label="Title"
+            key="title"
             // helperText="Incorrect entry."
             variant="outlined"
             name="title"
@@ -414,7 +447,7 @@ function GetStarted(props) {
     }
 
     // Income step is to gather income data for the user's current role
-    else if (step === "income") {
+    else if (step === 'income') {
       return (
         <React.Fragment>
           <form autoComplete="off">
@@ -564,6 +597,8 @@ function GetStarted(props) {
 
   return (
     <Container maxWidth="sm">
+      <br />
+      <br />
       {renderNextStep()}
       {/* if on the final step of the form, render a "See results" button that submits the form responses to the DB */}
     </Container>

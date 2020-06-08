@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const fairpayController = require("../controllers/fairpayControllers.js");
+const jwt = require('jsonwebtoken');
 
 // auth with linkedin
 router.get(
@@ -30,6 +31,9 @@ router.get(
       if (res.locals.userData[0].salary) {
         res.status(200).redirect("http://localhost:8080/home");
       }
+      let jwtToken = jwt.sign(res.locals.userData.linkedin_user_id, process.env.LINKEDIN_SECRET);
+      res.cookie("jsonToken", jwtToken);
+      res.cookie('userId', res.locals.userDate.linkedin_user_id);
       res.status(200).redirect("http://localhost:8080/getstarted");
     } else if (res.locals.userData[0].salary) {
       res.status(200).redirect("http://localhost:3000/home");
