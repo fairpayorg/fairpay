@@ -8,6 +8,12 @@ const fairpayController = {};
 
 // GET /api/user: responds with all user data
 fairpayController.getUser = (req, res, next) => {
+  let userId;
+  if (!req.body.linkedin_user_id) {
+    userId = req.user.id;
+  } else {
+    userId = req.body.linkedin_user_id;
+  }
   let queryString = `SELECT *, c.linkedin_id AS company_linkedin_id, c.name AS company_name, c.city AS company_city, c.zipcode AS company_zipcode
                     FROM public.users AS u
                     LEFT OUTER JOIN public.company AS c
@@ -16,13 +22,14 @@ fairpayController.getUser = (req, res, next) => {
                     ON u.salary = s._id
                     WHERE u.linkedin_user_id = $1;`;
 
-  let params = [req.body.linkedin_user_id];
+  let params = [userId];
 
   db.query(queryString, params, (err, response) => {
     if (err) {
       console.log("Error in query for user: ", err);
     }
 
+    console.log("response in getUser", response.rows);
     res.locals.userData = response.rows;
 
     next();
@@ -84,7 +91,7 @@ fairpayController.onboardUser = async (req, res, next) => {
       next();
     })
     .catch((err) =>
-      console.log('Error in query for creating new user entry:\n', err)
+      console.log("Error in query for creating new user entry:\n", err)
     );
 };
 
@@ -170,7 +177,7 @@ fairpayController.getRaceStats = (req, res, next) => {
       });
     }
     res.locals.raceStats = response.rows;
-    console.log('response.rows in getracestats', response.rows);
+    console.log("response.rows in getracestats", response.rows);
     return next();
   });
 };
