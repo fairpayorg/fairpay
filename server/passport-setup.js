@@ -12,32 +12,17 @@ passport.serializeUser((user, done) => {
   to the done callback
   PS: You dont have to do it like this its just usually done like this
   */
-  console.log('SERIALIZER FIRED');
-  console.log('USER IS', user);
-  console.log('ID IS', user.id);
   done(null, user);
 });
 
-passport.deserializeUser((id, done) => {
+passport.deserializeUser((user, done) => {
   /*
   Instead of user this function usually recives the id 
   then you use the id to select the user from the db and pass the user obj to the done callback
   PS: You can later access this data in any routes in: req.user
+  PS: For this project, the entire user was passed
   */
-  
-  /*
-  console.log('HNNNNNNNG THE ID IS', id)
-  const getUserQuery = `
-    SELECT * 
-    FROM users u
-    WHERE u.linkedin_user_id = $1
-  `
-  db.query(getUserQuery, [id])
-  .then((res) => done(null, res.rows[0]))
-  */
-
-  console.log('DESERIALIZER IS', id);
-  done(null, id);
+  done(null, user);
 });
 
 passport.use(new LinkedInStrategy({
@@ -46,8 +31,6 @@ passport.use(new LinkedInStrategy({
   callbackURL: "http://localhost:3000/auth/linkedin/callback",
   scope: ['r_emailaddress', 'r_liteprofile']
 }, function (accessToken, refreshToken, profile, done) {
-  // asynchronous verification, for effect...
-  console.log('CB FIRED');
 
   const getUserQuery = `
     SELECT * 
@@ -60,22 +43,13 @@ passport.use(new LinkedInStrategy({
   `
   async function executeQuery() {
     const user = await db.query(getUserQuery, [profile.id]);
-    console.log('THE USER QUERY RESULTS', user.rows)
-    console.log('TRUTHY', user.rows.length === 0);
     if (user.rows.length === 0) {
-      console.log('CREATING NEW USER');
       const addNewUser = await db.query(addNewUserQuery, [profile.id, profile.displayName, profile.emails[0].value, profile.photos[0].value])
       const newUser = await db.query(getUserQuery, [profile.id]);
-      console.log('SENDING', newUser.rows[0])
-      // done(null, newUser.rows[0]);
       done(null, profile);
     } else {
-      console.log('USER EXISTS');
-      console.log('SENDING', user.rows[0])
-      // done(null, user.rows[0]);
       done(null, profile);
     }
   }
   executeQuery();
-  //done(null, profile)
 }));

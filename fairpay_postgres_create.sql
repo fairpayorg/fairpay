@@ -1,4 +1,6 @@
 -- creates tables in our databases with relevant columns, setting their serial _id columns as the primary key
+-- TO RUN, SWITCH TO TOP LEVEL DIRECTORY 
+-- INVOKE: psql -d <DB URI> -f fairpay_postgres_create.sql
 
 CREATE TABLE public.users (
   "_id" serial,
