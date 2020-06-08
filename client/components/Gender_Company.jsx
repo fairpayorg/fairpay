@@ -19,6 +19,7 @@ function Gender(props) {
               <TableHead>
                 <TableRow>
                   <TableCell>Gender</TableCell>
+                  <TableCell align="right">People in Company</TableCell>
                   <TableCell align="right">Average Salary</TableCell>
                   <TableCell align="right">Average Annual Bonus</TableCell>
                   <TableCell align="right">Average Stock Options</TableCell>
@@ -28,6 +29,7 @@ function Gender(props) {
                 {props.genderList.map((row) => (
                   <TableRow key={row.gender}>
                     <TableCell>{row.gender}</TableCell>
+                    <TableCell align="right">{row.count}</TableCell>
                     <TableCell align="right">${row.avg_salary}</TableCell>
                     <TableCell align="right">${row.avg_bonus}</TableCell>
                     <TableCell align="right">${row.avg_stock}</TableCell>

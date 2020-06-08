@@ -6,14 +6,20 @@ import {
   Tab,
   Typography,
   Container,
+  withStyles,
 } from "@material-ui/core";
 import CompanyComparison from "./CompanyComparison.jsx";
 import IndividualComparison from "./IndividualComparison.jsx";
 
+const styles = {
+  tabBar: {
+    backgroundColor: "#ffb300",
+  },
+};
 function Home(props) {
   // this is the hook that toggles the different comparison views
   // defaults to company comparison view
-  const [view, setView] = useState(null);
+  const [view, setView] = useState(0);
   const handleComparison = (e, view) => {
     setView(view);
   };
@@ -117,6 +123,7 @@ function Home(props) {
             avg_bonus: race.avg_bonus,
             avg_salary: race.avg_salary,
             avg_stock: race.avg_stock_options,
+            count: race.count,
           });
         });
         setRaceList(raceAvg);
@@ -129,6 +136,7 @@ function Home(props) {
             avg_bonus: gender.avg_bonus,
             avg_salary: gender.avg_salary,
             avg_stock: gender.avg_stock_options,
+            count: gender.count,
           });
         });
         setGenderList(genderAvg);
@@ -141,6 +149,7 @@ function Home(props) {
             avg_salary: age.avg_salary,
             avg_bonus: age.avg_bonus,
             avg_stock: age.avg_stock_options,
+            count: age.count,
           });
         });
         setAgeList(ageAvg);
@@ -153,6 +162,7 @@ function Home(props) {
             avg_bonus: item.avg_bonus,
             avg_stock: item.avg_stock_options,
             title: item.job_title,
+            count: item.count,
           });
         });
         setAggregateList(aggregateAvg);
@@ -188,10 +198,15 @@ function Home(props) {
       });
   }, []);
 
+  const { classes } = props;
   return (
     <React.Fragment>
       <Container id="comparison_tabs">
-        <AppBar id="company_individual_toggle" position="static">
+        <AppBar
+          className={classes.tabBar}
+          id="company_individual_toggle"
+          position="static"
+        >
           <Tabs view={view} onChange={handleComparison} centered>
             <Tab label="Company Wide Comparison" />
             <Tab label="Individual Comparison" />
@@ -208,7 +223,7 @@ function Home(props) {
               {jobTitle} at {company}
             </label>
           </div>
-          <div>
+          <div id="tables_div">
             <Container>
               <CompanyComparison
                 view={view}
@@ -269,4 +284,4 @@ function Home(props) {
   );
 }
 
-export default Home;
+export default withStyles(styles)(Home);

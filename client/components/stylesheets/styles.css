@@ -18,6 +18,12 @@ body {
   width: 13em;
 }
 
+.vertical_tab_bar {
+  background-color: #f5f5f5;
+  border: 1px solid #f5f5f5;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 .data_display_div {
   display: flex;
   background-color: red;

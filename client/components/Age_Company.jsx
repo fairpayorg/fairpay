@@ -19,6 +19,7 @@ export default function Age(props) {
               <TableHead>
                 <TableRow>
                   <TableCell>Age</TableCell>
+                  <TableCell align="right">People in Company</TableCell>
                   <TableCell align="right">Average Salary</TableCell>
                   <TableCell align="right">Average Annual Bonus</TableCell>
                   <TableCell align="right">Average Stock Options</TableCell>
@@ -28,6 +29,7 @@ export default function Age(props) {
                 {props.ageList.map((row) => (
                   <TableRow key={row.age}>
                     <TableCell>{row.age}</TableCell>
+                    <TableCell align="right">{row.count}</TableCell>
                     <TableCell align="right">${row.avg_salary}</TableCell>
                     <TableCell align="right">${row.avg_bonus}</TableCell>
                     <TableCell align="right">${row.avg_stock}</TableCell>
