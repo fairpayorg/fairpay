@@ -153,6 +153,26 @@ fairpayController.getCompanyData = (req, res, next) => {
   });
 };
 
+// middleware gets avg stats of current user's job title in company
+fairpayController.getJobStats = (req, res, next) => {
+  const { linkedin_id, job_title } = res.locals.currentUser;
+  const queryString = `select s.job_title, round(avg(s.base_salary), 0) as avg_salary, round(avg(s.annual_bonus), 0) as avg_bonus, round(avg(s.stock_options), 0) as avg_stock_options from salary s left join users u on s._id = u.salary left join company c on c._id = s.company_id where c.linkedin_id = '${linkedin_id}' and s.active = 'true' and s.job_title = '${job_title}' group by s.job_title order by s.job_title`;
+  db.query(queryString, (err, response) => {
+    if (err) {
+      return next({
+        log: `fairpayController.getJobStats: ERROR: ${err}`,
+        message: {
+          err:
+            'fairpayController.getJobStats: ERROR: Check server logs for details',
+        },
+      });
+    }
+    res.locals.jobStats = response.rows;
+    //console.log('response.rows in getracestats', response.rows);
+    return next();
+  });
+};
+
 // middleware gets avg race stats of current user's company
 fairpayController.getRaceStats = (req, res, next) => {
   const { linkedin_id } = res.locals.currentUser;

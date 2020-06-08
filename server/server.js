@@ -31,6 +31,7 @@ app.use(
   '/api/company/:linkedin_user_id',
   fairpayController.getCurrentUser,
   fairpayController.getCompanyData,
+  fairpayController.getJobStats,
   fairpayController.getRaceStats,
   fairpayController.getAgeStats,
   fairpayController.getGenderStats,
@@ -38,6 +39,7 @@ app.use(
     res.status(200).json({
       currentUser: res.locals.currentUser,
       companyData: res.locals.companyData.rows,
+      jobStats: res.locals.jobStats,
       raceStats: res.locals.raceStats,
       ageStats: res.locals.ageStats,
       genderStats: res.locals.genderStats,
