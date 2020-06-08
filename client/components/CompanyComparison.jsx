@@ -35,14 +35,19 @@ function CompanyComparison(props) {
         <Total_Company view={props.view} value={value} index={0} />
       </Box>
       <Box>
-        <Race_Company view={props.view} value={value} index={1} />
+        <Race_Company
+          raceList={props.raceList}
+          view={props.view}
+          value={value}
+          index={1}
+        />
       </Box>
       <Box>
         <Age_Company
           view={props.view}
           value={value}
           index={2}
-          graph={props.type}
+          ageList={props.ageList}
         />
       </Box>
       <Box>
@@ -50,7 +55,7 @@ function CompanyComparison(props) {
           view={props.view}
           value={value}
           index={3}
-          graph={props.type}
+          genderList={props.genderList}
         />
       </Box>
     </React.Fragment>

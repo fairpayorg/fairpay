@@ -3,9 +3,9 @@ const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, './../../.env') });
 
 const PG_URI = process.env.PG_URI;
-console.log("Server address variable is: ", process.env.PG_URI);
+
 const pool = new Pool({
-  connectionString: PG_URI
+  connectionString: PG_URI,
 });
 
 // Schema for the database can be found below:
@@ -13,7 +13,6 @@ const pool = new Pool({
 
 module.exports = {
   query: (text, params, callback) => {
-    console.log('executed query', text);
     return pool.query(text, params, callback);
-  }
+  },
 };
