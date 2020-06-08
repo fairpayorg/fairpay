@@ -31,12 +31,18 @@ body {
   flex-wrap: wrap;
 }
 
+#linkedinButton {
+  width: 174px;
+  height: 42px;
+} 
+
 .current_user_header {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
+
 
 #current_user_name {
   font-weight: 100;
@@ -58,4 +64,9 @@ body {
 
 #comparison_tabs {
   margin-top: 2rem;
+}
+
+#appBar {
+  background-color: #ff8f00;
+  justify-content: space-between;
 }
