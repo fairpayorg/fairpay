@@ -3,8 +3,6 @@ const express = require('express');
 const passport = require('passport');
 const cookieSession = require('cookie-session');
 require('./passport-setup');
-// const dotenv = require('dotenv');
-// dotenv.config();
 
 const app = express();
 const PORT = 3000;
@@ -36,7 +34,6 @@ app.use('/auth', authRouter);
 
 if (process.env.NODE_ENV === 'production') {
   app.use('/build', express.static(path.resolve(__dirname, '../build')));
-
   app.get('/', (req, res) =>
     res.status(200).sendFile(path.resolve(__dirname, '../index.html'))
   );
