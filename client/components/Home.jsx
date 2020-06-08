@@ -91,7 +91,7 @@ function Home(props) {
     setLoading(true);
 
     // provide user_linkedin_id in req params
-    fetch("/api/company/ebachman")
+    fetch("/api/company/saejin-kang-98165483")
       .then((res) => res.json())
       .then((data) => {
         // with this data, setState for each hook and prop drill to appropriate components
