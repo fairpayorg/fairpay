@@ -64,12 +64,12 @@ body {
   margin-top: 2rem;
 }
 
-#appBar {
-  background-color: #ff8f00;
-  justify-content: space-between;
-}
-
 #linkedinButton {
   width: 203px;
   height: 49px;
+}
+
+#appBar {
+  background-color: #ff8f00;
+  justify-content: space-between;
 }
