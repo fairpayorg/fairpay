@@ -89,10 +89,11 @@ function Home(props) {
   const aggregateAvg = [];
 
   useEffect(() => {
+    const user_linkedin_id = document.cookie.userId;
     setLoading(true);
 
     // provide user_linkedin_id in req params
-    fetch("/api/company/saejin-kang-98165483")
+    fetch(`/api/company/${user_linkedin_id}`)
       .then((res) => res.json())
       .then((data) => {
         // with this data, setState for each hook and prop drill to appropriate components
