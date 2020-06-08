@@ -146,17 +146,17 @@ function GetStarted(props) {
     };
     console.log(data);
 
-    // fetch('http://localhost:8080/api/user/onboardUser', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(data),
-    // })
-    //   .then(() => console.log('Successful post'))
-    //   .catch((error) => {
-    //     console.error('Error:', error);
-    //   });
+    fetch('/api/onboardUser', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then(() => console.log('Successful post'))
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   }
 
   function renderIncomeQuestions() {
