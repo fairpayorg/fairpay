@@ -31,10 +31,6 @@ const App = () => {
         </Tabs>
       </AppBar>
       <Router>
-        <Link to="/home">go to home</Link>
-        <Link to="/">go to login page</Link>
-        <Link to="/getstarted">go to get started</Link>
-
         <Switch>
           <Route exact path="/getstarted">
             <GetStarted />
