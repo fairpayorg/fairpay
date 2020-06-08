@@ -8,11 +8,11 @@ const fairpayController = {};
 
 // GET /api/user: responds with all user data
 fairpayController.getUser = (req, res, next) => {
-  let userId;
+  let currentUserId;
   if (!req.body.linkedin_user_id) {
-    userId = req.user.id;
+    currentUserId = req.user.id;
   } else {
-    userId = req.body.linkedin_user_id;
+    currentUserId = req.body.linkedin_user_id;
   }
   let queryString = `SELECT *, c.linkedin_id AS company_linkedin_id, c.name AS company_name, c.city AS company_city, c.zipcode AS company_zipcode
                     FROM public.users AS u
@@ -22,7 +22,7 @@ fairpayController.getUser = (req, res, next) => {
                     ON u.salary = s._id
                     WHERE u.linkedin_user_id = $1;`;
 
-  let params = [userId];
+  let params = [currentUserId];
 
   db.query(queryString, params, (err, response) => {
     if (err) {
@@ -46,8 +46,11 @@ fairpayController.getCommonJobTitles = async (req, res, next) => {
 fairpayController.onboardUser = async (req, res, next) => {
   console.log("creating user, verifying if request is proper");
   //if (!req.body.linkedin_user_id || !req.body.name || !req.body.company_name || !req.body.job_title || !req.body.company_linkedin_id) {
-  let userId = jwt.verify(req.cookies.jsonToken, process.env.LINKEDIN_SECRET) 
-  if (!userId) {
+  let userIdCookie = jwt.verify(
+    req.cookies.jsonToken,
+    process.env.LINKEDIN_SECRET
+  );
+  if (!userIdCookie) {
     res
       .status(418)
       .json(`Invalid create user request: must include linkedin_user_id`);
@@ -58,15 +61,7 @@ fairpayController.onboardUser = async (req, res, next) => {
   let salaryKey = await insertSalary.insert(req, res, companyKey);
 
   // then insert user into user table, including name, company foreign key and salary foreign key
-  let {
-    userId,
-    sexuality,
-    age,
-    gender,
-    race,
-    city,
-    state,
-  } = req.body;
+  let { userId, sexuality, age, gender, race, city, state } = req.body;
   queryString = `UPDATE users 
                 SET company_id=$1, salary=$2, sexuality=$3,
                     age=$4, gender=$5, race=$6,
@@ -83,7 +78,7 @@ fairpayController.onboardUser = async (req, res, next) => {
     race,
     city,
     state,
-    userId,
+    userIdCookie,
   ];
 
   db.query(queryString, params)
