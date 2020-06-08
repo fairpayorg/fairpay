@@ -10,9 +10,9 @@ import {
 } from '@material-ui/core';
 import Home from './components/Home.jsx';
 import Login from './components/Login.jsx';
-import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
-import GetStarted from './components/GetStarted.jsx';
+import GraphicEqRoundedIcon from '@material-ui/icons/GraphicEqRounded';
 import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
+import GetStarted from './components/GetStarted.jsx';
 import {
   Switch,
   BrowserRouter as Router,
@@ -27,9 +27,9 @@ const App = () => {
   return (
     <div>
       <AppBar position="static" id="appBar">
-        <Tabs>
-          <Tab icon={<HomeRoundedIcon style={{ fontSize: 30 }} />} />
-          <Tab icon={<PersonRoundedIcon style={{ fontSize: 30 }} />} />
+        <Tabs variant="fullWidth">
+          <Tab label="FairPay" icon={<GraphicEqRoundedIcon />} />
+          <Tab label="User" icon={<PersonRoundedIcon />} />
         </Tabs>
       </AppBar>
       <Router>
