@@ -32,7 +32,13 @@ function CompanyComparison(props) {
       </Container>
 
       <Box>
-        <Total_Company view={props.view} value={value} index={0} />
+        <Total_Company
+          allNames={props.allNames}
+          aggregateList={props.aggregateList}
+          view={props.view}
+          value={value}
+          index={0}
+        />
       </Box>
       <Box>
         <Race_Company

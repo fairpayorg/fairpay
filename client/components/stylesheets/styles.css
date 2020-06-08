@@ -2,6 +2,11 @@
   width: 33em;
 }
 
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #fff8e1;
+}
+
 #company_container {
   width: 15em;
   display: flex;
@@ -17,4 +22,25 @@
   display: flex;
   background-color: red;
   flex-wrap: wrap;
+}
+
+.current_user_header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#current_user_name {
+  font-weight: 100;
+  font-size: 2.5rem;
+}
+
+#current_user_label {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+#tables_div {
+  margin-top: 3rem;
 }
