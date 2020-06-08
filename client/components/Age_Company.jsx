@@ -28,9 +28,9 @@ export default function Age(props) {
                 {props.ageList.map((row) => (
                   <TableRow key={row.age}>
                     <TableCell>{row.age}</TableCell>
-                    <TableCell align="right">{row.avg_salary}</TableCell>
-                    <TableCell align="right">{row.avg_bonus}</TableCell>
-                    <TableCell align="right">{row.avg_stock}</TableCell>
+                    <TableCell align="right">${row.avg_salary}</TableCell>
+                    <TableCell align="right">${row.avg_bonus}</TableCell>
+                    <TableCell align="right">${row.avg_stock}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

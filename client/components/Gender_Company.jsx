@@ -10,7 +10,6 @@ import {
 } from "@material-ui/core";
 
 function Gender(props) {
-  console.log("props in gender comparison", props);
   return (
     <React.Fragment>
       <div hidden={props.value !== props.index || props.view === 1}>
@@ -26,7 +25,7 @@ function Gender(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {props.genderList.forEach((row) => (
+                {props.genderList.map((row) => (
                   <TableRow key={row.gender}>
                     <TableCell>{row.gender}</TableCell>
                     <TableCell align="right">${row.avg_salary}</TableCell>

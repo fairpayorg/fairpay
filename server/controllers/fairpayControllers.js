@@ -4,7 +4,6 @@ const fairpayController = {};
 
 // responds to GET /api/user with all user data
 fairpayController.getUser = (req, res, next) => {
-  console.log("creating query");
   let queryString = `SELECT *, c.linkedin_id AS company_linkedin_id, c.name AS company_name, c.city AS company_city, c.zipcode AS company_zipcode
                     FROM public.users AS u
                     LEFT OUTER JOIN public.company AS c
@@ -16,20 +15,18 @@ fairpayController.getUser = (req, res, next) => {
   let params = [req.body.linkedin_user_id];
 
   db.query(queryString, params, (err, response) => {
-    console.log("checking for error in query response");
     if (err) {
       console.log("Error in query for user: ", err);
     }
-    console.log("in query handler");
+
     res.locals.userData = response.rows;
-    console.log(res.locals.userData);
+
     next();
   });
 };
 
 // POST /api/user
 fairpayController.createUser = (req, res, next) => {
-  console.log("creating user, verifying if request is proper");
   if (
     !req.body.linkedin_user_id ||
     !req.body.name ||
@@ -135,7 +132,7 @@ fairpayController.getCompanyData = (req, res, next) => {
   //   res.locals.currentUser
   // );
   const params = [job_title, linkedin_id];
-  console.log("params is", params);
+
   let queryString = `select u.name, s.job_title, c.linkedin_id, u.sexuality, u.age, u.gender, u.race, s.employee_type, s.years_at_company, s.years_of_experience, s.base_salary, s.full_time_status, s.annual_bonus, s.stock_options, s.signing_bonus from salary s inner join company c on s.job_title = $1 and c.linkedin_id = $2 and s.company_id = c._id inner join users u on s._id = u.salary`;
   db.query(queryString, params, (err, response) => {
     // console.log('inside get company, rows is ', response.rows);

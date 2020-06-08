@@ -20,11 +20,11 @@ function Home(props) {
 
   // this is name of employee
   const [name, setName] = useState(null);
-
   const [company, setCompany] = useState(null);
 
   // this is job title
   const [jobTitle, setJobTitle] = useState(null);
+  // this is sexual orientation
   const [sexuality, setSexuality] = useState(null);
   const [age, setAge] = useState(null);
   const [gender, setGender] = useState();
@@ -42,8 +42,10 @@ function Home(props) {
   const [signingBonus, setSigningBonus] = useState();
   const [ftStatus, setFtStatus] = useState();
 
+  // this section is for individual comparison component
   const [allNames, setAllNames] = useState([]);
   const [allSexes, setAllSexes] = useState([]);
+  const [allGenders, setAllGenders] = useState([]);
   const [allAges, setAllAges] = useState([]);
   const [allTypes, setAllTypes] = useState([]);
   const [allYrsExperience, setAllYrsExperience] = useState([]);
@@ -57,8 +59,13 @@ function Home(props) {
   const [genderList, setGenderList] = useState([]);
   const [ageList, setAgeList] = useState([]);
 
+  // state for whether fetch call is finished
+  const [loading, setLoading] = useState(false);
+
+  // used for prop drilling into child components
   const employeesNames = [];
   const employeesSexuality = [];
+  const employeesGender = [];
   const employeesAge = [];
   const employeesType = [];
   const employeesYrsExperience = [];
@@ -72,11 +79,11 @@ function Home(props) {
   const genderAvg = [];
   const ageAvg = [];
 
-  // provide company_linkedin_id, and send in body of request to get /api/company
-  // need to give company name and position title
   useEffect(() => {
-    // fetch call to /api/company/user_linkedin_id when you get it
-    fetch("/api/company/bren-yamaguchi-56179413") /*put user_linkedin_id here */
+    setLoading(true);
+
+    // provide user_linkedin_id in req params
+    fetch("/api/company/bren-yamaguchi-56179413")
       .then((res) => res.json())
       .then((data) => {
         // with this data, setState for each hook and prop drill to appropriate components
@@ -141,6 +148,7 @@ function Home(props) {
         list.forEach((employee) => {
           employeesNames.push(employee.name);
           employeesAge.push(employee.age);
+          employeesGender.push(employee.gender);
           employeesSexuality.push(employee.sexuality);
           employeesType.push(employee.employee_type);
           employeesYrsExperience.push(employee.years_of_experience);
@@ -152,6 +160,7 @@ function Home(props) {
           employeesFtStatus.push(employee.full_time_status);
         });
         setAllNames(employeesNames);
+        setAllGenders(employeesGender);
         setAllAges(employeesAge);
         setAllSexes(employeesSexuality);
         setAllTypes(employeesType);
@@ -159,6 +168,9 @@ function Home(props) {
         setAllYrsCompany(employeesYrsCompany);
         setAllBaseSalary(employeesBaseSalary);
         setAllFtStatuses(employeesFtStatus);
+
+        // after finishing this execution, set loading to false
+        setLoading(false);
       });
   }, []);
 
@@ -172,62 +184,67 @@ function Home(props) {
           </Tabs>
         </AppBar>
       </Container>
-      <div>
-        <h2>Hello {name}</h2>
-        <label>
-          {jobTitle} at {company}
-        </label>
-      </div>
-      <Container>
-        <CompanyComparison
-          view={view}
-          index={0}
-          name={name}
-          company={company}
-          jobTitle={jobTitle}
-          sexuality={sexuality}
-          age={age}
-          gender={gender}
-          race={race}
-          employeeType={employeeType}
-          yrsExperience={yrsExperience}
-          yrsCompany={yrsCompany}
-          baseSalary={baseSalary}
-          annualBonus={annualBonus}
-          stockOptions={stockOptions}
-          signingBonus={signingBonus}
-          ftStatus={ftStatus}
-          raceList={raceList}
-          genderList={genderList}
-          ageList={ageList}
-        />
-        <IndividualComparison
-          view={view}
-          index={1}
-          name={name}
-          company={company}
-          jobTitle={jobTitle}
-          sexuality={sexuality}
-          age={age}
-          gender={gender}
-          race={race}
-          employeeType={employeeType}
-          yrsExperience={yrsExperience}
-          yrsCompany={yrsCompany}
-          baseSalary={baseSalary}
-          annualBonus={annualBonus}
-          stockOptions={stockOptions}
-          signingBonus={signingBonus}
-          ftStatus={ftStatus}
-          allNames={allNames}
-          allAges={allAges}
-          allSexes={allSexes}
-          allTypes={allTypes}
-          allYrsExperience={allYrsExperience}
-          allYrsCompany={allYrsCompany}
-          allBaseSalary={allBaseSalary}
-        />
-      </Container>
+      {loading ? (
+        <h2>Loading Data...</h2>
+      ) : (
+        <div>
+          <h2>Hello {name}</h2>
+          <label>
+            {jobTitle} at {company}
+          </label>
+          <Container>
+            <CompanyComparison
+              view={view}
+              index={0}
+              name={name}
+              company={company}
+              jobTitle={jobTitle}
+              sexuality={sexuality}
+              age={age}
+              gender={gender}
+              race={race}
+              employeeType={employeeType}
+              yrsExperience={yrsExperience}
+              yrsCompany={yrsCompany}
+              baseSalary={baseSalary}
+              annualBonus={annualBonus}
+              stockOptions={stockOptions}
+              signingBonus={signingBonus}
+              ftStatus={ftStatus}
+              raceList={raceList}
+              genderList={genderList}
+              ageList={ageList}
+            />
+            <IndividualComparison
+              view={view}
+              index={1}
+              name={name}
+              company={company}
+              jobTitle={jobTitle}
+              sexuality={sexuality}
+              age={age}
+              gender={gender}
+              race={race}
+              employeeType={employeeType}
+              yrsExperience={yrsExperience}
+              yrsCompany={yrsCompany}
+              baseSalary={baseSalary}
+              annualBonus={annualBonus}
+              stockOptions={stockOptions}
+              signingBonus={signingBonus}
+              ftStatus={ftStatus}
+              allNames={allNames}
+              allGenders={allGenders}
+              allAges={allAges}
+              allSexes={allSexes}
+              allTypes={allTypes}
+              allYrsExperience={allYrsExperience}
+              allYrsCompany={allYrsCompany}
+              allBaseSalary={allBaseSalary}
+            />
+          </Container>
+        </div>
+      )}
     </React.Fragment>
   );
 }
