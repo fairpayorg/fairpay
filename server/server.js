@@ -45,7 +45,8 @@ app.get('/api/user', fairpayController.getUser, (req, res) => {
 // Updates user with his/her personal, salary, and company information
 // If company does not exists in company table, it gets added
 app.post('/api/onboardUser', fairpayController.onboardUser, (req, res) => {
-  res.status(200).json(res.locals.userData);
+  //res.status(200).json(res.locals.userData);
+  res.status(200).redirect("http://localhost:3000/home");
 });
 
 // Returns a list of all job titles of users in the platform associated with
