@@ -22,7 +22,7 @@ fairpayController.getUser = (req, res, next) => {
     if (err) {
       console.log("Error in query for user: ", err);
     }
-
+    
     res.locals.userData = response.rows;
 
     next();
