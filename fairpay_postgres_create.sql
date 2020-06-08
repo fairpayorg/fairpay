@@ -1,9 +1,11 @@
 -- creates tables in our databases with relevant columns, setting their serial _id columns as the primary key
+-- TO RUN, SWITCH TO TOP LEVEL DIRECTORY 
+-- INVOKE: psql -d <DB URI> -f fairpay_postgres_create.sql
 
-CREATE TABLE public.users
-(
+CREATE TABLE public.users (
   "_id" serial,
   "linkedin_user_id" varchar, -- user id provided from linked
+  "image_url" varchar,
   "name" varchar,
   "company_id" bigint, -- foreign key refers to company table _id
   "salary" bigint, -- foreign key refers to salary table _id
@@ -19,16 +21,12 @@ CREATE TABLE public.users
   "refreshtoken" varchar,
   "expiresin" integer,
   CONSTRAINT "users_pk" PRIMARY KEY ("_id"),
-  CONSTRAINT "users_fk0" FOREIGN KEY ("company_id") REFERENCES public.company("_id"),
-  CONSTRAINT "users_fk1" FOREIGN KEY ("salary") REFERENCES public.salary("_id"),
-  CONSTRAINT "unique_linkedin_user_id" UNIQUE ("linkedin_user_id"), -- sets the linkedin_user_id as a unique identifier this is needed because ?
-)
-WITH (
+  CONSTRAINT "unique_linkedin_user_id" UNIQUE ("linkedin_user_id") -- sets the linkedin_user_id as a unique identifier this is needed because ?
+) WITH (
   OIDS=FALSE
 );
 
-CREATE TABLE public.salary
-(
+CREATE TABLE public.salary (
   "_id" serial,
   "company_id" bigint, -- foreign key refers to company table _id
   "job_title" varchar, -- job title at company
@@ -41,15 +39,12 @@ CREATE TABLE public.salary
   "signing_bonus" integer,
   "full_time_status" varchar,
   "active" boolean,
-  CONSTRAINT "salary_pk" PRIMARY KEY ("_id"),
-  CONSTRAINT "salary_fk0" FOREIGN KEY ("company_id") REFERENCES public.company("_id");
-)
-WITH (
+  CONSTRAINT "salary_pk" PRIMARY KEY ("_id")
+) WITH (
   OIDS=FALSE
 );
 
-CREATE TABLE public.company
-(
+CREATE TABLE public.company (
   "_id" serial,
   "linkedin_id" varchar, -- company name given to us by linkedin
   "name" varchar,
@@ -57,15 +52,16 @@ CREATE TABLE public.company
   "industry" varchar,
   "region" varchar,
   "zipcode" varchar,
-  CONSTRAINT "company_pk" PRIMARY KEY ("_id")
-  CONSTRAINT "unique_linkedin_id" UNIQUE ("linkedin_id"),
-)
-WITH (
+  CONSTRAINT "company_pk" PRIMARY KEY ("_id"),
+  CONSTRAINT "unique_linkedin_id" UNIQUE ("linkedin_id")
+) WITH (
   OIDS=FALSE
 );
 
-
 -- 
+ALTER TABLE public.users ADD CONSTRAINT "users_fk0" FOREIGN KEY ("company_id") REFERENCES public.company("_id");
+ALTER TABLE public.users ADD CONSTRAINT "users_fk1" FOREIGN KEY ("salary") REFERENCES public.salary("_id");
+ALTER TABLE public.salary ADD CONSTRAINT "salary_fk0" FOREIGN KEY ("company_id") REFERENCES public.company("_id");
 
 -- add default test data starting with company table
 INSERT INTO company (linkedin_id, name, city, industry, region, zipcode) VALUES ('Codesmith-LLC', 'Codesmith', 'Venice', 'Software Engineering Boot Camp', 'West Coast USA', '90291');
@@ -94,3 +90,8 @@ INSERT INTO users (linkedin_user_id, name, company_id, salary, sexuality, age, g
 INSERT INTO users (linkedin_user_id, name, company_id, salary, sexuality, age, gender, race, city, state, email, oauthtoken, refreshtoken, expiresin, zipcode) VALUES ('vivian-cermeno-76589495', 'Vivan Cermeno', 3, 7, 'Straight', 29, 'female', 'hispanic', 'Rowland Heights', 'California', 'viviancermeno@gmail.com', 'oauthtoken7', 'refreshtoken7', 10000, '91748');
 INSERT INTO users (linkedin_user_id, name, company_id, salary, sexuality, age, gender, race, city, state, email, oauthtoken, refreshtoken, expiresin, zipcode) VALUES ('bren-yamaguchi-56179413', 'Bren Yamaguchi', 2, 8, 'Straight', 35, 'male', 'asian', 'Torrance', 'California', 'brenyamaguchi@gmail.com', 'oauthtoken8', 'refreshtoken8', 10000, '90505');
 INSERT INTO users (linkedin_user_id, name, company_id, salary, sexuality, age, gender, race, city, state, email, oauthtoken, refreshtoken, expiresin, zipcode) VALUES ('stephanie-wood-76123485', 'Stephanie Wood', 2, 35, 'Straight', 37, 'female', 'caucasian', 'Long Beach', 'California', 'stephaniewood@gmail.com', 'oauthtoken9', 'refreshtoken9', 10000, '90814');
+
+SELECT setval('public.users__id_seq', 10, false);
+SELECT setval('public.salary__id_seq', 9, false);
+SELECT setval('public.company__id_seq', 7, false);
+

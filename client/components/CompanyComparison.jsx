@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Container, Tabs, Tab, Box } from "@material-ui/core";
+import { Container, Tabs, Tab, Box, AppBar } from "@material-ui/core";
 import Race_Company from "./Race_Company.jsx";
 import Age_Company from "./Age_Company.jsx";
 import Gender_Company from "./Gender_Company.jsx";
 import Total_Company from "./Total_Company.jsx";
 
 function CompanyComparison(props) {
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState(0);
 
   const changeGraph = (e, newValue) => {
     setValue(newValue);
@@ -32,7 +32,13 @@ function CompanyComparison(props) {
       </Container>
 
       <Box>
-        <Total_Company view={props.view} value={value} index={0} />
+        <Total_Company
+          allNames={props.allNames}
+          aggregateList={props.aggregateList}
+          view={props.view}
+          value={value}
+          index={0}
+        />
       </Box>
       <Box>
         <Race_Company

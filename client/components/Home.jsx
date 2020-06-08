@@ -6,14 +6,20 @@ import {
   Tab,
   Typography,
   Container,
+  withStyles,
 } from "@material-ui/core";
 import CompanyComparison from "./CompanyComparison.jsx";
 import IndividualComparison from "./IndividualComparison.jsx";
 
+const styles = {
+  tabBar: {
+    backgroundColor: "#ffb300",
+  },
+};
 function Home(props) {
   // this is the hook that toggles the different comparison views
   // defaults to company comparison view
-  const [view, setView] = useState(null);
+  const [view, setView] = useState(0);
   const handleComparison = (e, view) => {
     setView(view);
   };
@@ -58,6 +64,7 @@ function Home(props) {
   const [raceList, setRaceList] = useState([]);
   const [genderList, setGenderList] = useState([]);
   const [ageList, setAgeList] = useState([]);
+  const [aggregateList, setAggregateList] = useState([]);
 
   // state for whether fetch call is finished
   const [loading, setLoading] = useState(false);
@@ -78,6 +85,7 @@ function Home(props) {
   const raceAvg = [];
   const genderAvg = [];
   const ageAvg = [];
+  const aggregateAvg = [];
 
   useEffect(() => {
     setLoading(true);
@@ -115,6 +123,7 @@ function Home(props) {
             avg_bonus: race.avg_bonus,
             avg_salary: race.avg_salary,
             avg_stock: race.avg_stock_options,
+            count: race.count,
           });
         });
         setRaceList(raceAvg);
@@ -127,6 +136,7 @@ function Home(props) {
             avg_bonus: gender.avg_bonus,
             avg_salary: gender.avg_salary,
             avg_stock: gender.avg_stock_options,
+            count: gender.count,
           });
         });
         setGenderList(genderAvg);
@@ -139,9 +149,23 @@ function Home(props) {
             avg_salary: age.avg_salary,
             avg_bonus: age.avg_bonus,
             avg_stock: age.avg_stock_options,
+            count: age.count,
           });
         });
         setAgeList(ageAvg);
+
+        // calculating values for aggregate view
+        const aggregateList = data.jobStats;
+        aggregateList.forEach((item) => {
+          aggregateAvg.push({
+            avg_salary: item.avg_salary,
+            avg_bonus: item.avg_bonus,
+            avg_stock: item.avg_stock_options,
+            title: item.job_title,
+            count: item.count,
+          });
+        });
+        setAggregateList(aggregateAvg);
 
         // setting state for individual comparisons
         const list = data.companyData;
@@ -174,10 +198,15 @@ function Home(props) {
       });
   }, []);
 
+  const { classes } = props;
   return (
     <React.Fragment>
       <Container id="comparison_tabs">
-        <AppBar id="company_individual_toggle" position="static">
+        <AppBar
+          className={classes.tabBar}
+          id="company_individual_toggle"
+          position="static"
+        >
           <Tabs view={view} onChange={handleComparison} centered>
             <Tab label="Company Wide Comparison" />
             <Tab label="Individual Comparison" />
@@ -185,68 +214,74 @@ function Home(props) {
         </AppBar>
       </Container>
       {loading ? (
-        <h2 centered>Loading Data...</h2>
+        <h2 className="current_user_header">Loading Data...</h2>
       ) : (
-        <div centered>
-          <h2>Hello {name}</h2>
-          <label>
-            {jobTitle} at {company}
-          </label>
-          <Container>
-            <CompanyComparison
-              view={view}
-              index={0}
-              name={name}
-              company={company}
-              jobTitle={jobTitle}
-              sexuality={sexuality}
-              age={age}
-              gender={gender}
-              race={race}
-              employeeType={employeeType}
-              yrsExperience={yrsExperience}
-              yrsCompany={yrsCompany}
-              baseSalary={baseSalary}
-              annualBonus={annualBonus}
-              stockOptions={stockOptions}
-              signingBonus={signingBonus}
-              ftStatus={ftStatus}
-              raceList={raceList}
-              genderList={genderList}
-              ageList={ageList}
-            />
-            <IndividualComparison
-              view={view}
-              index={1}
-              name={name}
-              company={company}
-              jobTitle={jobTitle}
-              sexuality={sexuality}
-              age={age}
-              gender={gender}
-              race={race}
-              employeeType={employeeType}
-              yrsExperience={yrsExperience}
-              yrsCompany={yrsCompany}
-              baseSalary={baseSalary}
-              annualBonus={annualBonus}
-              stockOptions={stockOptions}
-              signingBonus={signingBonus}
-              ftStatus={ftStatus}
-              allNames={allNames}
-              allGenders={allGenders}
-              allAges={allAges}
-              allSexes={allSexes}
-              allTypes={allTypes}
-              allYrsExperience={allYrsExperience}
-              allYrsCompany={allYrsCompany}
-              allBaseSalary={allBaseSalary}
-            />
-          </Container>
+        <div>
+          <div className="current_user_header">
+            <h2 id="current_user_name">Hello {name}</h2>
+            <label id="current_user_label">
+              {jobTitle} at {company}
+            </label>
+          </div>
+          <div id="tables_div">
+            <Container>
+              <CompanyComparison
+                view={view}
+                index={0}
+                name={name}
+                company={company}
+                jobTitle={jobTitle}
+                sexuality={sexuality}
+                age={age}
+                gender={gender}
+                race={race}
+                employeeType={employeeType}
+                yrsExperience={yrsExperience}
+                yrsCompany={yrsCompany}
+                baseSalary={baseSalary}
+                annualBonus={annualBonus}
+                stockOptions={stockOptions}
+                signingBonus={signingBonus}
+                ftStatus={ftStatus}
+                raceList={raceList}
+                genderList={genderList}
+                ageList={ageList}
+                aggregateList={aggregateList}
+                allNames={allNames}
+              />
+              <IndividualComparison
+                view={view}
+                index={1}
+                name={name}
+                company={company}
+                jobTitle={jobTitle}
+                sexuality={sexuality}
+                age={age}
+                gender={gender}
+                race={race}
+                employeeType={employeeType}
+                yrsExperience={yrsExperience}
+                yrsCompany={yrsCompany}
+                baseSalary={baseSalary}
+                annualBonus={annualBonus}
+                stockOptions={stockOptions}
+                signingBonus={signingBonus}
+                ftStatus={ftStatus}
+                allNames={allNames}
+                allGenders={allGenders}
+                allAges={allAges}
+                allSexes={allSexes}
+                allTypes={allTypes}
+                allYrsExperience={allYrsExperience}
+                allYrsCompany={allYrsCompany}
+                allBaseSalary={allBaseSalary}
+              />
+            </Container>
+          </div>
         </div>
       )}
     </React.Fragment>
   );
 }
 
-export default Home;
+export default withStyles(styles)(Home);
