@@ -20,15 +20,27 @@ if (process.env.NODE_ENV === 'production') {
 
 }
 
-app.get('/api/test', fairpayController.getUser, (req, res) => {
+// Returns all user data
+app.get('/api/user', fairpayController.getUser, (req, res) => {
     res.status(200).json(res.locals.userData);
 });
 
-app.post('/api/user', fairpayController.createUser, (req, res) => {
-  //res.status(200).json(res.locals.userData);
+// Updates user with his/her personal, salary, and company information
+// If company does not exists in company table, it gets added
+app.post('/api/onboardUser', fairpayController.onboardUser, (req, res) => {
+  res.status(200).json(res.locals.userData);
 });
 
+// Returns a list of all job titles of users in the platform associated with
+// a particular company. Used for display a list for the user to select his/her
+// job title.
+app.post('/api/company/jobTitles', fairpayController.getCommonJobTitles, (req, res) => {
+  res.status(200).json(res.locals.commonJobTitles);
+})
 
+// app.put('/api/user', fairpayController.updateUser, (req, res) => {
+//   res.status(200).json(res.locals.userData);
+// });
 
 
 // route error handler
