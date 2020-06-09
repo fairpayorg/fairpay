@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import Home from './Home.jsx'
 import { render } from 'react-dom';
+import {Redirect ,useHistory} from 'react-router-dom'
 import TitleCount from './TitleCount.jsx';
 import {
   Button,
@@ -14,6 +16,7 @@ import {
 } from '@material-ui/core';
 
 function GetStarted(props) {
+  const history = useHistory()
   // the "step" control defines which part of the three step flow the user is on
   const [step, setStep] = useState('intro');
   // initialize inputs as an empty object
@@ -138,8 +141,11 @@ function GetStarted(props) {
     }
   }
 
-  function submitForm() {
+  function submitForm(e) {
+    e.preventDefault()
     postUserUpdates();
+    console.log('in the submit form')
+    history.push('/home')
   }
 
   function postUserUpdates() {
@@ -586,7 +592,7 @@ function GetStarted(props) {
             // disabled
             color="primary"
             variant="contained"
-            onClick={() => submitForm()}
+            onClick={submitForm}
           >
             Complete
           </Button>

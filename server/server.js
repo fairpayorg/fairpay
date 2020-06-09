@@ -4,12 +4,16 @@ const passport = require('passport');
 const authRouter = require('./routes/auth.js');
 const fairpayController = require('./controllers/fairpayControllers');
 const cookieSession = require('cookie-session');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
 require('./passport-setup');
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+app.use(cookieParser());
+//app.use(cors());
 
 // set up session cookies
 app.use(
@@ -46,7 +50,7 @@ app.get('/api/user', fairpayController.getUser, (req, res) => {
 // If company does not exists in company table, it gets added
 app.post('/api/onboardUser', fairpayController.onboardUser, (req, res) => {
   //res.status(200).json(res.locals.userData);
-  res.status(200).redirect("http://localhost:3000/home");
+  res.status(200).redirect('http://localhost:3000/home');
 });
 
 // Returns a list of all job titles of users in the platform associated with
