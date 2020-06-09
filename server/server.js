@@ -15,11 +15,14 @@ app.use(express.json());
 app.use(cookieParser());
 //app.use(cors());
 
-// set up session cookies
+/* 
+  Set up session cookies
+  Executed during the passport serializer step (see passport-setup.js) to encrpyt browser cookie
+*/
 app.use(
   cookieSession({
     maxAge: 24 * 60 * 60 * 1000,
-    keys: ['wonderpus'],
+    keys: ['wonderpus'], // the encryption key, use any random string
   })
 );
 
