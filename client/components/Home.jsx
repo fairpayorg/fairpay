@@ -89,7 +89,8 @@ function Home(props) {
   const aggregateAvg = [];
 
   useEffect(() => {
-    const user_linkedin_id = document.cookie.userId;
+    let user_linkedin_id = document.cookie;
+    user_linkedin_id = user_linkedin_id.split('; ').find(row => row.startsWith('userId')).split('=')[1];
     setLoading(true);
 
     // provide user_linkedin_id in req params
