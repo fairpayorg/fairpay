@@ -13,7 +13,8 @@ import IndividualComparison from "./IndividualComparison.jsx";
 
 const styles = {
   tabBar: {
-    backgroundColor: "#ffb300",
+    backgroundColor: "#ffe082",
+    color: "rgb(102, 102, 102)",
   },
 };
 function Home(props) {
@@ -88,10 +89,12 @@ function Home(props) {
   const aggregateAvg = [];
 
   useEffect(() => {
+    let user_linkedin_id = document.cookie;
+    user_linkedin_id = user_linkedin_id.split('; ').find(row => row.startsWith('userId')).split('=')[1];
     setLoading(true);
 
     // provide user_linkedin_id in req params
-    fetch("/api/company/bren-yamaguchi-56179413")
+    fetch(`/api/company/${user_linkedin_id}`)
       .then((res) => res.json())
       .then((data) => {
         // with this data, setState for each hook and prop drill to appropriate components
@@ -201,6 +204,14 @@ function Home(props) {
   const { classes } = props;
   return (
     <React.Fragment>
+      {loading ? null : (
+        <div className="current_user_header">
+          <h2 id="current_user_name">Hello {name}</h2>
+          <label id="current_user_label">
+            {jobTitle} at {company}
+          </label>
+        </div>
+      )}
       <Container id="comparison_tabs">
         <AppBar
           className={classes.tabBar}
@@ -217,12 +228,6 @@ function Home(props) {
         <h2 className="current_user_header">Loading Data...</h2>
       ) : (
         <div>
-          <div className="current_user_header">
-            <h2 id="current_user_name">Hello {name}</h2>
-            <label id="current_user_label">
-              {jobTitle} at {company}
-            </label>
-          </div>
           <div id="tables_div">
             <Container>
               <CompanyComparison

@@ -1,42 +1,64 @@
 const path = require('path');
 const express = require('express');
+const passport = require('passport');
+const authRouter = require('./routes/auth.js');
+const fairpayController = require('./controllers/fairpayControllers');
+const cookieSession = require('cookie-session');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
+require('./passport-setup');
 
 const app = express();
 const PORT = 3000;
 
-const dotenv = require('dotenv');
-dotenv.config();
-
-const fairpayController = require('./controllers/fairpayControllers');
-
 app.use(express.json());
+app.use(cookieParser());
+//app.use(cors());
+
+// set up session cookies
+app.use(
+  cookieSession({
+    maxAge: 24 * 60 * 60 * 1000,
+    keys: ['wonderpus'],
+  })
+);
+
+// initializes passport and passport sessions
+app.use(passport.initialize());
+app.use(passport.session());
+
+// route handlers
+app.use('/auth', authRouter);
 
 if (process.env.NODE_ENV === 'production') {
   app.use('/build', express.static(path.resolve(__dirname, '../build')));
-
   app.get('/', (req, res) =>
     res.status(200).sendFile(path.resolve(__dirname, '../index.html'))
   );
 }
 
+app.get('/api/test', fairpayController.getUser, (req, res) => {
+  res.status(200).json(res.locals.userData);
+});
+
 // Returns all user data
 app.get('/api/user', fairpayController.getUser, (req, res) => {
-    res.status(200).json(res.locals.userData);
+  res.status(200).json(res.locals.userData);
 });
 
 // Updates user with his/her personal, salary, and company information
 // If company does not exists in company table, it gets added
 app.post('/api/onboardUser', fairpayController.onboardUser, (req, res) => {
-  res.status(200).json(res.locals.userData);
+  //res.status(200).json(res.locals.userData);
+  res.status(200).redirect('http://localhost:3000/home');
 });
-
 
 // Returns a list of all job titles of users in the platform associated with
 // a particular company. Used for display a list for the user to select his/her
 // job title.
-app.post('/api/company/jobTitles', fairpayController.getCommonJobTitles, (req, res) => {
+app.post('/api/jobTitles', fairpayController.getCommonJobTitles, (req, res) => {
   res.status(200).json(res.locals.commonJobTitles);
-})
+});
 
 // app.put('/api/user', fairpayController.updateUser, (req, res) => {
 //   res.status(200).json(res.locals.userData);
