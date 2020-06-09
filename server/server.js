@@ -5,7 +5,6 @@ const authRouter = require('./routes/auth.js');
 const fairpayController = require('./controllers/fairpayControllers');
 const cookieSession = require('cookie-session');
 const cookieParser = require('cookie-parser');
-const cors = require('cors');
 require('./passport-setup');
 
 const app = express();
@@ -13,7 +12,6 @@ const PORT = 3000;
 
 app.use(express.json());
 app.use(cookieParser());
-//app.use(cors());
 
 /* 
   Set up session cookies
@@ -62,10 +60,6 @@ app.post('/api/onboardUser', fairpayController.onboardUser, (req, res) => {
 app.post('/api/jobTitles', fairpayController.getCommonJobTitles, (req, res) => {
   res.status(200).json(res.locals.commonJobTitles);
 });
-
-// app.put('/api/user', fairpayController.updateUser, (req, res) => {
-//   res.status(200).json(res.locals.userData);
-// });
 
 app.use(
   '/api/company/:linkedin_user_id',
