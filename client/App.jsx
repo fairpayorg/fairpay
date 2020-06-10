@@ -29,22 +29,16 @@ import './components/stylesheets/styles.css';
 const App = () => {
   return (
     <div>
-<<<<<<< HEAD
-=======
       {/* AppBar, Tabs, Tab is a material ui component */}
->>>>>>> c60097c1319fa388510899215dae7b3b6e4a82d1
       {/* <AppBar position="static" id="appBar">
         <Tabs variant="fullWidth">
           <Tab label="FairPay" icon={<GraphicEqRoundedIcon />} />
           <Tab label="User" icon={<PersonRoundedIcon />} />
         </Tabs>
       </AppBar> */}
-<<<<<<< HEAD
-=======
       
 {/*ADD NAV BAR HERE ONCE MADE  */}
 
->>>>>>> c60097c1319fa388510899215dae7b3b6e4a82d1
       <Router>
         <Switch>
 {/* this is the form page */}
