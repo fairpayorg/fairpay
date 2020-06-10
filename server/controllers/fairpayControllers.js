@@ -10,29 +10,38 @@ const fairpayController = {};
 
 // GET /api/user: responds with all user data
 fairpayController.getUser = (req, res, next) => {
+  console.log('controller: get user');
   let currentUserId;
-  if (!req.body.linkedin_user_id) {
+  if (req.user.id) {
+    // Coming from passport
+    console.log('passport -> get user');
     currentUserId = req.user.id;
   } else {
+    // Coming from /api/user ### where is this coming from???
+    console.log('/api/user => passport');
     currentUserId = req.body.linkedin_user_id;
   }
-  let queryString = `SELECT *, c.linkedin_id AS company_linkedin_id, c.name AS company_name, c.city AS company_city, c.zipcode AS company_zipcode
-                    FROM public.users AS u
-                    LEFT OUTER JOIN public.company AS c
-                    ON u.company_id = c._id
-                    LEFT OUTER JOIN public.salary AS s
-                    ON u.salary_id = s._id
-                    WHERE u.linkedin_user_id = $1;`;
-
+  let queryString = `
+    SELECT *, c.linkedin_id AS company_linkedin_id, c.name AS company_name, c.city AS company_city, c.zipcode AS company_zipcode
+    FROM public.users AS u
+    LEFT OUTER JOIN public.company AS c
+    ON u.company_id = c._id
+    LEFT OUTER JOIN public.salary AS s
+    ON u.salary_id = s._id
+    WHERE u.linkedin_user_id = $1;`;
   let params = [currentUserId];
 
   db.query(queryString, params, (err, response) => {
     if (err) {
-      console.log('Error in query for user: ', err);
+      return next({
+        log: `fairpayController.getUser: ERROR: ${err}`,
+        message: {
+          err: 'fairpayController.getUser: ERROR: Check server logs for details',
+        },
+      });
     }
 
-    console.log('response in getUser', response.rows);
-    res.locals.userData = response.rows;
+    res.locals.userData = response.rows[0];
 
     next();
   });
@@ -40,24 +49,19 @@ fairpayController.getUser = (req, res, next) => {
 
 // POST /api/company/jobTitles
 fairpayController.getCommonJobTitles = async (req, res, next) => {
+  console.log('controller: get common job titles');
   res.locals.commonJobTitles = await getCommonJobTitles.get(req);
   next();
 };
 
 // POST /api/user
 fairpayController.onboardUser = async (req, res, next) => {
-  console.log('creating user, verifying if request is proper');
+  console.log('controller: onboard user');
   //if (!req.body.linkedin_user_id || !req.body.name || !req.body.company_name || !req.body.job_title || !req.body.company_linkedin_id) {
-  console.log('COOKIES ', req.cookies);
-  let userIdCookie = jwt.verify(
-    req.cookies.jsonToken,
-    process.env.LINKEDIN_SECRET
-  );
+  let userIdCookie = jwt.verify(req.cookies.jsonToken, process.env.LINKEDIN_SECRET);
   res.locals.usedId = userIdCookie;
   if (!userIdCookie) {
-    res
-      .status(418)
-      .json(`Invalid create user request: must include linkedin_user_id`);
+    res.status(418).json(`Invalid create user request: must include linkedin_user_id`);
   }
 
   let companyKey = await upsertCompany.upsert(req, res);
@@ -73,44 +77,38 @@ fairpayController.onboardUser = async (req, res, next) => {
                 WHERE linkedin_user_id=$9
                 RETURNING *`;
 
-  let params = [
-    companyKey,
-    salaryKey,
-    sexuality,
-    age,
-    gender,
-    race,
-    city,
-    state,
-    userIdCookie,
-  ];
+  let params = [companyKey, salaryKey, sexuality, age, gender, race, city, state, userIdCookie];
 
   db.query(queryString, params)
-    .then((response) => {
+    .then(response => {
       res.locals.userData = response.rows[0];
       next();
     })
-    .catch((err) =>
-      console.log('Error in query for creating new user entry:\n', err)
-    );
+    .catch(err => console.log('Error in query for creating new user entry:\n', err));
 };
 
 // get /api/company/:linkedin_user_id retrieves current user data to be used in subsequent middleware that will retrieve company data
 fairpayController.getCurrentUser = (req, res, next) => {
-  const { linkedin_user_id } = req.params;
-  let queryString = `select u.name, s.job_title, c.linkedin_id, u.sexuality, u.age, u.gender, u.race, s.employee_type, s.years_at_company, s.years_of_experience, s.base_salary, s.full_time_status, s.annual_bonus, s.stock_options, s.signing_bonus from salary s inner join company c on s.company_id = c._id inner join users u on s._id = u.salary_id where u.linkedin_user_id = '${linkedin_user_id}'`;
+  console.log('controller: get current user');
+  const linkedin_user_id = req.cookies.userId;
+  console.log(linkedin_user_id);
+  let queryString = `
+    SELECT 
+      u.name, s.job_title, c.linkedin_id, u.sexuality, u.age, u.gender, u.race, s.employee_type, s.years_at_company, s.years_of_experience, s.base_salary, s.full_time_status, s.annual_bonus, s.stock_options, s.signing_bonus 
+    FROM salary s 
+    INNER JOIN company c on s.company_id = c._id 
+    INNER JOIN users u on s._id = u.salary_id where u.linkedin_user_id = '${linkedin_user_id}';`;
+
   db.query(queryString, (err, response) => {
     if (err) {
       return next({
         log: `fairpayController.getCurrentUser: ERROR: ${err}`,
         message: {
-          err:
-            'fairpayController.getCurrentUser: ERROR: Check server logs for details',
+          err: 'fairpayController.getCurrentUser: ERROR: Check server logs for details',
         },
       });
     }
     res.locals.currentUser = response.rows[0];
-    // console.log('res.locals.currentUser is', res.locals.currentUser);
     return next();
   });
 };
@@ -118,6 +116,7 @@ fairpayController.getCurrentUser = (req, res, next) => {
 // second middleware to fire after get to /api/company/:linkedin_user_id; sends company data of users with all same job titles at same company of user
 
 fairpayController.getCompanyData = (req, res, next) => {
+  console.log('controller: get compnay data');
   const { job_title, linkedin_id } = res.locals.currentUser;
   // console.log(
   //   'inside getcompanydata, res.locals.currentUser is',
@@ -141,8 +140,7 @@ fairpayController.getCompanyData = (req, res, next) => {
       return next({
         log: `fairpayController.getCompanyData: ERROR: ${err}`,
         message: {
-          err:
-            'fairpayController.getCompanyData: ERROR: Check server logs for details',
+          err: 'fairpayController.getCompanyData: ERROR: Check server logs for details',
         },
       });
     }
@@ -153,6 +151,8 @@ fairpayController.getCompanyData = (req, res, next) => {
 
 // middleware gets avg stats of current user's job title in company
 fairpayController.getJobStats = (req, res, next) => {
+  console.log('controller: get job stats');
+
   const { linkedin_id, job_title } = res.locals.currentUser;
   const queryString = `select s.job_title, round(avg(s.base_salary), 0) as avg_salary, round(avg(s.annual_bonus), 0) as avg_bonus, round(avg(s.stock_options), 0) as avg_stock_options, count(*) from salary s left join users u on s._id = u.salary_id left join company c on c._id = s.company_id where c.linkedin_id = '${linkedin_id}' and s.active = 'true' and s.job_title = '${job_title}' group by s.job_title order by s.job_title`;
   db.query(queryString, (err, response) => {
@@ -160,8 +160,7 @@ fairpayController.getJobStats = (req, res, next) => {
       return next({
         log: `fairpayController.getJobStats: ERROR: ${err}`,
         message: {
-          err:
-            'fairpayController.getJobStats: ERROR: Check server logs for details',
+          err: 'fairpayController.getJobStats: ERROR: Check server logs for details',
         },
       });
     }
@@ -173,6 +172,8 @@ fairpayController.getJobStats = (req, res, next) => {
 
 // middleware gets avg race stats of current user's company
 fairpayController.getRaceStats = (req, res, next) => {
+  console.log('controller: get race stats');
+
   const { linkedin_id, job_title } = res.locals.currentUser;
   const queryString = `select u.race, round(avg(s.base_salary), 0) as avg_salary, round(avg(s.annual_bonus), 0) as avg_bonus, round(avg(s.stock_options), 0) as avg_stock_options, count(*) from salary s left join users u on s._id = u.salary_id left join company c on c._id = s.company_id where c.linkedin_id = '${linkedin_id}' and s.active = 'true' and s.job_title = '${job_title}' group by u.race order by u.race`;
   db.query(queryString, (err, response) => {
@@ -180,8 +181,7 @@ fairpayController.getRaceStats = (req, res, next) => {
       return next({
         log: `fairpayController.getRaceStats: ERROR: ${err}`,
         message: {
-          err:
-            'fairpayController.getRaceStats: ERROR: Check server logs for details',
+          err: 'fairpayController.getRaceStats: ERROR: Check server logs for details',
         },
       });
     }
@@ -193,6 +193,8 @@ fairpayController.getRaceStats = (req, res, next) => {
 
 // middleware gets avg age stats of current user's company
 fairpayController.getAgeStats = (req, res, next) => {
+  console.log('controller: get age stats');
+
   const { linkedin_id, job_title } = res.locals.currentUser;
   const queryString = `select u.age, round(avg(s.base_salary), 0) as avg_salary, round(avg(s.annual_bonus), 0) as avg_bonus, round(avg(s.stock_options), 0) as avg_stock_options, count(*) from salary s left join users u on s._id = u.salary_id left join company c on c._id = s.company_id where c.linkedin_id = '${linkedin_id}' and s.active = 'true' and s.job_title = '${job_title}' group by u.age order by u.age`;
   db.query(queryString, (err, response) => {
@@ -200,8 +202,7 @@ fairpayController.getAgeStats = (req, res, next) => {
       return next({
         log: `fairpayController.getAgeStats: ERROR: ${err}`,
         message: {
-          err:
-            'fairpayController.getAgeStats: ERROR: Check server logs for details',
+          err: 'fairpayController.getAgeStats: ERROR: Check server logs for details',
         },
       });
     }
@@ -213,6 +214,8 @@ fairpayController.getAgeStats = (req, res, next) => {
 
 // middleware gets avg gender stats of current user's company
 fairpayController.getGenderStats = (req, res, next) => {
+  console.log('controller: get gender stats');
+
   const { linkedin_id, job_title } = res.locals.currentUser;
   const queryString = `select u.gender, round(avg(s.base_salary), 0) as avg_salary, round(avg(s.annual_bonus), 0) as avg_bonus, round(avg(s.stock_options), 0) as avg_stock_options, count(*) from salary s left join users u on s._id = u.salary_id left join company c on c._id = s.company_id where c.linkedin_id = '${linkedin_id}' and s.job_title = '${job_title}' and s.active = 'true' group by u.gender order by u.gender`;
   db.query(queryString, (err, response) => {
@@ -220,8 +223,7 @@ fairpayController.getGenderStats = (req, res, next) => {
       return next({
         log: `fairpayController.getGenderStats: ERROR: ${err}`,
         message: {
-          err:
-            'fairpayController.getGenderStats: ERROR: Check server logs for details',
+          err: 'fairpayController.getGenderStats: ERROR: Check server logs for details',
         },
       });
     }
