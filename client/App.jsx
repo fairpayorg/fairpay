@@ -26,12 +26,12 @@ import './components/stylesheets/styles.css';
 const App = () => {
   return (
     <div>
-      <AppBar position="static" id="appBar">
+      {/* <AppBar position="static" id="appBar">
         <Tabs variant="fullWidth">
           <Tab label="FairPay" icon={<GraphicEqRoundedIcon />} />
           <Tab label="User" icon={<PersonRoundedIcon />} />
         </Tabs>
-      </AppBar>
+      </AppBar> */}
       <Router>
         <Switch>
           <Route exact path="/getstarted">
