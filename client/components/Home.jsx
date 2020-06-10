@@ -101,6 +101,9 @@ function Home(props) {
       let data = await response.json();
       const current = data.currentUser;
 
+      // server added middlewares that grab city wide comparisons, have to parse that from data variable and store in new states
+      console.log("this is data from fetch in home component", data);
+
       // setting state for current logged in user
       setName(current.name);
       setCompany(current.linkedin_id);
