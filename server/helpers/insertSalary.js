@@ -21,12 +21,12 @@ insertSalary.insert = (req, res, companyKey) => {
     queryString = `INSERT INTO salary (company_id, job_title, employee_type, 
                                       years_at_company, years_of_experience, base_salary,
                                       annual_bonus, stock_options, signing_bonus, 
-                                      full_time_status, active)
-                   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+                                      full_time_status, active, user_id)
+                   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
                    RETURNING _id as key`;
     let params = [companyKey, job_title, employee_type, years_at_company, years_of_experience,
                   base_salary, annual_bonus, stock_options, signing_bonus, full_time_status,
-                  active];
+                  active, res.locals.userId];
     
     return db.query(queryString, params)
     .then(response =>  response.rows[0].key)

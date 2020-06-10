@@ -53,6 +53,7 @@ fairpayController.onboardUser = async (req, res, next) => {
     req.cookies.jsonToken,
     process.env.LINKEDIN_SECRET
   );
+  res.locals.usedId = userIdCookie;
   if (!userIdCookie) {
     res
       .status(418)
