@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Table,
@@ -8,7 +8,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
 function IndividualComparison(props) {
   // need to write logic that loops through the data we get back from the fetch request and renders
@@ -55,7 +55,7 @@ function IndividualComparison(props) {
               <TableBody>
                 {props.allNames.map((key, i) => {
                   return (
-                    <TableRow>
+                    <TableRow key={i}>
                       <TableCell>{key}</TableCell>
                       <TableCell align="right">{props.allAges[i]}</TableCell>
                       <TableCell align="right">
