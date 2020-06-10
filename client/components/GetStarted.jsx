@@ -144,8 +144,7 @@ function GetStarted(props) {
   function submitForm(e) {
     e.preventDefault()
     postUserUpdates();
-    console.log('in the submit form')
-    history.push('/home')
+    console.log('in the submit form');
   }
 
   function postUserUpdates() {
@@ -181,6 +180,7 @@ function GetStarted(props) {
       body: JSON.stringify(data),
     })
       .then(() => console.log('Successful post'))
+      .then(() => history.push('/home'))
       .catch((error) => {
         console.error('Error:', error);
       });
