@@ -3,6 +3,11 @@ import Home from './Home.jsx'
 import { render } from 'react-dom';
 import {Redirect ,useHistory} from 'react-router-dom'
 import TitleCount from './TitleCount.jsx';
+
+///////////////////forms//////////////////
+import IntroForm from './getStarted/IntroForm.jsx'
+
+// imported material ui components 
 import {
   Button,
   Container,
@@ -14,7 +19,7 @@ import {
   FormLabel,
   InputAdornment,
 } from '@material-ui/core';
-
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function GetStarted(props) {
   const history = useHistory()
   // the "step" control defines which part of the three step flow the user is on
@@ -27,7 +32,7 @@ function GetStarted(props) {
   const [currentStepComplete, updateStepCompletionStatus] = useState(false);
 
   const steps = ['intro', 'company', 'title', 'income', 'personal', 'complete'];
-
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // function is called each time user clicks  'next'
   function moveToNextStep() {
     if (step === 'company') {
@@ -36,7 +41,7 @@ function GetStarted(props) {
     }
     setStep(steps[steps.indexOf(step) + 1]);
   }
-
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // returns array of counts for each title at a given company
   function getRoleCount(company) {
     const data = { company_name: company };
@@ -48,15 +53,15 @@ function GetStarted(props) {
       },
       body: JSON.stringify(data),
     })
-      .then((data) => {
-        return data.json();
+      .then((res) => {
+        return res.json();
       })
-      .then((res) => setTitleCount(res))
+      .then((givenData) => setTitleCount(givenData))
       .catch((error) => {
         console.error('Error:', error);
       });
   }
-
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // called each time an input changes
   // updates state, checks for validation errors, and updates disable status of button
   function handleChange(event) {
@@ -65,7 +70,7 @@ function GetStarted(props) {
     handleError(name, value);
     determineIfStepComplete();
   }
-
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   function handleError(name, value) {
     // for every change in the input, we're going to check whether that passes our validation requirements
     let error;
@@ -91,7 +96,7 @@ function GetStarted(props) {
       delete errors[name];
     }
   }
-
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // this function determines whether the next button is disabled
   function determineIfStepComplete() {
     let hasError = false;
@@ -140,14 +145,14 @@ function GetStarted(props) {
       updateStepCompletionStatus(true);
     }
   }
-
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   function submitForm(e) {
     e.preventDefault()
     postUserUpdates();
     console.log('in the submit form')
     history.push('/home')
   }
-
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   function postUserUpdates() {
     console.log(inputs);
     let data = {
@@ -185,7 +190,7 @@ function GetStarted(props) {
         console.error('Error:', error);
       });
   }
-
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   function renderIncomeQuestions() {
     if (inputs.employeeType === 'Salary') {
       return (
@@ -304,35 +309,13 @@ function GetStarted(props) {
       );
     }
   }
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   function renderNextStep() {
     // Intro step is basic user education about what this app does
     if (step === 'intro') {
       return (
-        <React.Fragment>
-          <h1>How this works</h1>
-          <h3>
-            We're about to ask you for deeply personal information, including
-            your income, gender, race, and sexuality <br />
-            <br />
-            All data is encrypted and will only be viewable by individuals at
-            your company with your same title <br />
-            <br />
-            Keeping your information personally identifiable is crucial for
-            building trust in this system. <br />
-            <br />
-            Accurate and complete information is essential for ending workplace
-            discrimination <br />
-          </h3>
-          <Button
-            // {inputs.keys.length > 0 ? disabled : color="primary"}
-            color="primary"
-            variant="contained"
-            onClick={() => moveToNextStep()}
-          >
-            Next
-          </Button>
-        </React.Fragment>
+        <IntroForm moveToNextStep={this.moveToNextStep}/>
       );
     }
     // enter company information
@@ -419,8 +402,7 @@ function GetStarted(props) {
           <br />
           <p>
             {' '}
-            You'll only be compared to people at your company with your same
-            title. Here are the titles that other employees at your company have
+            You'll only be compared to people at your company with your SAME TITLE. Here are the titles that other employees at your company have
             used:
           </p>
           <TitleCount titles={titleCount} />
@@ -500,7 +482,7 @@ function GetStarted(props) {
         <React.Fragment>
           <FormControl component="fieldset">
             <FormLabel component="legend">
-              What race your identify with?
+              What race do you identify with?
             </FormLabel>
             <RadioGroup aria-label="race" name="race" onChange={handleChange}>
               <FormControlLabel
@@ -600,6 +582,8 @@ function GetStarted(props) {
       );
     }
   }
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   return (
     <Container maxWidth="sm">
