@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Table,
   TableBody,
@@ -7,7 +7,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
 function Total(props) {
   return (
@@ -26,7 +26,7 @@ function Total(props) {
               </TableHead>
               <TableBody>
                 {props.aggregateList.map((row) => (
-                  <TableRow>
+                  <TableRow key={row}>
                     <TableCell>{row.count}</TableCell>
                     <TableCell align="right">${row.avg_salary}</TableCell>
                     <TableCell align="right">${row.avg_bonus}</TableCell>
