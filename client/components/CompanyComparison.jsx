@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { Container, Tabs, Tab, Box, AppBar } from "@material-ui/core";
-import Race_Company from "./Race_Company.jsx";
-import Age_Company from "./Age_Company.jsx";
-import Gender_Company from "./Gender_Company.jsx";
-import Total_Company from "./Total_Company.jsx";
+import React, { useState, useEffect } from 'react';
+import { Container, Tabs, Tab, Box, AppBar } from '@material-ui/core';
+import Race_Company from './Race_Company.jsx';
+import Age_Company from './Age_Company.jsx';
+import Gender_Company from './Gender_Company.jsx';
+import Total_Company from './Total_Company.jsx';
 
 function CompanyComparison(props) {
   const [value, setValue] = useState(0);
