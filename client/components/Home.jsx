@@ -138,16 +138,28 @@ function Home(props) {
         })
 
         //grabbing race averages
-        const raceList = data.raceStats;
-        raceList.forEach((race) => {
-          raceAvg.push({
+        // const raceList = data.raceStats;
+        // raceList.forEach((race) => {
+        //   raceAvg.push({
+        //     race: race.race,
+        //     avg_bonus: race.avg_bonus,
+        //     avg_salary: race.avg_salary,
+        //     avg_stock: race.avg_stock_options,
+        //     count: race.count,
+        //   });
+        // });
+
+        const newRaceList = data.raceStats.reduce((acc, curVal) => {
+          acc.push({
             race: race.race,
             avg_bonus: race.avg_bonus,
             avg_salary: race.avg_salary,
             avg_stock: race.avg_stock_options,
             count: race.count,
           });
-        });
+          return acc;
+        }, []);
+
         // setRaceList(raceAvg);
 
         // grabbing gender averages
@@ -162,17 +174,19 @@ function Home(props) {
           });
         });
 
-        // setGenderList(genderAvg);
-        const newAgeList = data.ageStats.reduce((acc, curVal) => {
+        const newGenderList = data.genderStats.reduce((acc, curVal) => {
           acc.push({
-            age: curVal.age,
-            avg_salary: curVal.avg_salary,
-            avg_bonus: age.avg_bonus,
-            avg_stock: curVal.avg_stock,
-            count: curVal.count
+            gender: gender.gender,
+            avg_bonus: gender.avg_bonus,
+            avg_salary: gender.avg_salary,
+            avg_stock: gender.avg_stock_options,
+            count: gender.count,
           });
           return acc;
         }, []);
+
+ 
+        // setGenderList(genderAvg);
 
         //grabbing age averages
         const ageList = data.ageStats;
