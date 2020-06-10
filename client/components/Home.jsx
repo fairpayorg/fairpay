@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   AppBar,
@@ -7,14 +7,14 @@ import {
   Typography,
   Container,
   withStyles,
-} from "@material-ui/core";
-import CompanyComparison from "./CompanyComparison.jsx";
-import IndividualComparison from "./IndividualComparison.jsx";
+} from '@material-ui/core';
+import CompanyComparison from './CompanyComparison.jsx';
+import IndividualComparison from './IndividualComparison.jsx';
 
 const styles = {
   tabBar: {
-    backgroundColor: "#ffe082",
-    color: "rgb(102, 102, 102)",
+    backgroundColor: '#ffe082',
+    color: 'rgb(102, 102, 102)',
   },
 };
 function Home(props) {
@@ -90,7 +90,10 @@ function Home(props) {
 
   useEffect(() => {
     let user_linkedin_id = document.cookie;
-    user_linkedin_id = user_linkedin_id.split('; ').find(row => row.startsWith('userId')).split('=')[1];
+    user_linkedin_id = user_linkedin_id
+      .split('; ')
+      .find((row) => row.startsWith('userId'))
+      .split('=')[1];
     setLoading(true);
 
     // provide user_linkedin_id in req params
@@ -98,7 +101,7 @@ function Home(props) {
       .then((res) => res.json())
       .then((data) => {
         // with this data, setState for each hook and prop drill to appropriate components
-        console.log("data from fetch", data);
+        console.log('data from fetch', data);
         const current = data.currentUser;
 
         // setting state for current logged in user
@@ -218,7 +221,7 @@ function Home(props) {
           id="company_individual_toggle"
           position="static"
         >
-          <Tabs view={view} onChange={handleComparison} centered>
+          <Tabs value={view} view={view} onChange={handleComparison} centered>
             <Tab label="Company Wide Comparison" />
             <Tab label="Individual Comparison" />
           </Tabs>

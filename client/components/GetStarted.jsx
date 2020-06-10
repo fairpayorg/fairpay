@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import Home from './Home.jsx'
-import { render } from 'react-dom';
-import {Redirect ,useHistory} from 'react-router-dom'
-import TitleCount from './TitleCount.jsx';
+import React, { useState } from "react";
+import Home from "./Home.jsx";
+import { render } from "react-dom";
+import { Redirect, useHistory } from "react-router-dom";
+import TitleCount from "./TitleCount.jsx";
 import {
   Button,
   Container,
@@ -13,12 +13,12 @@ import {
   FormControlLabel,
   FormLabel,
   InputAdornment,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
 function GetStarted(props) {
-  const history = useHistory()
+  const history = useHistory();
   // the "step" control defines which part of the three step flow the user is on
-  const [step, setStep] = useState('intro');
+  const [step, setStep] = useState("intro");
   // initialize inputs as an empty object
   // every time we udpate inputs, we'll use the setInput functio
   const [inputs, setInputs] = useState({});
@@ -26,12 +26,13 @@ function GetStarted(props) {
   const [titleCount, setTitleCount] = useState(null);
   const [currentStepComplete, updateStepCompletionStatus] = useState(false);
 
-  const steps = ['intro', 'company', 'title', 'income', 'personal', 'complete'];
+  const steps = ["intro", "company", "title", "income", "personal", "complete"];
 
   // function is called each time user clicks  'next'
   function moveToNextStep() {
-    if (step === 'company') {
+    if (step === "company") {
       console.log(inputs.company);
+      console.log("city", inputs.city);
       getRoleCount(inputs.company);
     }
     setStep(steps[steps.indexOf(step) + 1]);
@@ -41,10 +42,10 @@ function GetStarted(props) {
   function getRoleCount(company) {
     const data = { company_name: company };
 
-    fetch('/api/jobTitles', {
-      method: 'POST',
+    fetch("/api/jobTitles", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     })
@@ -53,7 +54,7 @@ function GetStarted(props) {
       })
       .then((res) => setTitleCount(res))
       .catch((error) => {
-        console.error('Error:', error);
+        console.error("Error:", error);
       });
   }
 
@@ -61,6 +62,7 @@ function GetStarted(props) {
   // updates state, checks for validation errors, and updates disable status of button
   function handleChange(event) {
     const { name, value } = event.target;
+
     setInputs((prevState) => ({ ...prevState, [name]: value }));
     handleError(name, value);
     determineIfStepComplete();
@@ -70,16 +72,16 @@ function GetStarted(props) {
     // for every change in the input, we're going to check whether that passes our validation requirements
     let error;
     const numberFields = [
-      'annualIncome',
-      'annualBonus',
-      'stockOptions',
-      'hourlyWage',
-      'yearsExperience',
-      'yearsTenure',
+      "annualIncome",
+      "annualBonus",
+      "stockOptions",
+      "hourlyWage",
+      "yearsExperience",
+      "yearsTenure",
     ];
     if (numberFields.includes(name)) {
       if (isNaN(Number(value))) {
-        error = 'Please enter a number';
+        error = "Please enter a number";
       }
     }
 
@@ -100,24 +102,24 @@ function GetStarted(props) {
 
     // determine required questions for a given step
     if (
-      step === 'income' &&
-      (!inputs.employeeType || inputs.employeeType === 'Salary')
+      step === "income" &&
+      (!inputs.employeeType || inputs.employeeType === "Salary")
     ) {
       reqQuestions = [
-        'employeeType',
-        'annualIncome',
-        'annualBonus',
-        'stockOptions',
+        "employeeType",
+        "annualIncome",
+        "annualBonus",
+        "stockOptions",
       ];
     } else if (
-      step === 'income' &&
-      (!inputs.employeeType || inputs.employeeType === 'Hourly')
+      step === "income" &&
+      (!inputs.employeeType || inputs.employeeType === "Hourly")
     ) {
-      reqQuestions = ['employeeType', 'hourlyWage', 'ftStatus'];
-    } else if (step === 'title') {
-      reqQuestions = ['yearsExperience', 'yearsTenure', 'title'];
-    } else if (step === 'company') {
-      reqQuestions = ['company', 'state'];
+      reqQuestions = ["employeeType", "hourlyWage", "ftStatus"];
+    } else if (step === "title") {
+      reqQuestions = ["yearsExperience", "yearsTenure", "title"];
+    } else if (step === "company") {
+      reqQuestions = ["company", "state"];
     }
 
     if (Object.keys(errors).length > 0) {
@@ -127,7 +129,7 @@ function GetStarted(props) {
     if (reqQuestions) {
       for (let i = 0; i <= reqQuestions.length - 1; i++) {
         if (!inputs.hasOwnProperty(reqQuestions[i])) {
-          console.log('no own property');
+          console.log("no own property");
           isIncomplete = true;
           break;
         }
@@ -142,10 +144,10 @@ function GetStarted(props) {
   }
 
   function submitForm(e) {
-    e.preventDefault()
+    e.preventDefault();
     postUserUpdates();
-    console.log('in the submit form')
-    history.push('/home')
+    console.log("in the submit form");
+    history.push("/home");
   }
 
   function postUserUpdates() {
@@ -159,7 +161,7 @@ function GetStarted(props) {
       age: inputs.age,
       gender: inputs.gender,
       race: inputs.race,
-      city: null,
+      city: inputs.city,
       state: inputs.state,
       employee_type: inputs.employeeType,
       years_at_company: inputs.yearsTenure,
@@ -173,21 +175,21 @@ function GetStarted(props) {
     };
     console.log(data);
 
-    fetch('/api/onboardUser', {
-      method: 'POST',
+    fetch("/api/onboardUser", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     })
-      .then(() => console.log('Successful post'))
+      .then(() => console.log("Successful post"))
       .catch((error) => {
-        console.error('Error:', error);
+        console.error("Error:", error);
       });
   }
 
   function renderIncomeQuestions() {
-    if (inputs.employeeType === 'Salary') {
+    if (inputs.employeeType === "Salary") {
       return (
         <React.Fragment>
           {/* Text input for annual salary*/}
@@ -195,11 +197,11 @@ function GetStarted(props) {
           <br />
           <TextField
             required
-            error={errors.hasOwnProperty('annualIncome') ? true : false}
+            error={errors.hasOwnProperty("annualIncome") ? true : false}
             helperText={
-              errors.hasOwnProperty('annualIncome')
-                ? errors['annualIncome']
-                : ''
+              errors.hasOwnProperty("annualIncome")
+                ? errors["annualIncome"]
+                : ""
             }
             id="annual-income-input"
             label="Annual Income (pre-tax)"
@@ -220,9 +222,9 @@ function GetStarted(props) {
             required
             id="bonus-input"
             label="Last annual bonus"
-            error={errors.hasOwnProperty('annualBonus') ? true : false}
+            error={errors.hasOwnProperty("annualBonus") ? true : false}
             helperText={
-              errors.hasOwnProperty('annualBonus') ? errors['annualBonus'] : ''
+              errors.hasOwnProperty("annualBonus") ? errors["annualBonus"] : ""
             }
             // helperText="Incorrect entry."
             variant="outlined"
@@ -243,11 +245,11 @@ function GetStarted(props) {
             id="stock-options-input"
             label="Total stock options "
             // helperText="Incorrect entry."
-            error={errors.hasOwnProperty('stockOptions') ? true : false}
+            error={errors.hasOwnProperty("stockOptions") ? true : false}
             helperText={
-              errors.hasOwnProperty('stockOptions')
-                ? errors['stockOptions']
-                : ''
+              errors.hasOwnProperty("stockOptions")
+                ? errors["stockOptions"]
+                : ""
             }
             variant="outlined"
             name="stockOptions"
@@ -255,7 +257,7 @@ function GetStarted(props) {
           />
         </React.Fragment>
       );
-    } else if (inputs.employeeType === 'Hourly') {
+    } else if (inputs.employeeType === "Hourly") {
       return (
         <React.Fragment>
           <br />
@@ -274,9 +276,9 @@ function GetStarted(props) {
               ),
             }}
             onChange={handleChange}
-            error={errors.hasOwnProperty('hourlyWage') ? true : false}
+            error={errors.hasOwnProperty("hourlyWage") ? true : false}
             helperText={
-              errors.hasOwnProperty('hourlyWage') ? errors['hourlyWage'] : ''
+              errors.hasOwnProperty("hourlyWage") ? errors["hourlyWage"] : ""
             }
           />
           <br />
@@ -307,7 +309,7 @@ function GetStarted(props) {
 
   function renderNextStep() {
     // Intro step is basic user education about what this app does
-    if (step === 'intro') {
+    if (step === "intro") {
       return (
         <React.Fragment>
           <h1>How this works</h1>
@@ -336,7 +338,7 @@ function GetStarted(props) {
       );
     }
     // enter company information
-    else if (step === 'company') {
+    else if (step === "company") {
       return (
         <React.Fragment>
           <TextField
@@ -348,10 +350,24 @@ function GetStarted(props) {
             variant="outlined"
             name="company"
             onChange={handleChange}
-            error={errors.hasOwnProperty('company') ? true : false}
+            error={errors.hasOwnProperty("company") ? true : false}
             helperText={
-              errors.hasOwnProperty('company') ? errors['company'] : ''
+              errors.hasOwnProperty("company") ? errors["company"] : ""
             }
+          />
+          <br />
+          <br />
+          <TextField
+            required
+            id="city"
+            key="city"
+            label="City"
+            // helperText="Incorrect entry."
+            variant="outlined"
+            name="city"
+            onChange={handleChange}
+            error={errors.hasOwnProperty("city") ? true : false}
+            helperText={errors.hasOwnProperty("city") ? errors["city"] : ""}
           />
           <br />
           <br />
@@ -364,8 +380,8 @@ function GetStarted(props) {
             variant="outlined"
             name="state"
             onChange={handleChange}
-            error={errors.hasOwnProperty('state') ? true : false}
-            helperText={errors.hasOwnProperty('state') ? errors['state'] : ''}
+            error={errors.hasOwnProperty("state") ? true : false}
+            helperText={errors.hasOwnProperty("state") ? errors["state"] : ""}
           />
           <br />
           <br />
@@ -380,7 +396,7 @@ function GetStarted(props) {
           </Button>
         </React.Fragment>
       );
-    } else if (step === 'title') {
+    } else if (step === "title") {
       return (
         <React.Fragment>
           <TextField
@@ -392,11 +408,11 @@ function GetStarted(props) {
             variant="outlined"
             name="yearsExperience"
             onChange={handleChange}
-            error={errors.hasOwnProperty('yearsExperience') ? true : false}
+            error={errors.hasOwnProperty("yearsExperience") ? true : false}
             helperText={
-              errors.hasOwnProperty('yearsExperience')
-                ? errors['yearsExperience']
-                : ''
+              errors.hasOwnProperty("yearsExperience")
+                ? errors["yearsExperience"]
+                : ""
             }
           />
           <br />
@@ -410,15 +426,15 @@ function GetStarted(props) {
             variant="outlined"
             name="yearsTenure"
             onChange={handleChange}
-            error={errors.hasOwnProperty('yearsTenure') ? true : false}
+            error={errors.hasOwnProperty("yearsTenure") ? true : false}
             helperText={
-              errors.hasOwnProperty('yearsTenure') ? errors['yearsTenure'] : ''
+              errors.hasOwnProperty("yearsTenure") ? errors["yearsTenure"] : ""
             }
           />
           <br />
           <br />
           <p>
-            {' '}
+            {" "}
             You'll only be compared to people at your company with your same
             title. Here are the titles that other employees at your company have
             used:
@@ -434,8 +450,8 @@ function GetStarted(props) {
             variant="outlined"
             name="title"
             onChange={handleChange}
-            error={errors.hasOwnProperty('title') ? true : false}
-            helperText={errors.hasOwnProperty('title') ? errors['title'] : ''}
+            error={errors.hasOwnProperty("title") ? true : false}
+            helperText={errors.hasOwnProperty("title") ? errors["title"] : ""}
           />
           <br />
           <br />
@@ -453,7 +469,7 @@ function GetStarted(props) {
     }
 
     // Income step is to gather income data for the user's current role
-    else if (step === 'income') {
+    else if (step === "income") {
       return (
         <React.Fragment>
           <form autoComplete="off">
@@ -495,7 +511,7 @@ function GetStarted(props) {
           </Button>
         </React.Fragment>
       );
-    } else if (step === 'personal') {
+    } else if (step === "personal") {
       return (
         <React.Fragment>
           <FormControl component="fieldset">

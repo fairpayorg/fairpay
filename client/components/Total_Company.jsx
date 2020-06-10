@@ -26,7 +26,7 @@ function Total(props) {
               </TableHead>
               <TableBody>
                 {props.aggregateList.map((row) => (
-                  <TableRow>
+                  <TableRow key={row}>
                     <TableCell>{row.count}</TableCell>
                     <TableCell align="right">${row.avg_salary}</TableCell>
                     <TableCell align="right">${row.avg_bonus}</TableCell>

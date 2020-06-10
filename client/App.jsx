@@ -26,10 +26,10 @@ import './components/stylesheets/styles.css';
 const App = () => {
   return (
     <div>
-      <AppBar position="static" id="appBar" color="primary">
-        <Tabs variant="fullWidth">
+      <AppBar position="static" id="appBar">
+        <Tabs value={0} variant="fullWidth">
           <Tab label="FairPay" icon={<GraphicEqRoundedIcon />} />
-          <Tab label="User" icon={<PersonRoundedIcon />} />
+          {/* <Tab label="User" icon={<PersonRoundedIcon />} /> */}
         </Tabs>
       </AppBar>
       <Router>
