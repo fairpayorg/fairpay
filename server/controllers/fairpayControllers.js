@@ -34,14 +34,14 @@ fairpayController.getUser = (req, res, next) => {
     console.log('response in getUser', response.rows);
     res.locals.userData = response.rows;
 
-    next();
+    return next();
   });
 };
 
 // POST /api/company/jobTitles
 fairpayController.getCommonJobTitles = async (req, res, next) => {
   res.locals.commonJobTitles = await getCommonJobTitles.get(req);
-  next();
+  return next();
 };
 
 // POST /api/user
@@ -88,7 +88,7 @@ fairpayController.onboardUser = async (req, res, next) => {
   db.query(queryString, params)
     .then((response) => {
       res.locals.userData = response.rows[0];
-      next();
+      return next();
     })
     .catch((err) =>
       console.log('Error in query for creating new user entry:\n', err)
