@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import Home from './Home.jsx'
 import { render } from 'react-dom';
-import {Redirect ,useHistory} from 'react-router-dom'
+import { Redirect, useHistory } from 'react-router-dom'
 import TitleCount from './TitleCount.jsx';
 
 ///////////////////forms//////////////////
-import IntroForm from './getStarted/IntroForm.jsx'
-
+import IntroStep from './getStarted/IntroStep.jsx';
+import IncomeStep from './getStarted/IncomeStep_salary.jsx';
+import PersonalStep from './getStarted/PersonalStep.jsx';
+import IncomeStep_salary from './getStarted/IncomeStep_salary.jsx';
+import CompanyStep from './getStarted/CompanyStep.jsx';
+import TitleStep from './getStarted/TitleStep.jsx';
 // imported material ui components 
 import {
   Button,
@@ -19,7 +23,7 @@ import {
   FormLabel,
   InputAdornment,
 } from '@material-ui/core';
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function GetStarted(props) {
   const history = useHistory()
   // the "step" control defines which part of the three step flow the user is on
@@ -35,10 +39,7 @@ function GetStarted(props) {
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // function is called each time user clicks  'next'
   function moveToNextStep() {
-    if (step === 'company') {
-      console.log(inputs.company);
-      getRoleCount(inputs.company);
-    }
+    if (step === 'company') getRoleCount(inputs.company);
     setStep(steps[steps.indexOf(step) + 1]);
   }
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -83,18 +84,14 @@ function GetStarted(props) {
       'yearsTenure',
     ];
     if (numberFields.includes(name)) {
-      if (isNaN(Number(value))) {
-        error = 'Please enter a number';
-      }
+      if (isNaN(Number(value))) error = 'Please enter a number';
     }
 
     if (error !== undefined) {
       setErrors((prevState) => ({ ...prevState, [name]: error }));
     }
     // if there is an error in the error object but the input has passed all tests, remove the error from error object
-    else if (errors.hasOwnProperty(name)) {
-      delete errors[name];
-    }
+    else if (errors.hasOwnProperty(name)) delete errors[name];
   }
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // this function determines whether the next button is disabled
@@ -194,118 +191,12 @@ function GetStarted(props) {
   function renderIncomeQuestions() {
     if (inputs.employeeType === 'Salary') {
       return (
-        <React.Fragment>
-          {/* Text input for annual salary*/}
-          <br />
-          <br />
-          <TextField
-            required
-            error={errors.hasOwnProperty('annualIncome') ? true : false}
-            helperText={
-              errors.hasOwnProperty('annualIncome')
-                ? errors['annualIncome']
-                : ''
-            }
-            id="annual-income-input"
-            label="Annual Income (pre-tax)"
-            variant="outlined"
-            name="annualIncome"
-            // prepends $ at the beginning of the input
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">$</InputAdornment>
-              ),
-            }}
-            onChange={handleChange}
-          />
-          <br />
-          <br />
-          {/* TODO: allow a N/A option for the annual bonus input */}
-          <TextField
-            required
-            id="bonus-input"
-            label="Last annual bonus"
-            error={errors.hasOwnProperty('annualBonus') ? true : false}
-            helperText={
-              errors.hasOwnProperty('annualBonus') ? errors['annualBonus'] : ''
-            }
-            // helperText="Incorrect entry."
-            variant="outlined"
-            name="annualBonus"
-            // prepends $ at the beginning of the input
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">$</InputAdornment>
-              ),
-            }}
-            onChange={handleChange}
-          />
-          <br />
-          <br />
-          {/* TODO: allow a N/A option for the stock options input */}
-          <TextField
-            required
-            id="stock-options-input"
-            label="Total stock options "
-            // helperText="Incorrect entry."
-            error={errors.hasOwnProperty('stockOptions') ? true : false}
-            helperText={
-              errors.hasOwnProperty('stockOptions')
-                ? errors['stockOptions']
-                : ''
-            }
-            variant="outlined"
-            name="stockOptions"
-            onChange={handleChange}
-          />
-        </React.Fragment>
-      );
-    } else if (inputs.employeeType === 'Hourly') {
-      return (
-        <React.Fragment>
-          <br />
-          <br />
-          <TextField
-            required
-            id="hourly-wage-input"
-            label="Hourly wage (pre-tax)"
-            // helperText="Incorrect entry."
-            variant="outlined"
-            name="hourlyWage"
-            // prepends $ at the beginning of the input
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">$</InputAdornment>
-              ),
-            }}
-            onChange={handleChange}
-            error={errors.hasOwnProperty('hourlyWage') ? true : false}
-            helperText={
-              errors.hasOwnProperty('hourlyWage') ? errors['hourlyWage'] : ''
-            }
-          />
-          <br />
-          <br />
-          <FormControl component="fieldset">
-            <FormLabel component="legend"></FormLabel>
-            <RadioGroup
-              aria-label="Part time or full time?"
-              name="ftStatus"
-              onChange={handleChange}
-            >
-              <FormControlLabel
-                value="Part Time"
-                control={<Radio />}
-                label="Part Time"
-              />
-              <FormControlLabel
-                value="Full Time"
-                control={<Radio />}
-                label="Part Time"
-              />
-            </RadioGroup>
-          </FormControl>
-        </React.Fragment>
+        <IncomeStep_salary
+          moveToNextStep={moveToNextStep}
+          errors={errors}
+          handleChange={handleChange}
+          currentStepComplete={currentStepComplete}
+        />
       );
     }
   }
@@ -315,270 +206,50 @@ function GetStarted(props) {
     // Intro step is basic user education about what this app does
     if (step === 'intro') {
       return (
-        <IntroForm moveToNextStep={moveToNextStep}/>
+        <IntroStep
+          moveToNextStep={moveToNextStep}
+        />
       );
     }
     // enter company information
     else if (step === 'company') {
       return (
-        <React.Fragment>
-          <TextField
-            required
-            id="company"
-            key="company"
-            label="Company"
-            // helperText="Incorrect entry."
-            variant="outlined"
-            name="company"
-            onChange={handleChange}
-            error={errors.hasOwnProperty('company') ? true : false}
-            helperText={
-              errors.hasOwnProperty('company') ? errors['company'] : ''
-            }
-          />
-          <br />
-          <br />
-          <TextField
-            required
-            id="state"
-            key="state"
-            label="State"
-            // helperText="Incorrect entry."
-            variant="outlined"
-            name="state"
-            onChange={handleChange}
-            error={errors.hasOwnProperty('state') ? true : false}
-            helperText={errors.hasOwnProperty('state') ? errors['state'] : ''}
-          />
-          <br />
-          <br />
-          <Button
-            // {inputs.keys.length > 0 ? disabled : color="primary"}
-            color="primary"
-            variant="contained"
-            onClick={() => moveToNextStep()}
-            disabled={!currentStepComplete}
-          >
-            Next
-          </Button>
-        </React.Fragment>
+        <CompanyStep
+          errors={errors}
+          handleChange={handleChange}
+          currentStepComplete={currentStepComplete}
+          moveToNextStep={moveToNextStep}
+        />
       );
     } else if (step === 'title') {
       return (
-        <React.Fragment>
-          <TextField
-            required
-            id="years-experience-input"
-            key="years-experience-input"
-            label="# years in this industry"
-            // helperText="Incorrect entry."
-            variant="outlined"
-            name="yearsExperience"
-            onChange={handleChange}
-            error={errors.hasOwnProperty('yearsExperience') ? true : false}
-            helperText={
-              errors.hasOwnProperty('yearsExperience')
-                ? errors['yearsExperience']
-                : ''
-            }
-          />
-          <br />
-          <br />
-          <TextField
-            required
-            id="years-tenure"
-            key="years-tenure"
-            label="# years at company"
-            // helperText="Incorrect entry."
-            variant="outlined"
-            name="yearsTenure"
-            onChange={handleChange}
-            error={errors.hasOwnProperty('yearsTenure') ? true : false}
-            helperText={
-              errors.hasOwnProperty('yearsTenure') ? errors['yearsTenure'] : ''
-            }
-          />
-          <br />
-          <br />
-          <p>
-            {' '}
-            You'll only be compared to people at your company with your SAME TITLE. Here are the titles that other employees at your company have
-            used:
-          </p>
-          <TitleCount titles={titleCount} />
-          <br />
-          <TextField
-            required
-            id="title"
-            label="Title"
-            key="title"
-            // helperText="Incorrect entry."
-            variant="outlined"
-            name="title"
-            onChange={handleChange}
-            error={errors.hasOwnProperty('title') ? true : false}
-            helperText={errors.hasOwnProperty('title') ? errors['title'] : ''}
-          />
-          <br />
-          <br />
-          <Button
-            // {inputs.keys.length > 0 ? disabled : color="primary"}
-            disabled={!currentStepComplete}
-            color="primary"
-            variant="contained"
-            onClick={() => moveToNextStep()}
-          >
-            Next
-          </Button>
-        </React.Fragment>
+        <TitleStep
+          TitleCount={titleCount}
+          errors={errors}
+          handleChange={handleChange}
+          currentStepComplete={currentStepComplete}
+          moveToNextStep={moveToNextStep}
+        />
       );
     }
 
     // Income step is to gather income data for the user's current role
     else if (step === 'income') {
       return (
-        <React.Fragment>
-          <form autoComplete="off">
-            {/* Radio button about whether user is paid hourly or by salary */}
-            <br />
-            <br />
-            <FormControl component="fieldset">
-              <FormLabel component="legend">How are you paid?</FormLabel>
-              <RadioGroup
-                aria-label="employee type"
-                name="employeeType"
-                onChange={handleChange}
-              >
-                <FormControlLabel
-                  value="Salary"
-                  control={<Radio />}
-                  label="Salary"
-                />
-                <FormControlLabel
-                  value="Hourly"
-                  control={<Radio />}
-                  label="Hourly"
-                />
-              </RadioGroup>
-            </FormControl>
-            {/* Depending on whether the user is salaried or hourly, we'll ask different income questiosn */}
-            {renderIncomeQuestions()}
-            <br />
-            <br />
-          </form>
-          <Button
-            // {inputs.keys.length > 0 ? disabled : color="primary"}
-            disabled={!currentStepComplete}
-            color="primary"
-            variant="contained"
-            onClick={() => moveToNextStep()}
-          >
-            Next
-          </Button>
-        </React.Fragment>
+        <IncomeStep
+          renderIncomeQuestions={renderIncomeQuestions}
+          handleChange={handleChange}
+          currentStepComplete={currentStepComplete}
+          moveToNextStep={moveToNextStep}
+        />
       );
     } else if (step === 'personal') {
       return (
-        <React.Fragment>
-          <FormControl component="fieldset">
-            <FormLabel component="legend">
-              What race do you identify with?
-            </FormLabel>
-            <RadioGroup aria-label="race" name="race" onChange={handleChange}>
-              <FormControlLabel
-                value="White"
-                control={<Radio />}
-                label="White"
-              />
-              <FormControlLabel
-                value="Black"
-                control={<Radio />}
-                label="Black"
-              />
-              <FormControlLabel
-                value="Latino"
-                control={<Radio />}
-                label="Latino"
-              />
-              <FormControlLabel
-                value="Asian"
-                control={<Radio />}
-                label="Asian"
-              />
-            </RadioGroup>
-          </FormControl>
-          <br />
-          <br />
-          <FormControl component="fieldset">
-            <FormLabel component="legend">
-              What gender do you identify with?
-            </FormLabel>
-            <RadioGroup
-              aria-label="gender"
-              name="gender"
-              onChange={handleChange}
-              // value={inputs.employeeType}
-            >
-              <FormControlLabel value="Male" control={<Radio />} label="Male" />
-              <FormControlLabel
-                value="Female"
-                control={<Radio />}
-                label="Female"
-              />
-              <FormControlLabel
-                value="Other"
-                control={<Radio />}
-                label="Other"
-              />
-            </RadioGroup>
-          </FormControl>
-          <br />
-          <br />
-          <FormControl component="fieldset">
-            <FormLabel component="legend">
-              Do you consider yourself a member of the LGBTQ community?
-            </FormLabel>
-            <RadioGroup
-              aria-label="sexuality"
-              name="sexuality"
-              onChange={handleChange}
-              // value={inputs.employeeType}
-            >
-              <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
-              <FormControlLabel value="No" control={<Radio />} label="No" />
-            </RadioGroup>
-          </FormControl>
-          <br />
-          <br />
-          <FormControl component="fieldset">
-            <FormLabel component="legend">Age</FormLabel>
-            <RadioGroup aria-label="age" name="age" onChange={handleChange}>
-              <FormControlLabel
-                value="18 - 35"
-                control={<Radio />}
-                label="18 - 35"
-              />
-              <FormControlLabel
-                value="36 - 50"
-                control={<Radio />}
-                label="36 - 50"
-              />
-              <FormControlLabel value="51 +" control={<Radio />} label="51 +" />
-            </RadioGroup>
-          </FormControl>
-          <br />
-          <br />
-          <Button
-            // {...inputs.keys.length > 0 ? ' ': disabled}
-            disabled={!currentStepComplete}
-            // disabled
-            color="primary"
-            variant="contained"
-            onClick={submitForm}
-          >
-            Complete
-          </Button>
-        </React.Fragment>
+        <PersonalStep
+          submitForm={submitForm}
+          handleChange={handleChange}
+          currentStepComplete={currentStepComplete}
+        />
       );
     }
   }
