@@ -1,10 +1,10 @@
-const db = require('../models/payfairModels');
-const jwt = require('jsonwebtoken');
-const cookieParser = require('cookie-parser');
+const db = require("../models/payfairModels");
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 
-const getCommonJobTitles = require('../helpers/getCommonJobTitles');
-const upsertCompany = require('../helpers/upsertCompany');
-const insertSalary = require('../helpers/insertSalary');
+const getCommonJobTitles = require("../helpers/getCommonJobTitles");
+const upsertCompany = require("../helpers/upsertCompany");
+const insertSalary = require("../helpers/insertSalary");
 
 const fairpayController = {};
 
@@ -28,10 +28,10 @@ fairpayController.getUser = (req, res, next) => {
 
   db.query(queryString, params, (err, response) => {
     if (err) {
-      console.log('Error in query for user: ', err);
+      console.log("Error in query for user: ", err);
     }
 
-    console.log('response in getUser', response.rows);
+    console.log("response in getUser", response.rows);
     res.locals.userData = response.rows;
 
     next();
@@ -46,9 +46,9 @@ fairpayController.getCommonJobTitles = async (req, res, next) => {
 
 // POST /api/user
 fairpayController.onboardUser = async (req, res, next) => {
-  console.log('creating user, verifying if request is proper');
+  console.log("city in onboarduser controller", req.body.city);
   //if (!req.body.linkedin_user_id || !req.body.name || !req.body.company_name || !req.body.job_title || !req.body.company_linkedin_id) {
-  console.log('COOKIES ', req.cookies);
+  console.log("COOKIES ", req.cookies);
   let userIdCookie = jwt.verify(
     req.cookies.jsonToken,
     process.env.LINKEDIN_SECRET
@@ -90,7 +90,7 @@ fairpayController.onboardUser = async (req, res, next) => {
       next();
     })
     .catch((err) =>
-      console.log('Error in query for creating new user entry:\n', err)
+      console.log("Error in query for creating new user entry:\n", err)
     );
 };
 
@@ -105,7 +105,7 @@ fairpayController.getCurrentUser = (req, res, next) => {
         log: `fairpayController.getCurrentUser: ERROR: ${err}`,
         message: {
           err:
-            'fairpayController.getCurrentUser: ERROR: Check server logs for details',
+            "fairpayController.getCurrentUser: ERROR: Check server logs for details",
         },
       });
     }
@@ -133,7 +133,7 @@ fairpayController.getCompanyData = (req, res, next) => {
         log: `fairpayController.getCompanyData: ERROR: ${err}`,
         message: {
           err:
-            'fairpayController.getCompanyData: ERROR: Check server logs for details',
+            "fairpayController.getCompanyData: ERROR: Check server logs for details",
         },
       });
     }
@@ -152,7 +152,7 @@ fairpayController.getJobStats = (req, res, next) => {
         log: `fairpayController.getJobStats: ERROR: ${err}`,
         message: {
           err:
-            'fairpayController.getJobStats: ERROR: Check server logs for details',
+            "fairpayController.getJobStats: ERROR: Check server logs for details",
         },
       });
     }
@@ -172,7 +172,7 @@ fairpayController.getRaceStats = (req, res, next) => {
         log: `fairpayController.getRaceStats: ERROR: ${err}`,
         message: {
           err:
-            'fairpayController.getRaceStats: ERROR: Check server logs for details',
+            "fairpayController.getRaceStats: ERROR: Check server logs for details",
         },
       });
     }
@@ -192,7 +192,7 @@ fairpayController.getAgeStats = (req, res, next) => {
         log: `fairpayController.getAgeStats: ERROR: ${err}`,
         message: {
           err:
-            'fairpayController.getAgeStats: ERROR: Check server logs for details',
+            "fairpayController.getAgeStats: ERROR: Check server logs for details",
         },
       });
     }
@@ -225,7 +225,7 @@ fairpayController.getGenderStats = (req, res, next) => {
         log: `fairpayController.getGenderStats: ERROR: ${err}`,
         message: {
           err:
-            'fairpayController.getGenderStats: ERROR: Check server logs for details',
+            "fairpayController.getGenderStats: ERROR: Check server logs for details",
         },
       });
     }
