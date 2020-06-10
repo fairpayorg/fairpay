@@ -11,12 +11,12 @@ import {
 import CompanyComparison from './CompanyComparison.jsx';
 import IndividualComparison from './IndividualComparison.jsx';
 
-const styles = {
-  tabBar: {
-    backgroundColor: '#ffe082',
-    color: 'rgb(102, 102, 102)',
-  },
-};
+// const styles = {
+//   tabBar: {
+//     backgroundColor: '#ffe082',
+//     color: 'rgb(102, 102, 102)',
+//   },
+// };
 function Home(props) {
   // this is the hook that toggles the different comparison views
   // defaults to company comparison view
@@ -217,12 +217,13 @@ function Home(props) {
       )}
       <Container id="comparison_tabs">
         <AppBar
-          className={classes.tabBar}
+          // className={classes.tabBar}
           id="company_individual_toggle"
           position="static"
         >
           <Tabs value={view} view={view} onChange={handleComparison} centered>
             <Tab label="Company Wide Comparison" />
+            {/* <Tab label="Regional Comparison" /> */}
             <Tab label="Individual Comparison" />
           </Tabs>
         </AppBar>
@@ -257,6 +258,30 @@ function Home(props) {
                 aggregateList={aggregateList}
                 allNames={allNames}
               />
+              {/* <RegionalComparison 
+                view={view}
+                index={0}
+                name={name}
+                company={company}
+                jobTitle={jobTitle}
+                sexuality={sexuality}
+                age={age}
+                gender={gender}
+                race={race}
+                employeeType={employeeType}
+                yrsExperience={yrsExperience}
+                yrsCompany={yrsCompany}
+                baseSalary={baseSalary}
+                annualBonus={annualBonus}
+                stockOptions={stockOptions}
+                signingBonus={signingBonus}
+                ftStatus={ftStatus}
+                raceList={raceList}
+                genderList={genderList}
+                ageList={ageList}
+                aggregateList={aggregateList}
+                allNames={allNames}
+              /> */}
               <IndividualComparison
                 view={view}
                 index={1}
@@ -292,4 +317,5 @@ function Home(props) {
   );
 }
 
-export default withStyles(styles)(Home);
+export default Home;
+// export default withStyles(styles)(Home);
