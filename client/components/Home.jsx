@@ -25,72 +25,84 @@ function Home(props) {
   const handleComparison = (e, view) => {
     setView(view);
   };
-  
+
 /////////////////////////////////////////////////
   // this is name of employee
-  const [name, setName] = useState(null);
-  const [company, setCompany] = useState(null);
-  // this is job title
-  const [jobTitle, setJobTitle] = useState(null);
-  // this is sexual orientation
-  const [sexuality, setSexuality] = useState(null);
-  const [age, setAge] = useState(null);
-  const [gender, setGender] = useState();
-  const [race, setRace] = useState();
-  // salary vs hourly employee
-  const [employeeType, setEmployeeType] = useState();
-  // years of experience in field/position
-  const [yrsExperience, setYrsExperience] = useState();
-  // years at current company
-  const [yrsCompany, setYrsCompany] = useState();
-  const [baseSalary, setBaseSalary] = useState();
-  const [annualBonus, setAnnualBonus] = useState();
-  // total invested and uninvested
-  const [stockOptions, setStockOptions] = useState();
-  const [signingBonus, setSigningBonus] = useState();
-  const [ftStatus, setFtStatus] = useState();
-/////////////////////////////////////////////////////
+  const [currentUser, setCurrentUser] = useState({
+    name: null,
+    company: null,
+    jobTitle: null,
+    sexuality: null,
+    age: null,
+    gender: null,
+    race: null,
+    employeeType: null,
+    yrsExperience: null,
+    yrsCompany: null,
+    baseSalary: null,
+    annualBonus: null,
+    stockOptions: null,
+    signingBonus: null,
+    ftStatus: null,
+  })
 
-
-  
   // this section is for individual comparison component
-  const [allNames, setAllNames] = useState([]);
-  const [allSexes, setAllSexes] = useState([]);
-  const [allGenders, setAllGenders] = useState([]);
-  const [allAges, setAllAges] = useState([]);
-  const [allTypes, setAllTypes] = useState([]);
-  const [allYrsExperience, setAllYrsExperience] = useState([]);
-  const [allYrsCompany, setAllYrsCompany] = useState([]);
-  const [allBaseSalary, setAllBaseSalary] = useState([]);
-  const [allAnnualBonus, setAllAnnualBonus] = useState([]);
-  const [allStockOptions, setAllStockOptions] = useState([]);
-  const [allSigningBonuses, setAllSigningBonuses] = useState([]);
-  const [allFtStatuses, setAllFtStatuses] = useState([]);
-  const [raceList, setRaceList] = useState([]);
-  const [genderList, setGenderList] = useState([]);
-  const [ageList, setAgeList] = useState([]);
-  const [aggregateList, setAggregateList] = useState([]);
+  // const [allNames, setAllNames] = useState([]);
+  // const [allSexes, setAllSexes] = useState([]);
+  // const [allGenders, setAllGenders] = useState([]);
+  // const [allAges, setAllAges] = useState([]);
+  // const [allTypes, setAllTypes] = useState([]);
+  // const [allYrsExperience, setAllYrsExperience] = useState([]);
+  // const [allYrsCompany, setAllYrsCompany] = useState([]);
+  // const [allBaseSalary, setAllBaseSalary] = useState([]);
+  // const [allAnnualBonus, setAllAnnualBonus] = useState([]);
+  // const [allStockOptions, setAllStockOptions] = useState([]);
+  // const [allSigningBonuses, setAllSigningBonuses] = useState([]);
+  // const [allFtStatuses, setAllFtStatuses] = useState([]);
+  // const [raceList, setRaceList] = useState([]);
+  // const [genderList, setGenderList] = useState([]);
+  // const [ageList, setAgeList] = useState([]);
+  // const [aggregateList, setAggregateList] = useState([]);
+
+  const [companyAggregate, setCompanyAggregate] = useState({
+    allNames: [],
+    allSexes: [],
+    allSexes: [],
+    allGenders: [],
+    allAges: [],
+    allTypes: [],
+    allYrsExperience: [],
+    allBaseSalary: [],
+    allStockOptions: [],
+    allSigningOptions: [],
+    allSigningBonuses: [],
+    allFtStatuses: [],
+    raceList: [],
+    genderList: [],
+    ageList: [],
+    aggregateList: [],
+  });
 
   // state for whether fetch call is finished
   const [loading, setLoading] = useState(false);
 
   // used for prop drilling into child components
-  const employeesNames = [];
-  const employeesSexuality = [];
-  const employeesGender = [];
-  const employeesAge = [];
-  const employeesType = [];
-  const employeesYrsExperience = [];
-  const employeesYrsCompany = [];
-  const employeesBaseSalary = [];
-  const employeesAnnualBonus = [];
-  const employeesStockOptions = [];
-  const employeesSigningBonus = [];
-  const employeesFtStatus = [];
-  const raceAvg = [];
-  const genderAvg = [];
-  const ageAvg = [];
-  const aggregateAvg = [];
+  // const employeesNames = [];
+  // const employeesSexuality = [];
+  // const employeesGender = [];
+  // const employeesAge = [];
+  // const employeesType = [];
+  // const employeesYrsExperience = [];
+  // const employeesYrsCompany = [];
+  // const employeesBaseSalary = [];
+  // const employeesAnnualBonus = [];
+  // const employeesStockOptions = [];
+  // const employeesSigningBonus = [];
+  // const employeesFtStatus = [];
+  // const raceAvg = [];
+  // const genderAvg = [];
+  // const ageAvg = [];
+  // const aggregateAvg = [];
 
   useEffect(() => {
     let user_linkedin_id = document.cookie;
@@ -101,28 +113,29 @@ function Home(props) {
     fetch(`/api/company/${user_linkedin_id}`)
       .then((res) => res.json())
       .then((data) => {
+
         // with this data, setState for each hook and prop drill to appropriate components
         console.log("data from fetch", data);
         const current = data.currentUser;
-        
-//////////////////////////////////////////////////////////////////////////////
+
         // setting state for current logged in user
-        setName(current.name);
-        setCompany(current.linkedin_id);
-        setJobTitle(current.job_title);
-        setSexuality(current.sexuality);
-        setAge(current.age);
-        setGender(current.gender);
-        setRace(current.race);
-        setEmployeeType(current.employee_type);
-        setYrsExperience(current.years_of_experience);
-        setYrsCompany(current.years_at_company);
-        setBaseSalary(current.base_salary);
-        setAnnualBonus(current.annual_bonus);
-        setStockOptions(current.stock_options);
-        setSigningBonus(current.signing_bonus);
-        setFtStatus(current.full_time_status);
-//////////////////////////////////////////////////////////////////////////////
+        setCurrentUser({
+          name: current.name,
+          company: current.linkedin_id,
+          jobTitle: current.job_title,
+          sexuality: current.sexuality,
+          age: current.age,
+          gender: current.gender,
+          race: current.race,
+          employeeType: current.employee_type,
+          yrsExperience: current.years_of_experience,
+          yrsCompany: current.years_at_company,
+          baseSalary: current.base_salary,
+          annualBonus: current.annual_bonus,
+          stockOptions: current.stock_options,
+          signingBonus: current.signing_bonus,
+          ftStatus: current.full_time_status,
+        })
 
         //grabbing race averages
         const raceList = data.raceStats;
@@ -135,7 +148,7 @@ function Home(props) {
             count: race.count,
           });
         });
-        setRaceList(raceAvg);
+        // setRaceList(raceAvg);
 
         // grabbing gender averages
         const genderList = data.genderStats;
@@ -148,7 +161,18 @@ function Home(props) {
             count: gender.count,
           });
         });
-        setGenderList(genderAvg);
+
+        // setGenderList(genderAvg);
+        const newAgeList = data.ageStats.reduce((acc, curVal) => {
+          acc.push({
+            age: curVal.age,
+            avg_salary: curVal.avg_salary,
+            avg_bonus: age.avg_bonus,
+            avg_stock: curVal.avg_stock,
+            count: curVal.count
+          });
+          return acc;
+        }, []);
 
         //grabbing age averages
         const ageList = data.ageStats;
@@ -161,7 +185,18 @@ function Home(props) {
             count: age.count,
           });
         });
-        setAgeList(ageAvg);
+
+        const newAgeList = data.ageStats.reduce((acc, curVal) => {
+          acc.push({
+            age: curVal.age,
+            avg_salary: curVal.avg_salary,
+            avg_bonus: age.avg_bonus,
+            avg_stock: curVal.avg_stock,
+            count: curVal.count
+          });
+          return acc;
+        }, []);
+        // setAgeList(ageAvg);
 
         // calculating values for aggregate view
         const aggregateList = data.jobStats;
@@ -174,9 +209,26 @@ function Home(props) {
             count: item.count,
           });
         });
-        setAggregateList(aggregateAvg);
+        // setAggregateList(aggregateAvg);
 
         // setting state for individual comparisons
+        const employeesNames = [];
+        const employeesSexuality = [];
+        const employeesGender = [];
+        const employeesAge = [];
+        const employeesType = [];
+        const employeesYrsExperience = [];
+        const employeesYrsCompany = [];
+        const employeesBaseSalary = [];
+        const employeesAnnualBonus = [];
+        const employeesStockOptions = [];
+        const employeesSigningBonus = [];
+        const employeesFtStatus = [];
+        const raceAvg = [];
+        const genderAvg = [];
+        const ageAvg = [];
+        const aggregateAvg = [];
+
         const list = data.companyData;
         list.forEach((employee) => {
           employeesNames.push(employee.name);
@@ -192,15 +244,34 @@ function Home(props) {
           employeesSigningBonus.push(employee.signing_bonus);
           employeesFtStatus.push(employee.full_time_status);
         });
-        setAllNames(employeesNames);
-        setAllGenders(employeesGender);
-        setAllAges(employeesAge);
-        setAllSexes(employeesSexuality);
-        setAllTypes(employeesType);
-        setAllYrsExperience(employeesYrsExperience);
-        setAllYrsCompany(employeesYrsCompany);
-        setAllBaseSalary(employeesBaseSalary);
-        setAllFtStatuses(employeesFtStatus);
+
+        setCompanyAggregate({
+          allNames: employeesNames,
+          allAges: employeesAge,
+          allGenders: employeesGender,
+          allSexes: employeesSexuality,
+          allTypes: employeesTypes,
+          allYrsExperience: employeesYrsExperience,
+          allBaseSalary: employeesBaseSalary,
+          allStockOptions: employeesStockOptions,
+          allStockOptions: employeesStockOptions,
+          allSigningBonuses: employeesSigningBonus,
+          allFtStatuses: employeesFtStatus,
+          raceList: [],
+          genderList: [],
+          ageList: newAgeList,
+          aggregateList: [],
+        })
+
+        // setAllNames(employeesNames);
+        // setAllGenders(employeesGender);
+        // setAllAges(employeesAge);
+        // setAllSexes(employeesSexuality);
+        // setAllTypes(employeesType);
+        // setAllYrsExperience(employeesYrsExperience);
+        // setAllYrsCompany(employeesYrsCompany);
+        // setAllBaseSalary(employeesBaseSalary);
+        // setAllFtStatuses(employeesFtStatus);
 
         // after finishing this execution, set loading to false
         setLoading(false);
@@ -214,7 +285,7 @@ function Home(props) {
         <div className="current_user_header">
           <h2 id="current_user_name">Hello {name}</h2>
           <label id="current_user_label">
-            {jobTitle} at {company}
+            {currentUser.jobTitle} at {currentUser.company}
           </label>
         </div>
       )}
@@ -239,21 +310,23 @@ function Home(props) {
               <CompanyComparison
                 view={view}
                 index={0}
-                name={name}
-                company={company}
-                jobTitle={jobTitle}
-                sexuality={sexuality}
-                age={age}
-                gender={gender}
-                race={race}
-                employeeType={employeeType}
-                yrsExperience={yrsExperience}
-                yrsCompany={yrsCompany}
-                baseSalary={baseSalary}
-                annualBonus={annualBonus}
-                stockOptions={stockOptions}
-                signingBonus={signingBonus}
-                ftStatus={ftStatus}
+
+                name={currentUser.name}
+                company={currentUser.company}
+                jobTitle={currentUser.jobTitle}
+                sexuality={currentUser.sexuality}
+                age={currentUser.age}
+                gender={currentUser.gender}
+                race={currentUser.race}
+                employeeType={currentUser.employeeType}
+                yrsExperience={currentUser.yrsExperience}
+                yrsCompany={currentUser.yrsCompany}
+                baseSalary={currentUser.baseSalary}
+                annualBonus={currentUser.annualBonus}
+                stockOptions={currentUser.stockOptions}
+                signingBonus={currentUser.signingBonus}
+                ftStatus={currentUser.ftStatus}
+
                 raceList={raceList}
                 genderList={genderList}
                 ageList={ageList}
@@ -263,21 +336,11 @@ function Home(props) {
               <IndividualComparison
                 view={view}
                 index={1}
-                name={name}
-                company={company}
-                jobTitle={jobTitle}
-                sexuality={sexuality}
-                age={age}
-                gender={gender}
-                race={race}
-                employeeType={employeeType}
-                yrsExperience={yrsExperience}
-                yrsCompany={yrsCompany}
-                baseSalary={baseSalary}
-                annualBonus={annualBonus}
-                stockOptions={stockOptions}
-                signingBonus={signingBonus}
-                ftStatus={ftStatus}
+
+                currentUser={currentUser}
+
+                aggregate={aggregate}
+
                 allNames={allNames}
                 allGenders={allGenders}
                 allAges={allAges}
