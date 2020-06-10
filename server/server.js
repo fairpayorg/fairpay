@@ -69,6 +69,10 @@ app.use(
   fairpayController.getRaceStats,
   fairpayController.getAgeStats,
   fairpayController.getGenderStats,
+  fairpayController.getJobStatsByCity,
+  fairpayController.getRaceStatsByCity,
+  fairpayController.getAgeStatsByCity,
+  fairpayController.getGenderStatsByCity,
   (req, res) => {
     res.status(200).json({
       currentUser: res.locals.currentUser,
@@ -77,6 +81,10 @@ app.use(
       raceStats: res.locals.raceStats,
       ageStats: res.locals.ageStats,
       genderStats: res.locals.genderStats,
+      jobStatsByCity: res.locals.jobStatsByCity,
+      raceStatsByCity: res.locals.raceStatsByCity,
+      ageStatsByCity: res.locals.ageStatsByCity,
+      genderStatsByCity: res.locals.genderStatsByCity
     });
   }
 );
