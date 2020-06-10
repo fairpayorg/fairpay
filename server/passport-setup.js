@@ -55,7 +55,7 @@ passport.use(new LinkedInStrategy({
     const user = await db.query(getUserQuery, [profile.id]);
     // If the user does not exist, add their info to the database
     if (user.rows.length === 0) {
-      const addNewUser = await db.query(addNewUserQuery, [profile.id, profile.displayName, profile.emails[0].value, profile.photos[0].value])
+      const addNewUser = await db.query(addNewUserQuery, [profile.id, profile.displayName, profile.emails[0]? profile.emails.value : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png', profile.photos[0].value])
       const newUser = await db.query(getUserQuery, [profile.id]);
       done(null, profile);
     } else {
