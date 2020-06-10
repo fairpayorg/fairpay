@@ -41,7 +41,7 @@ router.get(
         );
         res.cookie('jsonToken', jwtToken);
         res.cookie('userId', res.locals.userData[0].linkedin_user_id);
-        res.redirect('http://localhost:8080/home');
+        return res.redirect('http://localhost:8080/home');
       }
       console.log('user not found, will redirect to onboarding...');
       jwtToken = jwt.sign(
@@ -54,11 +54,11 @@ router.get(
         'redirecting to get started, sending cookies for user id: ',
         res.locals.userData[0].linkedin_user_id
       );
-      res.redirect('http://localhost:8080/getstarted');
+      return res.redirect('http://localhost:8080/getstarted');
     } else if (res.locals.userData[0].salary_id) {
-      res.redirect('http://localhost:3000/home');
+      return res.redirect('http://localhost:3000/home');
     }
-    res.redirect('http://localhost:3000/getstarted');
+    return res.redirect('http://localhost:3000/getstarted');
   }
 );
 
