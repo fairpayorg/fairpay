@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Button,
   AppBar,
@@ -7,14 +7,14 @@ import {
   Typography,
   Container,
   withStyles,
-} from '@material-ui/core';
-import CompanyComparison from './CompanyComparison.jsx';
-import IndividualComparison from './IndividualComparison.jsx';
+} from "@material-ui/core";
+import CompanyComparison from "./CompanyComparison.jsx";
+import IndividualComparison from "./IndividualComparison.jsx";
 
 const styles = {
   tabBar: {
-    backgroundColor: '#ffe082',
-    color: 'rgb(102, 102, 102)',
+    backgroundColor: "#ffe082",
+    color: "rgb(102, 102, 102)",
   },
 };
 function Home(props) {
@@ -91,117 +91,220 @@ function Home(props) {
   useEffect(() => {
     let user_linkedin_id = document.cookie;
     user_linkedin_id = user_linkedin_id
-      .split('; ')
-      .find((row) => row.startsWith('userId'))
-      .split('=')[1];
+      .split("; ")
+      .find((row) => row.startsWith("userId"))
+      .split("=")[1];
     setLoading(true);
 
-    // provide user_linkedin_id in req params
-    fetch(`/api/company/${user_linkedin_id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        // with this data, setState for each hook and prop drill to appropriate components
-        console.log('data from fetch', data);
-        const current = data.currentUser;
+    const asyncDataFetch = async () => {
+      let response = await fetch(`/api/company/${user_linkedin_id}`);
+      let data = await response.json();
+      const current = data.currentUser;
 
-        // setting state for current logged in user
-        setName(current.name);
-        setCompany(current.linkedin_id);
-        setJobTitle(current.job_title);
-        setSexuality(current.sexuality);
-        setAge(current.age);
-        setGender(current.gender);
-        setRace(current.race);
-        setEmployeeType(current.employee_type);
-        setYrsExperience(current.years_of_experience);
-        setYrsCompany(current.years_at_company);
-        setBaseSalary(current.base_salary);
-        setAnnualBonus(current.annual_bonus);
-        setStockOptions(current.stock_options);
-        setSigningBonus(current.signing_bonus);
-        setFtStatus(current.full_time_status);
+      // setting state for current logged in user
+      setName(current.name);
+      setCompany(current.linkedin_id);
+      setJobTitle(current.job_title);
+      setSexuality(current.sexuality);
+      setAge(current.age);
+      setGender(current.gender);
+      setRace(current.race);
+      setEmployeeType(current.employee_type);
+      setYrsExperience(current.years_of_experience);
+      setYrsCompany(current.years_at_company);
+      setBaseSalary(current.base_salary);
+      setAnnualBonus(current.annual_bonus);
+      setStockOptions(current.stock_options);
+      setSigningBonus(current.signing_bonus);
+      setFtStatus(current.full_time_status);
 
-        //grabbing race averages
-        const raceList = data.raceStats;
-        raceList.forEach((race) => {
-          raceAvg.push({
-            race: race.race,
-            avg_bonus: race.avg_bonus,
-            avg_salary: race.avg_salary,
-            avg_stock: race.avg_stock_options,
-            count: race.count,
-          });
+      //grabbing race averages
+      const raceList = data.raceStats;
+      raceList.forEach((race) => {
+        raceAvg.push({
+          race: race.race,
+          avg_bonus: race.avg_bonus,
+          avg_salary: race.avg_salary,
+          avg_stock: race.avg_stock_options,
+          count: race.count,
         });
-        setRaceList(raceAvg);
-
-        // grabbing gender averages
-        const genderList = data.genderStats;
-        genderList.forEach((gender) => {
-          genderAvg.push({
-            gender: gender.gender,
-            avg_bonus: gender.avg_bonus,
-            avg_salary: gender.avg_salary,
-            avg_stock: gender.avg_stock_options,
-            count: gender.count,
-          });
-        });
-        setGenderList(genderAvg);
-
-        //grabbing age averages
-        const ageList = data.ageStats;
-        ageList.forEach((age) => {
-          ageAvg.push({
-            age: age.age,
-            avg_salary: age.avg_salary,
-            avg_bonus: age.avg_bonus,
-            avg_stock: age.avg_stock_options,
-            count: age.count,
-          });
-        });
-        setAgeList(ageAvg);
-
-        // calculating values for aggregate view
-        const aggregateList = data.jobStats;
-        aggregateList.forEach((item) => {
-          aggregateAvg.push({
-            avg_salary: item.avg_salary,
-            avg_bonus: item.avg_bonus,
-            avg_stock: item.avg_stock_options,
-            title: item.job_title,
-            count: item.count,
-          });
-        });
-        setAggregateList(aggregateAvg);
-
-        // setting state for individual comparisons
-        const list = data.companyData;
-        list.forEach((employee) => {
-          employeesNames.push(employee.name);
-          employeesAge.push(employee.age);
-          employeesGender.push(employee.gender);
-          employeesSexuality.push(employee.sexuality);
-          employeesType.push(employee.employee_type);
-          employeesYrsExperience.push(employee.years_of_experience);
-          employeesYrsCompany.push(employee.years_at_company);
-          employeesBaseSalary.push(employee.base_salary);
-          employeesAnnualBonus.push(employee.annual_bonus);
-          employeesStockOptions.push(employee.stock_options);
-          employeesSigningBonus.push(employee.signing_bonus);
-          employeesFtStatus.push(employee.full_time_status);
-        });
-        setAllNames(employeesNames);
-        setAllGenders(employeesGender);
-        setAllAges(employeesAge);
-        setAllSexes(employeesSexuality);
-        setAllTypes(employeesType);
-        setAllYrsExperience(employeesYrsExperience);
-        setAllYrsCompany(employeesYrsCompany);
-        setAllBaseSalary(employeesBaseSalary);
-        setAllFtStatuses(employeesFtStatus);
-
-        // after finishing this execution, set loading to false
-        setLoading(false);
       });
+      setRaceList(raceAvg);
+
+      // grabbing gender averages
+      const genderList = data.genderStats;
+      genderList.forEach((gender) => {
+        genderAvg.push({
+          gender: gender.gender,
+          avg_bonus: gender.avg_bonus,
+          avg_salary: gender.avg_salary,
+          avg_stock: gender.avg_stock_options,
+          count: gender.count,
+        });
+      });
+      setGenderList(genderAvg);
+
+      //grabbing age averages
+      const ageList = data.ageStats;
+      ageList.forEach((age) => {
+        ageAvg.push({
+          age: age.age,
+          avg_salary: age.avg_salary,
+          avg_bonus: age.avg_bonus,
+          avg_stock: age.avg_stock_options,
+          count: age.count,
+        });
+      });
+      setAgeList(ageAvg);
+
+      // calculating values for aggregate view
+      const aggregateList = data.jobStats;
+      aggregateList.forEach((item) => {
+        aggregateAvg.push({
+          avg_salary: item.avg_salary,
+          avg_bonus: item.avg_bonus,
+          avg_stock: item.avg_stock_options,
+          title: item.job_title,
+          count: item.count,
+        });
+      });
+      setAggregateList(aggregateAvg);
+
+      // setting state for individual comparisons
+      const list = data.companyData;
+      list.forEach((employee) => {
+        employeesNames.push(employee.name);
+        employeesAge.push(employee.age);
+        employeesGender.push(employee.gender);
+        employeesSexuality.push(employee.sexuality);
+        employeesType.push(employee.employee_type);
+        employeesYrsExperience.push(employee.years_of_experience);
+        employeesYrsCompany.push(employee.years_at_company);
+        employeesBaseSalary.push(employee.base_salary);
+        employeesAnnualBonus.push(employee.annual_bonus);
+        employeesStockOptions.push(employee.stock_options);
+        employeesSigningBonus.push(employee.signing_bonus);
+        employeesFtStatus.push(employee.full_time_status);
+      });
+      setAllNames(employeesNames);
+      setAllGenders(employeesGender);
+      setAllAges(employeesAge);
+      setAllSexes(employeesSexuality);
+      setAllTypes(employeesType);
+      setAllYrsExperience(employeesYrsExperience);
+      setAllYrsCompany(employeesYrsCompany);
+      setAllBaseSalary(employeesBaseSalary);
+      setAllFtStatuses(employeesFtStatus);
+
+      // after finishing this execution, set loading to false
+      setLoading(false);
+    };
+    asyncDataFetch();
+    // provide user_linkedin_id in req params
+    // fetch(`/api/company/${user_linkedin_id}`)
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     // with this data, setState for each hook and prop drill to appropriate components
+    //     console.log('data from fetch', data);
+    //     const current = data.currentUser;
+
+    //     // setting state for current logged in user
+    //     setName(current.name);
+    //     setCompany(current.linkedin_id);
+    //     setJobTitle(current.job_title);
+    //     setSexuality(current.sexuality);
+    //     setAge(current.age);
+    //     setGender(current.gender);
+    //     setRace(current.race);
+    //     setEmployeeType(current.employee_type);
+    //     setYrsExperience(current.years_of_experience);
+    //     setYrsCompany(current.years_at_company);
+    //     setBaseSalary(current.base_salary);
+    //     setAnnualBonus(current.annual_bonus);
+    //     setStockOptions(current.stock_options);
+    //     setSigningBonus(current.signing_bonus);
+    //     setFtStatus(current.full_time_status);
+
+    //     //grabbing race averages
+    //     const raceList = data.raceStats;
+    //     raceList.forEach((race) => {
+    //       raceAvg.push({
+    //         race: race.race,
+    //         avg_bonus: race.avg_bonus,
+    //         avg_salary: race.avg_salary,
+    //         avg_stock: race.avg_stock_options,
+    //         count: race.count,
+    //       });
+    //     });
+    //     setRaceList(raceAvg);
+
+    //     // grabbing gender averages
+    //     const genderList = data.genderStats;
+    //     genderList.forEach((gender) => {
+    //       genderAvg.push({
+    //         gender: gender.gender,
+    //         avg_bonus: gender.avg_bonus,
+    //         avg_salary: gender.avg_salary,
+    //         avg_stock: gender.avg_stock_options,
+    //         count: gender.count,
+    //       });
+    //     });
+    //     setGenderList(genderAvg);
+
+    //     //grabbing age averages
+    //     const ageList = data.ageStats;
+    //     ageList.forEach((age) => {
+    //       ageAvg.push({
+    //         age: age.age,
+    //         avg_salary: age.avg_salary,
+    //         avg_bonus: age.avg_bonus,
+    //         avg_stock: age.avg_stock_options,
+    //         count: age.count,
+    //       });
+    //     });
+    //     setAgeList(ageAvg);
+
+    //     // calculating values for aggregate view
+    //     const aggregateList = data.jobStats;
+    //     aggregateList.forEach((item) => {
+    //       aggregateAvg.push({
+    //         avg_salary: item.avg_salary,
+    //         avg_bonus: item.avg_bonus,
+    //         avg_stock: item.avg_stock_options,
+    //         title: item.job_title,
+    //         count: item.count,
+    //       });
+    //     });
+    //     setAggregateList(aggregateAvg);
+
+    //     // setting state for individual comparisons
+    //     const list = data.companyData;
+    //     list.forEach((employee) => {
+    //       employeesNames.push(employee.name);
+    //       employeesAge.push(employee.age);
+    //       employeesGender.push(employee.gender);
+    //       employeesSexuality.push(employee.sexuality);
+    //       employeesType.push(employee.employee_type);
+    //       employeesYrsExperience.push(employee.years_of_experience);
+    //       employeesYrsCompany.push(employee.years_at_company);
+    //       employeesBaseSalary.push(employee.base_salary);
+    //       employeesAnnualBonus.push(employee.annual_bonus);
+    //       employeesStockOptions.push(employee.stock_options);
+    //       employeesSigningBonus.push(employee.signing_bonus);
+    //       employeesFtStatus.push(employee.full_time_status);
+    //     });
+    //     setAllNames(employeesNames);
+    //     setAllGenders(employeesGender);
+    //     setAllAges(employeesAge);
+    //     setAllSexes(employeesSexuality);
+    //     setAllTypes(employeesType);
+    //     setAllYrsExperience(employeesYrsExperience);
+    //     setAllYrsCompany(employeesYrsCompany);
+    //     setAllBaseSalary(employeesBaseSalary);
+    //     setAllFtStatuses(employeesFtStatus);
+
+    //     // after finishing this execution, set loading to false
+    //     setLoading(false);
   }, []);
 
   const { classes } = props;
