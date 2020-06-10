@@ -19,13 +19,13 @@ app.use(cookieParser());
 */
 app.use(
   cookieSession({
-    maxAge: 24 * 60 * 60 * 1000,
-    keys: ['wonderpus'], // the encryption key, use any random string
+    maxAge: 24 * 60 * 60 * 1000, // this is how long the cookies last(ms?)
+    keys: ['wonderpus'], // key for the cookie
   })
 );
 
 // initializes passport and passport sessions
-app.use(passport.initialize());
+app.use(passport.initialize()); 
 app.use(passport.session());
 
 // route handlers
@@ -51,7 +51,7 @@ app.get('/api/user', fairpayController.getUser, (req, res) => {
 // If company does not exists in company table, it gets added
 app.post('/api/onboardUser', fairpayController.onboardUser, (req, res) => {
   //res.status(200).json(res.locals.userData);
-  res.status(200).redirect('http://localhost:3000/home');
+  res.sendStatus(200);
 });
 
 // Returns a list of all job titles of users in the platform associated with
@@ -93,9 +93,9 @@ app.use((err, req, res, next) => {
       err: 'An error occurred',
     },
   };
-  const errorObj = Object.assign({}, defaultErr);
-  console.log(errorObj.log);
-  return res.status(errorObj.status).json(errorObj.message);
+  const errorObj = Object.assign({}, defaultErr, err);
+  console.log(errorObj);
+  return res.status(errorObj.status).json(errorObj.message); // this is giving an error
 });
 
 app.listen(PORT, () => console.log('Server started on port ', PORT));

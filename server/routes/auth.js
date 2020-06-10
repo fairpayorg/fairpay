@@ -54,6 +54,7 @@ router.get(
         'redirecting to get started, sending cookies for user id: ',
         res.locals.userData[0].linkedin_user_id
       );
+      // redirecting to get started page on front end
       res.redirect('http://localhost:8080/getstarted');
     } else if (res.locals.userData[0].salary) {
       res.redirect('http://localhost:3000/home');
