@@ -95,9 +95,10 @@ fairpayController.onboardUser = async (req, res, next) => {
 };
 
 // get /api/company/:linkedin_user_id retrieves current user data to be used in subsequent middleware that will retrieve company data
+// FREDO: added 'u.city' column in SELECT to store city property in res.locals.currentUser
 fairpayController.getCurrentUser = (req, res, next) => {
   const { linkedin_user_id } = req.params;
-  let queryString = `select u.name, s.job_title, c.linkedin_id, u.sexuality, u.age, u.gender, u.race, s.employee_type, s.years_at_company, s.years_of_experience, s.base_salary, s.full_time_status, s.annual_bonus, s.stock_options, s.signing_bonus from salary s inner join company c on s.company_id = c._id inner join users u on s._id = u.salary where u.linkedin_user_id = '${linkedin_user_id}'`;
+  let queryString = `select u.name, u.city, s.job_title, c.linkedin_id, u.sexuality, u.age, u.gender, u.race, s.employee_type, s.years_at_company, s.years_of_experience, s.base_salary, s.full_time_status, s.annual_bonus, s.stock_options, s.signing_bonus from salary s inner join company c on s.company_id = c._id inner join users u on s._id = u.salary where u.linkedin_user_id = '${linkedin_user_id}'`;
   db.query(queryString, (err, response) => {
     if (err) {
       return next({
@@ -236,6 +237,35 @@ fairpayController.getGenderStats = (req, res, next) => {
 
 //TO-DO:
 // fairpayController.getGenderStatsByCity
+fairpayController.getGenderStatsByCity = (req, res, next) => {
+  const { job_title, city } = res.locals.currentUser;
+  const queryString = 
+    `SELECT u.gender,
+            round(avg(s.base_salary), 0) AS avg_salary, 
+            round(avg(s.annual_bonus), 0) AS avg_bonus, 
+            round(avg(s.stock_options), 0) AS avg_stock_options, 
+            count(*) 
+    FROM salary s 
+    LEFT JOIN users u ON s._id = u.salary 
+    WHERE s.job_title = '${job_title}' 
+      AND s.active = 'true'
+      AND u.city = '${city}' 
+    GROUP BY u.gender ORDER BY u.gender`;
+    db.query(queryString, (err, response) => {
+      if (err) {
+        return next({
+          log: `fairpayController.getGenderStatsByCity: ERROR: ${err}`,
+          message: {
+            err:
+              'fairpayController.getGenderStatsByCity: ERROR: Check server logs for details',
+          },
+        });
+      }
+      res.locals.genderStatsByCity = response.rows;
+      //console.log('response.rows in getgenderstats', response.rows);
+      return next();
+    });
+}
 // fairpayController.getAgeStatsByCity
 // fairpayController.getRaceStatsByCity
 // fairpayController.getJobStatsByCity <-- aggregate data
