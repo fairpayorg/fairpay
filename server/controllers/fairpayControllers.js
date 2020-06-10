@@ -125,7 +125,16 @@ fairpayController.getCompanyData = (req, res, next) => {
   // );
   const params = [job_title, linkedin_id];
   //console.log("params is", params);
-  let queryString = `select u.name, s.job_title, c.linkedin_id, u.sexuality, u.age, u.gender, u.race, s.employee_type, s.years_at_company, s.years_of_experience, s.base_salary, s.full_time_status, s.annual_bonus, s.stock_options, s.signing_bonus from salary s inner join company c on s.job_title = $1 and c.linkedin_id = $2 and s.company_id = c._id inner join users u on s._id = u.salary`;
+  let queryString = `
+      SELECT u.name, s.job_title, c.linkedin_id, u.sexuality, u.age, u.gender, u.race, s.
+         employee_type, s.years_at_company, s.years_of_experience, s.base_salary, s.full_time_status, s.annual_bonus, s.stock_options, s.signing_bonus 
+      FROM salary s 
+      INNER JOIN company c 
+          ON s.job_title = $1 
+          AND c.linkedin_id = $2 
+          AND s.company_id = c._id 
+      INNER JOIN users u 
+          ON s._id = u.salary`;
   db.query(queryString, params, (err, response) => {
     // console.log('inside get company, rows is ', response.rows);
     if (err) {
