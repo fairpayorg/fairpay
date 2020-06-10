@@ -47,7 +47,7 @@ function IndividualComparison(props) {
                   <TableCell align="right">Base Salary</TableCell>
                   <TableCell align="right">Gender</TableCell>
                   <TableCell align="right">Employee Type</TableCell>
-                  <TableCell align="right">LGTBQ</TableCell>
+                  <TableCell align="right">LGBTQ+</TableCell>
                   <TableCell align="right">Years at Company</TableCell>
                   <TableCell align="right">Years of Experience</TableCell>
                 </TableRow>

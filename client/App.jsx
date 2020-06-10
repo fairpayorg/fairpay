@@ -1,5 +1,7 @@
 import React, { Component, useState } from 'react';
 // import { useState } from "react-hooks";
+
+// import material ui components
 import {
   Button,
   AppBar,
@@ -8,6 +10,7 @@ import {
   Typography,
   SvgIcon,
 } from '@material-ui/core';
+
 import Home from './components/Home.jsx';
 import Login from './components/Login.jsx';
 import GraphicEqRoundedIcon from '@material-ui/icons/GraphicEqRounded';
@@ -26,24 +29,33 @@ import './components/stylesheets/styles.css';
 const App = () => {
   return (
     <div>
-      <AppBar position="static" id="appBar">
+      {/* AppBar, Tabs, Tab is a material ui component */}
+      {/* <AppBar position="static" id="appBar">
         <Tabs variant="fullWidth">
           <Tab label="FairPay" icon={<GraphicEqRoundedIcon />} />
           <Tab label="User" icon={<PersonRoundedIcon />} />
         </Tabs>
-      </AppBar>
+      </AppBar> */}
+      
+{/*ADD NAV BAR HERE ONCE MADE  */}
+
       <Router>
         <Switch>
+{/* this is the form page */}
           <Route exact path="/getstarted">
             <GetStarted />
           </Route>
+
+{/* displayed the user name at the top and the charts */}
           <Route exact path="/home">
             <Home />
           </Route>
 
+{/* This is the linked in button */}
           <Route exact path="/">
             <Login />
           </Route>
+
         </Switch>
       </Router>
     </div>
