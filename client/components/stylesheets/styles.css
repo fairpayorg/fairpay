@@ -8,6 +8,16 @@ body {
   color: #424242;
 }
 
+.welcome {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  text-align: center;
+  padding: 25px 5px;
+  max-width: 700px;
+  margin: auto;
+}
+
 #company_container {
   width: 15em;
   display: flex;
@@ -34,6 +44,7 @@ body {
 #linkedinButton {
   width: 174px;
   height: 42px;
+  margin-top: 15px;
 }
 .current_user_header {
   display: flex;
@@ -41,7 +52,6 @@ body {
   justify-content: center;
   align-items: center;
 }
-
 
 #current_user_name {
   font-weight: 100;
@@ -71,6 +81,6 @@ body {
 }
 
 #appBar {
-  background-color: #ff8f00;
+  /* background-color: #ff8f00; */
   justify-content: space-between;
 }

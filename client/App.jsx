@@ -26,7 +26,7 @@ import './components/stylesheets/styles.css';
 const App = () => {
   return (
     <div>
-      <AppBar position="static" id="appBar">
+      <AppBar position="static" id="appBar" color="primary">
         <Tabs variant="fullWidth">
           <Tab label="FairPay" icon={<GraphicEqRoundedIcon />} />
           <Tab label="User" icon={<PersonRoundedIcon />} />
