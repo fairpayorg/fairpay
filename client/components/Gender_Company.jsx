@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Table,
   TableBody,
@@ -7,12 +7,12 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
-function Gender(props) {
+function Gender({ genderList, value, view, index }) {
   return (
     <React.Fragment>
-      <div hidden={props.value !== props.index || props.view === 1}>
+      <div hidden={value !== index || view === 1}>
         <div className="data_display_div">
           <TableContainer component={Paper}>
             <Table className="table_displays">
@@ -26,8 +26,8 @@ function Gender(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {props.genderList.map((row) => (
-                  <TableRow key={row.gender}>
+                {genderList.map((row, i) => (
+                  <TableRow key={i}>
                     <TableCell>{row.gender}</TableCell>
                     <TableCell align="right">{row.count}</TableCell>
                     <TableCell align="right">${row.avg_salary}</TableCell>
