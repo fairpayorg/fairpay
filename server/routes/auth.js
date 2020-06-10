@@ -8,10 +8,14 @@ const jwt = require('jsonwebtoken');
 The initial call to authenticate with linkedin
 After completion (i.e. user validates credentials), the get route to /linkedin/callback (line 21) is invoked
 */
-router.get('/linkedin', passport.authenticate('linkedin', { state: true }), function (req, res) {
-  // The request will be redirected to LinkedIn for authentication, so this
-  // function will not be called.
-});
+router.get(
+  '/linkedin',
+  passport.authenticate('linkedin', { state: true }),
+  function (req, res) {
+    // The request will be redirected to LinkedIn for authentication, so this
+    // function will not be called.
+  }
+);
 
 router.get(
   '/linkedin/callback',
@@ -30,33 +34,23 @@ router.get(
 
     console.log('in the redirect call back');
     if (process.env.NODE_ENV === 'development') {
-
       // Create and send json web tokens before sending to the client
       let jwtToken;
       if (salary_id) {
-        console.log('existing user');
-
-
-        const fake = {
-          fakekey: 'fakevalue'
-        }
-
         // Create JWT
-        jwtToken = jwt.sign(fake, process.env.LINKEDIN_SECRET);
+        jwtToken = jwt.sign(linkedin_user_id, process.env.LINKEDIN_SECRET);
         res.cookie('jsonToken', jwtToken);
         res.cookie('userId', linkedin_user_id);
         return res.redirect('http://localhost:8080/home');
       }
-      console.log('user not found, will redirect to onboarding...');
       jwtToken = jwt.sign(linkedin_user_id, process.env.LINKEDIN_SECRET);
       res.cookie('jsonToken', jwtToken);
       res.cookie('userId', linkedin_user_id);
-      console.log('redirecting to get started, sending cookies for user id: ', linkedin_user_id);
       return res.redirect('http://localhost:8080/getstarted');
     } else if (salary_id) {
       return res.redirect('http://localhost:3000/home');
     }
-    res.redirect('http://localhost:3000/getstarted');
+    return res.redirect('http://localhost:3000/getstarted');
   }
 );
 

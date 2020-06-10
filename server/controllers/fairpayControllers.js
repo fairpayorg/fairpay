@@ -10,7 +10,6 @@ const fairpayController = {};
 
 // GET /api/user: responds with all user data
 fairpayController.getUser = (req, res, next) => {
-  console.log('controller: get user');
   let currentUserId;
   if (req.user.id) {
     // Coming from passport
@@ -43,7 +42,7 @@ fairpayController.getUser = (req, res, next) => {
 
     res.locals.userData = response.rows[0];
 
-    next();
+    return next();
   });
 };
 
@@ -51,7 +50,7 @@ fairpayController.getUser = (req, res, next) => {
 fairpayController.getCommonJobTitles = async (req, res, next) => {
   console.log('controller: get common job titles');
   res.locals.commonJobTitles = await getCommonJobTitles.get(req);
-  next();
+  return next();
 };
 
 // POST /api/user
@@ -82,7 +81,7 @@ fairpayController.onboardUser = async (req, res, next) => {
   db.query(queryString, params)
     .then(response => {
       res.locals.userData = response.rows[0];
-      next();
+      return next();
     })
     .catch(err => console.log('Error in query for creating new user entry:\n', err));
 };
