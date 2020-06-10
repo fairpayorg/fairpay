@@ -41,6 +41,7 @@ function CompanyComparison(props) {
           view={props.view}
           value={value}
           index={0}
+          loading={props.loading}
         />
       </Box>
       <Box>
