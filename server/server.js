@@ -5,7 +5,6 @@ const authRouter = require('./routes/auth.js');
 const fairpayController = require('./controllers/fairpayControllers');
 const cookieSession = require('cookie-session');
 const cookieParser = require('cookie-parser');
-const cors = require('cors');
 require('./passport-setup');
 
 const app = express();
@@ -13,9 +12,11 @@ const PORT = 3000;
 
 app.use(express.json());
 app.use(cookieParser());
-//app.use(cors());
 
-// set up session cookies
+/* 
+  Set up session cookies
+  Executed during the passport serializer step (see passport-setup.js) to encrpyt browser cookie
+*/
 app.use(
   cookieSession({
     maxAge: 24 * 60 * 60 * 1000, // this is how long the cookies last(ms?)
@@ -59,10 +60,6 @@ app.post('/api/onboardUser', fairpayController.onboardUser, (req, res) => {
 app.post('/api/jobTitles', fairpayController.getCommonJobTitles, (req, res) => {
   res.status(200).json(res.locals.commonJobTitles);
 });
-
-// app.put('/api/user', fairpayController.updateUser, (req, res) => {
-//   res.status(200).json(res.locals.userData);
-// });
 
 app.use(
   '/api/company/:linkedin_user_id',

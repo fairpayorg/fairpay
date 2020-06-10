@@ -5,7 +5,10 @@ const fairpayController = require('../controllers/fairpayControllers.js');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 
-// auth with linkedin
+/*
+The initial call to authenticate with linkedin
+After completion (i.e. user validates credentials), the get route to /linkedin/callback (line 21) is invoked
+*/
 router.get(
   '/linkedin',
   passport.authenticate('linkedin', { state: true }),
