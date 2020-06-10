@@ -1,10 +1,22 @@
 import React from 'react';
 
+import {
+  Button,
+  Container,
+  TextField,
+  Radio,
+  RadioGroup,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  InputAdornment,
+} from '@material-ui/core';
+
 const IntroForm = (props) => (
-    <React.Fragment>
+  <div>
       <h1>How this works</h1>
       <h3>
-        We're about to ask you for deeply personal information, including
+        We're about to ask you for some personal information, including
         your income, gender, race, and sexuality 
         <br />
         <br />
@@ -22,12 +34,14 @@ const IntroForm = (props) => (
       </h3>
       <Button
         // {inputs.keys.length > 0 ? disabled : color="primary"}
-        color="primary"
-        variant="contained"
+        // color="primary"
+        // variant="contained"
         onClick={() => props.moveToNextStep()}
         >Next
       </Button>
-    </React.Fragment>
+  </div>
+    // <React.Fragment>
+    // </React.Fragment>
 )
 
 export default IntroForm;

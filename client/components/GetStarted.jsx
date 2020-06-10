@@ -315,7 +315,7 @@ function GetStarted(props) {
     // Intro step is basic user education about what this app does
     if (step === 'intro') {
       return (
-        <IntroForm moveToNextStep={this.moveToNextStep}/>
+        <IntroForm moveToNextStep={moveToNextStep}/>
       );
     }
     // enter company information
