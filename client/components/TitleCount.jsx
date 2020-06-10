@@ -5,7 +5,7 @@ function TitleCount(props) {
     let output = [];
     for (let i = 0; i <= props.titles.length - 1; i++) {
       let  elem = (
-        <p>
+        <p key={i}>
           {props.titles[i].job_title}: {props.titles[i].total} submissions
         </p>
       );

@@ -64,6 +64,8 @@ fairpayController.onboardUser = async (req, res, next) => {
   let salaryKey = await insertSalary.insert(req, res, companyKey);
 
   // then insert user into user table, including name, company foreign key and salary foreign key
+  console.log('onboardUser req.body: ')
+  console.log(req.body);
   let { userId, sexuality, age, gender, race, city, state } = req.body;
   queryString = `UPDATE users 
                 SET company_id=$1, salary=$2, sexuality=$3,
@@ -97,9 +99,12 @@ fairpayController.onboardUser = async (req, res, next) => {
 // get /api/company/:linkedin_user_id retrieves current user data to be used in subsequent middleware that will retrieve company data
 // FREDO: added 'u.city' column in SELECT to store city property in res.locals.currentUser
 fairpayController.getCurrentUser = (req, res, next) => {
+  console.log('get current user middleware');
   const { linkedin_user_id } = req.params;
   let queryString = `select u.name, u.city, s.job_title, c.linkedin_id, u.sexuality, u.age, u.gender, u.race, s.employee_type, s.years_at_company, s.years_of_experience, s.base_salary, s.full_time_status, s.annual_bonus, s.stock_options, s.signing_bonus from salary s inner join company c on s.company_id = c._id inner join users u on s._id = u.salary where u.linkedin_user_id = '${linkedin_user_id}'`;
   db.query(queryString, (err, response) => {
+    console.log('get current user middleware, DB response:');
+    console.log(response.rows[0]);
     if (err) {
       return next({
         log: `fairpayController.getCurrentUser: ERROR: ${err}`,
@@ -128,6 +133,7 @@ fairpayController.getCompanyData = (req, res, next) => {
   let queryString = `select u.name, s.job_title, c.linkedin_id, u.sexuality, u.age, u.gender, u.race, s.employee_type, s.years_at_company, s.years_of_experience, s.base_salary, s.full_time_status, s.annual_bonus, s.stock_options, s.signing_bonus from salary s inner join company c on s.job_title = $1 and c.linkedin_id = $2 and s.company_id = c._id inner join users u on s._id = u.salary`;
   db.query(queryString, params, (err, response) => {
     // console.log('inside get company, rows is ', response.rows);
+    console.log('get company data middleware DB');
     if (err) {
       return next({
         log: `fairpayController.getCompanyData: ERROR: ${err}`,
@@ -145,8 +151,22 @@ fairpayController.getCompanyData = (req, res, next) => {
 // middleware gets avg stats of current user's job title in company
 fairpayController.getJobStats = (req, res, next) => {
   const { linkedin_id, job_title } = res.locals.currentUser;
-  const queryString = `select s.job_title, round(avg(s.base_salary), 0) as avg_salary, round(avg(s.annual_bonus), 0) as avg_bonus, round(avg(s.stock_options), 0) as avg_stock_options, count(*) from salary s left join users u on s._id = u.salary left join company c on c._id = s.company_id where c.linkedin_id = '${linkedin_id}' and s.active = 'true' and s.job_title = '${job_title}' group by s.job_title order by s.job_title`;
+  const queryString = 
+      `SELECT s.job_title, 
+              round(avg(s.base_salary), 0) as avg_salary, 
+              round(avg(s.annual_bonus), 0) as avg_bonus, 
+              round(avg(s.stock_options), 0) as avg_stock_options, 
+              count(*) 
+      FROM salary s 
+      LEFT JOIN users u ON s._id = u.salary 
+      LEFT JOIN company c ON c._id = s.company_id 
+      WHERE c.linkedin_id = '${linkedin_id}' 
+        AND s.active = 'true' 
+        AND s.job_title = '${job_title}' 
+      GROUP BY s.job_title ORDER BY s.job_title`;
   db.query(queryString, (err, response) => {
+    console.log('get job stats middleware DB query');
+    console.log(response.rows);
     if (err) {
       return next({
         log: `fairpayController.getJobStats: ERROR: ${err}`,
@@ -167,6 +187,7 @@ fairpayController.getRaceStats = (req, res, next) => {
   const { linkedin_id, job_title } = res.locals.currentUser;
   const queryString = `select u.race, round(avg(s.base_salary), 0) as avg_salary, round(avg(s.annual_bonus), 0) as avg_bonus, round(avg(s.stock_options), 0) as avg_stock_options, count(*) from salary s left join users u on s._id = u.salary left join company c on c._id = s.company_id where c.linkedin_id = '${linkedin_id}' and s.active = 'true' and s.job_title = '${job_title}' group by u.race order by u.race`;
   db.query(queryString, (err, response) => {
+    console.log('get race stats middleware DB query');
     if (err) {
       return next({
         log: `fairpayController.getRaceStats: ERROR: ${err}`,
@@ -187,6 +208,7 @@ fairpayController.getAgeStats = (req, res, next) => {
   const { linkedin_id, job_title } = res.locals.currentUser;
   const queryString = `select u.age, round(avg(s.base_salary), 0) as avg_salary, round(avg(s.annual_bonus), 0) as avg_bonus, round(avg(s.stock_options), 0) as avg_stock_options, count(*) from salary s left join users u on s._id = u.salary left join company c on c._id = s.company_id where c.linkedin_id = '${linkedin_id}' and s.active = 'true' and s.job_title = '${job_title}' group by u.age order by u.age`;
   db.query(queryString, (err, response) => {
+    console.log('get age stats middleware DB query');
     if (err) {
       return next({
         log: `fairpayController.getAgeStats: ERROR: ${err}`,
@@ -220,6 +242,7 @@ fairpayController.getGenderStats = (req, res, next) => {
       AND s.active = 'true'
     GROUP BY u.gender ORDER BY u.gender`;
   db.query(queryString, (err, response) => {
+    console.log('get gender stats middleware DB query');
     if (err) {
       return next({
         log: `fairpayController.getGenderStats: ERROR: ${err}`,
@@ -266,8 +289,97 @@ fairpayController.getGenderStatsByCity = (req, res, next) => {
       return next();
     });
 }
-// fairpayController.getAgeStatsByCity
-// fairpayController.getRaceStatsByCity
-// fairpayController.getJobStatsByCity <-- aggregate data
 
+// fairpayController.getAgeStatsByCity
+fairpayController.getAgeStatsByCity = (req, res, next) => {
+  const { job_title, city } = res.locals.currentUser;
+  const queryString = 
+    `SELECT u.age,
+            round(avg(s.base_salary), 0) AS avg_salary, 
+            round(avg(s.annual_bonus), 0) AS avg_bonus, 
+            round(avg(s.stock_options), 0) AS avg_stock_options, 
+            count(*) 
+    FROM salary s 
+    LEFT JOIN users u ON s._id = u.salary 
+    WHERE s.job_title = '${job_title}' 
+      AND s.active = 'true'
+      AND u.city = '${city}' 
+    GROUP BY u.age ORDER BY u.age`;
+    db.query(queryString, (err, response) => {
+      if (err) {
+        return next({
+          log: `fairpayController.getAgeStatsByCity: ERROR: ${err}`,
+          message: {
+            err:
+              'fairpayController.getAgeStatsByCity: ERROR: Check server logs for details',
+          },
+        });
+      }
+      res.locals.ageStatsByCity = response.rows;
+      //console.log('response.rows in getgenderstats', response.rows);
+      return next();
+    });
+}
+
+// fairpayController.getRaceStatsByCity
+fairpayController.getRaceStatsByCity = (req, res, next) => {
+  const { job_title, city } = res.locals.currentUser;
+  const queryString = 
+    `SELECT u.race,
+            round(avg(s.base_salary), 0) AS avg_salary, 
+            round(avg(s.annual_bonus), 0) AS avg_bonus, 
+            round(avg(s.stock_options), 0) AS avg_stock_options, 
+            count(*) 
+    FROM salary s 
+    LEFT JOIN users u ON s._id = u.salary 
+    WHERE s.job_title = '${job_title}' 
+      AND s.active = 'true'
+      AND u.city = '${city}' 
+    GROUP BY u.race ORDER BY u.race`;
+    db.query(queryString, (err, response) => {
+      if (err) {
+        return next({
+          log: `fairpayController.getRaceStatsByCity: ERROR: ${err}`,
+          message: {
+            err:
+              'fairpayController.getRaceStatsByCity: ERROR: Check server logs for details',
+          },
+        });
+      }
+      res.locals.raceStatsByCity = response.rows;
+      //console.log('response.rows in getgenderstats', response.rows);
+      return next();
+    });
+}
+
+// fairpayController.getJobStatsByCity <-- aggregate data
+fairpayController.getJobStatsByCity = (req, res, next) => {
+  const { job_title, city } = res.locals.currentUser;
+  const queryString = 
+      `SELECT s.job_title, 
+              round(avg(s.base_salary), 0) as avg_salary, 
+              round(avg(s.annual_bonus), 0) as avg_bonus, 
+              round(avg(s.stock_options), 0) as avg_stock_options, 
+              count(*) 
+      FROM salary s 
+      LEFT JOIN users u ON s._id = u.salary 
+      WHERE s.active = 'true' 
+        AND s.job_title = '${job_title}'
+        AND u.city = '${city}' 
+      GROUP BY s.job_title ORDER BY s.job_title`;
+  db.query(queryString, (err, response) => {
+    if (err) {
+      return next({
+        log: `fairpayController.getJobStatsByCity: ERROR: ${err}`,
+        message: {
+          err:
+            "fairpayController.getJobStatsByCity: ERROR: Check server logs for details",
+        },
+      });
+    }
+    res.locals.jobStatsByCity = response.rows;
+    //console.log('response.rows in getracestats', response.rows);
+    return next();
+  });
+};
 module.exports = fairpayController;
