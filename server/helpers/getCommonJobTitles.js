@@ -10,10 +10,9 @@ getCommonJobTitles.get = async (req) => {
                     ON salary.company_id = company._id 
                     WHERE company.name=$1
                     group by job_title
-                    `
+                    `;
   let params = [req.body.company_name];
-  return db.query(queryString, params)
-         .then(result => result.rows);
-}
+  return db.query(queryString, params).then((result) => result.rows);
+};
 
 module.exports = getCommonJobTitles;

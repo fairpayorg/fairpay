@@ -29,11 +29,11 @@ router.get(
       email: req.user.emails[0].value,
       image_url: req.user.photos[0].value,
     };
-    console.log('in the call back')
+    console.log('in the call back');
     if (process.env.NODE_ENV === 'development') {
       console.log('res.locals.userData', res.locals.userData);
       let jwtToken;
-      if (res.locals.userData[0].salary) {
+      if (res.locals.userData[0].salary_id) {
         console.log('existing user');
         jwtToken = jwt.sign(
           res.locals.userData[0].linkedin_user_id,
@@ -44,7 +44,7 @@ router.get(
         res.redirect('http://localhost:8080/home');
       }
       console.log('user not found, will redirect to onboarding...');
-       jwtToken = jwt.sign(
+      jwtToken = jwt.sign(
         res.locals.userData[0].linkedin_user_id,
         process.env.LINKEDIN_SECRET
       );
@@ -55,7 +55,7 @@ router.get(
         res.locals.userData[0].linkedin_user_id
       );
       res.redirect('http://localhost:8080/getstarted');
-    } else if (res.locals.userData[0].salary) {
+    } else if (res.locals.userData[0].salary_id) {
       res.redirect('http://localhost:3000/home');
     }
     res.redirect('http://localhost:3000/getstarted');
