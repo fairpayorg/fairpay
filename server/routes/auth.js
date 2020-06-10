@@ -29,7 +29,7 @@ router.get(
       email: req.user.emails[0].value,
       image_url: req.user.photos[0].value,
     };
-    console.log('in the call back')
+    console.log('in the call back');
     if (process.env.NODE_ENV === 'development') {
       console.log('res.locals.userData', res.locals.userData);
       let jwtToken;
@@ -44,7 +44,7 @@ router.get(
         return res.redirect('http://localhost:8080/home');
       }
       console.log('user not found, will redirect to onboarding...');
-       jwtToken = jwt.sign(
+      jwtToken = jwt.sign(
         res.locals.userData[0].linkedin_user_id,
         process.env.LINKEDIN_SECRET
       );
