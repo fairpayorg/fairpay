@@ -274,27 +274,27 @@ function Home(props) {
   return (
     <React.Fragment>
       {loading ? null : (
-        <div className="current_user_header">
-          <h2 id="current_user_name">Hello {name}</h2>
-          <label id="current_user_label">
+        <div className='current_user_header'>
+          <h2 id='current_user_name'>Hello {name}</h2>
+          <label id='current_user_label'>
             {jobTitle} at {company} in {city}
           </label>
         </div>
       )}
-      <Container id="comparison_tabs">
-        <AppBar id="company_individual_toggle" position="static">
+      <Container id='comparison_tabs'>
+        <AppBar id='company_individual_toggle' position='static'>
           <Tabs value={view} view={view} onChange={handleComparison} centered>
-            <Tab label="Company Wide Comparison" />
-            <Tab label="Regional Comparison" />
-            <Tab label="Individual Comparison" />
+            <Tab label='Company-Wide' />
+            <Tab label='City-Wide' />
+            <Tab label='Individual' />
           </Tabs>
         </AppBar>
       </Container>
       {loading ? (
-        <h2 className="current_user_header">Loading Data...</h2>
+        <h2 className='current_user_header'>Loading Data...</h2>
       ) : (
         <div>
-          <div id="tables_div">
+          <div id='tables_div'>
             <Container>
               <CompanyComparison
                 view={view}

@@ -1,37 +1,28 @@
-
 import React, { Component, useRef } from 'react';
+import AggregateBarChart from './AggregateBarChart.js';
+import { scaleLinear } from 'd3-scale';
+import { max } from 'd3-array';
+import { select } from 'd3-selection';
 import * as d3 from 'd3';
 
-class CompanyChart extends Component {
+class AgeChartWrapper extends Component {
   constructor(props) {
     super(props);
     // this.createChartWrapper = this.createChartWrapper.bind(this);
     // const svgRef = useRef()
   }
   componentDidMount() {
-    // new AggregateBarChart(refs.chart);
-    // this.createChartWrapper();
-    const userArray = [
-      this.props.userSalary,
-      this.props.userAnnualBonus,
-      this.props.userStockOptions,
-    ];
-    let result = Object.values(this.props.aggregateList[0]).slice(0, 3);
-    const totalCompanyData = [];
-    for (let i = 0; i < userArray.length; i++) {
-      totalCompanyData.push(result[i]);
-      totalCompanyData.push(userArray[i]);
+    const totalAgeData = [];
+
+    let chartAgeList = this.props.ageList;
+
+    for (let i = 0; i < chartAgeList.length; i++) {
+      totalAgeData.push(chartAgeList[i].avg_salary);
+      totalAgeData.push(chartAgeList[i].avg_bonus);
+      totalAgeData.push(chartAgeList[i].avg_stock);
     }
 
-    // Use 3 instead of 6 labels
-    const textArray = [
-      'Salary',
-      `Salary`,
-      'Annual Bonus',
-      `Annual Bonus`,
-      'Stock Options',
-      `Stock Options`,
-    ];
+    const textArray = ['Salary', 'Annual Bonus', 'Stock Options'];
 
     const width = 1000;
     const height = 700;
@@ -74,17 +65,17 @@ class CompanyChart extends Component {
     //   .style("font-size", 14)
     //   .attr("alignment-baseline", "middle");
 
+    const barColors = ['orange', 'yellow', 'brown'];
+    const numberOfRanges = chartAgeList.length;
+
     // creating initial bars, then transition handles the height and widths
     svg
       .selectAll('rect')
-      .data(totalCompanyData)
+      .data(totalAgeData)
       .enter()
       .append('rect')
       .attr('fill', (d, i) => {
-        if (i % 2 === 0) {
-          return 'navy';
-        }
-        return 'green';
+        return barColors[i % numberOfRanges];
       })
       .attr('class', 'sBar')
       .attr('x', (d, i) => 20 + i * 150)
@@ -96,7 +87,7 @@ class CompanyChart extends Component {
 
     svg
       .selectAll('rect')
-      .data(totalCompanyData)
+      .data(totalAgeData)
       .enter()
       .append('text')
       .style('font-size', 14)
@@ -134,7 +125,7 @@ class CompanyChart extends Component {
 
     // Salary labels
     texts
-      .data(totalCompanyData)
+      .data(totalAgeData)
       .enter()
       .append('text')
       .attr('x', (d, i) => 10 + i * 152)
@@ -145,8 +136,9 @@ class CompanyChart extends Component {
         return 380 - d / 90;
       })
       .text((d, i) => {
-        return '$' + totalCompanyData[i];
+        return '$' + totalAgeData[i];
       });
+
     // X labels
     texts
       .data(textArray)
@@ -167,12 +159,12 @@ class CompanyChart extends Component {
         {/* <div ref="chart" width={500} height={500}>
           {" "}
         </div> */}
-        <div ref="chart">
+        <div ref='chart'>
           {/* <h1>This is the bar chart</h1> */}
-          <span className="legend_average"> </span>
+          {/* <span className='legend_average'> </span>
           <span> Average</span>
-          <span className="legend_user"> </span>
-          <span> User</span>
+          <span className='legend_user'> </span>
+          <span> User</span> */}
         </div>
       </React.Fragment>
     );
@@ -180,5 +172,4 @@ class CompanyChart extends Component {
   // }
 }
 
-export default CompanyChart;
-
+export default AgeChartWrapper;

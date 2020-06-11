@@ -1,5 +1,6 @@
 import React from 'react';
 import CompanyChart from './CompanyChart.js';
+
 import {
   Table,
   TableBody,
