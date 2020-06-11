@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Tabs,
@@ -10,11 +10,11 @@ import {
   FormControlLabel,
   FormControl,
   FormLabel,
-} from "@material-ui/core";
-import Race_Company from "./Race_Company.jsx";
-import Age_Company from "./Age_Company.jsx";
-import Gender_Company from "./Gender_Company.jsx";
-import Total_Company from "./Total_Company.jsx";
+} from '@material-ui/core';
+import Race_Company from './Race_Company.jsx';
+import Age_Company from './Age_Company.jsx';
+import Gender_Company from './Gender_Company.jsx';
+import Total_Company from './Total_Company.jsx';
 
 function CompanyComparison(props) {
   const [value, setValue] = useState(0);
@@ -27,19 +27,19 @@ function CompanyComparison(props) {
     <React.Fragment>
       <div hidden={props.view !== props.index}>
         <Container>
-          <div className="category_container">
-            <div className="category_comparison_div">
+          <div className='category_container'>
+            <div className='category_comparison_div'>
               <Tabs
-                orientation="vertical"
-                variant="scrollable"
+                orientation='vertical'
+                variant='scrollable'
                 value={value}
                 onChange={changeGraph}
-                className="vertical_tab_bar"
+                className='vertical_tab_bar'
               >
-                <Tab label="Total"></Tab>
-                <Tab label="Race"></Tab>
-                <Tab label="Age"></Tab>
-                <Tab label="Gender"></Tab>
+                <Tab label='Total'></Tab>
+                <Tab label='Race'></Tab>
+                <Tab label='Age'></Tab>
+                <Tab label='Gender'></Tab>
               </Tabs>
             </div>
           </div>
@@ -71,6 +71,9 @@ function CompanyComparison(props) {
             value={value}
             index={2}
             ageList={props.ageList}
+            userSalary={props.baseSalary}
+            userAnnualBonus={props.annualBonus}
+            userStockOptions={props.stockOptions}
           />
         </Box>
         <Box>

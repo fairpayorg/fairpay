@@ -9,42 +9,44 @@ import {
   TableRow,
 } from '@material-ui/core';
 
+import AgeChartWrapper from './AgeChartWrapper.js';
+
 export default function Age(props) {
   return (
     <React.Fragment>
       <div hidden={props.value !== props.index}>
-        <div className="data_display_div">
+        <div className='data_display_div'>
           <TableContainer component={Paper}>
-            <Table className="table_displays">
-              <TableHead className="TableHead">
+            <Table className='table_displays'>
+              <TableHead className='TableHead'>
                 <TableRow>
                   <TableCell>Age</TableCell>
-                  <TableCell align="right">People in Company</TableCell>
-                  <TableCell align="right">Average Salary</TableCell>
-                  <TableCell align="right">Average Annual Bonus</TableCell>
-                  <TableCell align="right">Average Stock Options</TableCell>
+                  <TableCell align='right'>People in Company</TableCell>
+                  <TableCell align='right'>Average Salary</TableCell>
+                  <TableCell align='right'>Average Annual Bonus</TableCell>
+                  <TableCell align='right'>Average Stock Options</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {props.ageList.map((row, index) => {
                   if (index % 2 === 1) {
                     return (
-                      <TableRow className="table-row" key={row.age}>
+                      <TableRow className='table-row' key={row.age}>
                         <TableCell>{row.age}</TableCell>
-                        <TableCell align="right">{row.count}</TableCell>
-                        <TableCell align="right">${row.avg_salary}</TableCell>
-                        <TableCell align="right">${row.avg_bonus}</TableCell>
-                        <TableCell align="right">${row.avg_stock}</TableCell>
+                        <TableCell align='right'>{row.count}</TableCell>
+                        <TableCell align='right'>${row.avg_salary}</TableCell>
+                        <TableCell align='right'>${row.avg_bonus}</TableCell>
+                        <TableCell align='right'>${row.avg_stock}</TableCell>
                       </TableRow>
                     );
                   } else {
                     return (
                       <TableRow key={row.age}>
                         <TableCell>{row.age}</TableCell>
-                        <TableCell align="right">{row.count}</TableCell>
-                        <TableCell align="right">${row.avg_salary}</TableCell>
-                        <TableCell align="right">${row.avg_bonus}</TableCell>
-                        <TableCell align="right">${row.avg_stock}</TableCell>
+                        <TableCell align='right'>{row.count}</TableCell>
+                        <TableCell align='right'>${row.avg_salary}</TableCell>
+                        <TableCell align='right'>${row.avg_bonus}</TableCell>
+                        <TableCell align='right'>${row.avg_stock}</TableCell>
                       </TableRow>
                     );
                   }
@@ -53,6 +55,12 @@ export default function Age(props) {
             </Table>
           </TableContainer>
         </div>
+        <AgeChartWrapper
+          ageList={props.ageList}
+          userSalary={props.userSalary}
+          serAnnualBonus={props.userAnnualBonus}
+          serStockOptions={props.userStockOptions}
+        />
       </div>
     </React.Fragment>
   );
