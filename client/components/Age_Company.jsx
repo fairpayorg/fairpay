@@ -55,7 +55,7 @@ export default function Age(props) {
             </Table>
           </TableContainer>
         </div>
-        <AgeChartWrapper
+        <AgeChart
           ageList={props.ageList}
         />
       </div>
