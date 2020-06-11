@@ -12,12 +12,12 @@ import CompanyComparison from "./CompanyComparison.jsx";
 import IndividualComparison from "./IndividualComparison.jsx";
 import CityComparison from "./CityComparison.jsx";
 
-const styles = {
-  tabBar: {
-    backgroundColor: "#ffe082",
-    color: "rgb(102, 102, 102)",
-  },
-};
+// const styles = {
+//   tabBar: {
+//     backgroundColor: '#ffe082',
+//     color: 'rgb(102, 102, 102)',
+//   },
+// };
 function Home(props) {
   // this is the hook that toggles the different comparison views
   // defaults to company comparison view
@@ -282,15 +282,11 @@ function Home(props) {
         </div>
       )}
       <Container id="comparison_tabs">
-        <AppBar
-          className={classes.tabBar}
-          id="company_individual_toggle"
-          position="static"
-        >
+        <AppBar id="company_individual_toggle" position="static">
           <Tabs value={view} view={view} onChange={handleComparison} centered>
-            <Tab label="Company-Wide" />
-            <Tab label="City-Wide" />
-            <Tab label="Individual" />
+            <Tab label="Company Wide Comparison" />
+            <Tab label="Regional Comparison" />
+            <Tab label="Individual Comparison" />
           </Tabs>
         </AppBar>
       </Container>
@@ -384,4 +380,5 @@ function Home(props) {
   );
 }
 
-export default withStyles(styles)(Home);
+export default Home;
+// export default withStyles(styles)(Home);
