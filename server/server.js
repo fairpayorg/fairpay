@@ -59,6 +59,14 @@ app.post('/api/jobTitles', fairpayController.getCommonJobTitles, (req, res) => {
   res.status(200).json(res.locals.commonJobTitles);
 });
 
+app.get(
+  '/api/companyNames',
+  fairpayController.getAllCompanyNames,
+  (req, res) => {
+    res.status(200).json(res.locals.companyNames);
+  }
+);
+
 app.use(
   '/api/company/',
   fairpayController.getCurrentUser,
