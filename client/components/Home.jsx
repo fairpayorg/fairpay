@@ -1,23 +1,16 @@
-import React, { useState, useEffect } from "react";
-import {
-  Button,
-  AppBar,
-  Tabs,
-  Tab,
-  Typography,
-  Container,
-  withStyles,
-} from "@material-ui/core";
-import CompanyComparison from "./CompanyComparison.jsx";
-import IndividualComparison from "./IndividualComparison.jsx";
+import React, { useState, useEffect } from 'react';
+import { Button, AppBar, Tabs, Tab, Typography, Container, withStyles } from '@material-ui/core';
+import CompanyComparison from './CompanyComparison.jsx';
+import IndividualComparison from './IndividualComparison.jsx';
 
 const styles = {
   tabBar: {
-    backgroundColor: "#ffe082",
-    color: "rgb(102, 102, 102)",
+    backgroundColor: '#ffe082',
+    color: 'rgb(102, 102, 102)',
   },
 };
 function Home(props) {
+  console.log('The props => ', props);
   // this is the hook that toggles the different comparison views
   // defaults to company comparison view
   const [view, setView] = useState(0);
@@ -89,16 +82,20 @@ function Home(props) {
   const aggregateAvg = [];
 
   useEffect(() => {
-    let user_linkedin_id = document.cookie;
-    user_linkedin_id = user_linkedin_id.split('; ').find(row => row.startsWith('userId')).split('=')[1];
+    // let user_linkedin_id = document.cookie;
+    // user_linkedin_id = user_linkedin_id
+    //   .split('; ')
+    //   .find(row => row.startsWith('userId'))
+    //   .split('=')[1];
+
     setLoading(true);
 
     // provide user_linkedin_id in req params
-    fetch(`/api/company/${user_linkedin_id}`)
-      .then((res) => res.json())
-      .then((data) => {
+    fetch(`/api/company`)
+      .then(res => res.json())
+      .then(data => {
         // with this data, setState for each hook and prop drill to appropriate components
-        console.log("data from fetch", data);
+        console.log('data from fetch', data);
         const current = data.currentUser;
 
         // setting state for current logged in user
@@ -120,7 +117,7 @@ function Home(props) {
 
         //grabbing race averages
         const raceList = data.raceStats;
-        raceList.forEach((race) => {
+        raceList.forEach(race => {
           raceAvg.push({
             race: race.race,
             avg_bonus: race.avg_bonus,
@@ -133,7 +130,7 @@ function Home(props) {
 
         // grabbing gender averages
         const genderList = data.genderStats;
-        genderList.forEach((gender) => {
+        genderList.forEach(gender => {
           genderAvg.push({
             gender: gender.gender,
             avg_bonus: gender.avg_bonus,
@@ -146,7 +143,7 @@ function Home(props) {
 
         //grabbing age averages
         const ageList = data.ageStats;
-        ageList.forEach((age) => {
+        ageList.forEach(age => {
           ageAvg.push({
             age: age.age,
             avg_salary: age.avg_salary,
@@ -159,7 +156,7 @@ function Home(props) {
 
         // calculating values for aggregate view
         const aggregateList = data.jobStats;
-        aggregateList.forEach((item) => {
+        aggregateList.forEach(item => {
           aggregateAvg.push({
             avg_salary: item.avg_salary,
             avg_bonus: item.avg_bonus,
@@ -172,7 +169,7 @@ function Home(props) {
 
         // setting state for individual comparisons
         const list = data.companyData;
-        list.forEach((employee) => {
+        list.forEach(employee => {
           employeesNames.push(employee.name);
           employeesAge.push(employee.age);
           employeesGender.push(employee.gender);
@@ -198,12 +195,16 @@ function Home(props) {
 
         // after finishing this execution, set loading to false
         setLoading(false);
-      });
+      })
+      .catch(err => console.log(err));
   }, []);
 
   const { classes } = props;
+  console.log('PROPS => ', props);
+  console.log('what are classes:', classes);
   return (
     <React.Fragment>
+      {/* Header STARTS here */}
       {loading ? null : (
         <div className="current_user_header">
           <h2 id="current_user_name">Hello {name}</h2>
@@ -212,77 +213,77 @@ function Home(props) {
           </label>
         </div>
       )}
+      {/* Header ENDS here */}
+
+      {/* Bar that has the individual comparisons */}
       <Container id="comparison_tabs">
-        <AppBar
-          className={classes.tabBar}
-          id="company_individual_toggle"
-          position="static"
-        >
+        <AppBar className={classes.tabBar} id="company_individual_toggle" position="static">
           <Tabs view={view} onChange={handleComparison} centered>
             <Tab label="Company Wide Comparison" />
             <Tab label="Individual Comparison" />
           </Tabs>
         </AppBar>
       </Container>
+      {/* End of bar */}
+
+      {/* CURRENT BUG, since there is an error in the fetch req-res, the loading state never hits the end of the useEffect hook and loading is never flipped to false*/}
       {loading ? (
         <h2 className="current_user_header">Loading Data...</h2>
       ) : (
-        <div>
-          <div id="tables_div">
-            <Container>
-              <CompanyComparison
-                view={view}
-                index={0}
-                name={name}
-                company={company}
-                jobTitle={jobTitle}
-                sexuality={sexuality}
-                age={age}
-                gender={gender}
-                race={race}
-                employeeType={employeeType}
-                yrsExperience={yrsExperience}
-                yrsCompany={yrsCompany}
-                baseSalary={baseSalary}
-                annualBonus={annualBonus}
-                stockOptions={stockOptions}
-                signingBonus={signingBonus}
-                ftStatus={ftStatus}
-                raceList={raceList}
-                genderList={genderList}
-                ageList={ageList}
-                aggregateList={aggregateList}
-                allNames={allNames}
-              />
-              <IndividualComparison
-                view={view}
-                index={1}
-                name={name}
-                company={company}
-                jobTitle={jobTitle}
-                sexuality={sexuality}
-                age={age}
-                gender={gender}
-                race={race}
-                employeeType={employeeType}
-                yrsExperience={yrsExperience}
-                yrsCompany={yrsCompany}
-                baseSalary={baseSalary}
-                annualBonus={annualBonus}
-                stockOptions={stockOptions}
-                signingBonus={signingBonus}
-                ftStatus={ftStatus}
-                allNames={allNames}
-                allGenders={allGenders}
-                allAges={allAges}
-                allSexes={allSexes}
-                allTypes={allTypes}
-                allYrsExperience={allYrsExperience}
-                allYrsCompany={allYrsCompany}
-                allBaseSalary={allBaseSalary}
-              />
-            </Container>
-          </div>
+        <div id="tables_div">
+          <Container>
+            <CompanyComparison
+              view={view}
+              index={0}
+              name={name}
+              company={company}
+              jobTitle={jobTitle}
+              sexuality={sexuality}
+              age={age}
+              gender={gender}
+              race={race}
+              employeeType={employeeType}
+              yrsExperience={yrsExperience}
+              yrsCompany={yrsCompany}
+              baseSalary={baseSalary}
+              annualBonus={annualBonus}
+              stockOptions={stockOptions}
+              signingBonus={signingBonus}
+              ftStatus={ftStatus}
+              raceList={raceList}
+              genderList={genderList}
+              ageList={ageList}
+              aggregateList={aggregateList}
+              allNames={allNames}
+            />
+            <IndividualComparison
+              view={view}
+              index={1}
+              name={name}
+              company={company}
+              jobTitle={jobTitle}
+              sexuality={sexuality}
+              age={age}
+              gender={gender}
+              race={race}
+              employeeType={employeeType}
+              yrsExperience={yrsExperience}
+              yrsCompany={yrsCompany}
+              baseSalary={baseSalary}
+              annualBonus={annualBonus}
+              stockOptions={stockOptions}
+              signingBonus={signingBonus}
+              ftStatus={ftStatus}
+              allNames={allNames}
+              allGenders={allGenders}
+              allAges={allAges}
+              allSexes={allSexes}
+              allTypes={allTypes}
+              allYrsExperience={allYrsExperience}
+              allYrsCompany={allYrsCompany}
+              allBaseSalary={allBaseSalary}
+            />
+          </Container>
         </div>
       )}
     </React.Fragment>

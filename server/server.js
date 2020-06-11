@@ -33,9 +33,7 @@ app.use('/auth', authRouter);
 
 if (process.env.NODE_ENV === 'production') {
   app.use('/build', express.static(path.resolve(__dirname, '../build')));
-  app.get('/', (req, res) =>
-    res.status(200).sendFile(path.resolve(__dirname, '../index.html'))
-  );
+  app.get('/', (req, res) => res.status(200).sendFile(path.resolve(__dirname, '../index.html')));
 }
 
 app.get('/api/test', fairpayController.getUser, (req, res) => {
@@ -62,7 +60,7 @@ app.post('/api/jobTitles', fairpayController.getCommonJobTitles, (req, res) => {
 });
 
 app.use(
-  '/api/company/:linkedin_user_id',
+  '/api/company/',
   fairpayController.getCurrentUser,
   fairpayController.getCompanyData,
   fairpayController.getJobStats,
@@ -70,6 +68,7 @@ app.use(
   fairpayController.getAgeStats,
   fairpayController.getGenderStats,
   (req, res) => {
+    console.log('all the way to the end of the response');
     res.status(200).json({
       currentUser: res.locals.currentUser,
       companyData: res.locals.companyData.rows,
@@ -81,6 +80,21 @@ app.use(
   }
 );
 
+// Serve static files in production mode only...
+if (process.env.NODE_ENV === 'production') {
+  app.use('/build', express.static(path.resolve(__dirname, '../build/')))
+
+  // Home endpoint
+  app.get('/', (req, res) => {
+    res.sendFile(__dirname, '../index.html')
+  })
+
+  // Handle other redirections made by the server
+  app.get('*', (req, res) => {
+    res.sendFile(__dirname, '../index.html')
+  })
+}
+
 // route error handler
 app.use('*', (req, res) => res.sendStatus(404));
 
@@ -88,14 +102,14 @@ app.use('*', (req, res) => res.sendStatus(404));
 app.use((err, req, res, next) => {
   const defaultErr = {
     log: 'Express error handler caught unknown middleware error',
-    status: 400,
+    status: 500,
     message: {
       err: 'An error occurred',
     },
   };
-  const errorObj = Object.assign({}, defaultErr);
-  console.log(errorObj.log);
-  return res.status(errorObj.status).json(errorObj.message);
+  // const errorObj = Object.assign({}, defaultErr);
+  const errorObj = Object.assign(defaultErr, err);
+  return res.status(errorObj.status).json({ message: 'Internal Server Error' });
 });
 
 app.listen(PORT, () => console.log('Server started on port ', PORT));
