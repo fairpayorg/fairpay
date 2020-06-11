@@ -14,6 +14,7 @@ function IndividualComparison(props) {
   // need to write logic that loops through the data we get back from the fetch request and renders
   // all the employee data who work at the same company with the same title
   const currentUser = props.currentUser;
+  const aggregate = props.aggregate;
 
   return (
     <React.Fragment>
@@ -34,22 +35,22 @@ function IndividualComparison(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {props.allNames.map((key, i) => {
+                {aggregate.allNames.map((key, i) => {
                   return (
                     <TableRow>
                       <TableCell>{''}</TableCell>
-                      <TableCell align="right">{props.allAges[i]}</TableCell>
+                      <TableCell align="right">{aggregate.allAges[i]}</TableCell>
                       <TableCell align="right">
-                        ${props.allBaseSalary[i]}
+                        ${aggregate.allBaseSalary[i]}
                       </TableCell>
-                      <TableCell align="right">{props.allGenders[i]}</TableCell>
-                      <TableCell align="right">{props.allTypes[i]}</TableCell>
-                      <TableCell align="right">{props.allSexes[i]}</TableCell>
+                      <TableCell align="right">{aggregate.allGenders[i]}</TableCell>
+                      <TableCell align="right">{aggregate.allTypes[i]}</TableCell>
+                      <TableCell align="right">{aggregate.allSexes[i]}</TableCell>
                       <TableCell align="right">
-                        {props.allYrsCompany[i]}
+                        {aggregate.allYrsCompany[i]}
                       </TableCell>
                       <TableCell align="right">
-                        {props.allYrsExperience[i]}
+                        {aggregate.allYrsExperience[i]}
                       </TableCell>
                     </TableRow>
                   );
