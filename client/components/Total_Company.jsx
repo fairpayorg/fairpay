@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Table,
   TableBody,
@@ -8,8 +8,10 @@ import {
   TableHead,
   TableRow,
 } from '@material-ui/core';
+import { UserContext } from './contexts/userContext';
 
-function Total({ aggregateList, value, view, index }) {
+function Total({ value, view, index }) {
+  const { aggregateList } = useContext(UserContext);
   return (
     <React.Fragment>
       <div hidden={value !== index || view === 1}>
@@ -30,7 +32,9 @@ function Total({ aggregateList, value, view, index }) {
                     <TableCell>{row.count}</TableCell>
                     <TableCell align="right">${row.avg_salary}</TableCell>
                     <TableCell align="right">${row.avg_bonus}</TableCell>
-                    <TableCell align="right">${row.avg_stock}</TableCell>
+                    <TableCell align="right">
+                      ${row.avg_stock_options}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

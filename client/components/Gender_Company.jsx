@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Table,
   TableBody,
@@ -8,8 +8,10 @@ import {
   TableHead,
   TableRow,
 } from '@material-ui/core';
+import { UserContext } from './contexts/userContext';
 
-function Gender({ genderList, value, view, index }) {
+function Gender({ value, view, index }) {
+  const { genderList } = useContext(UserContext);
   return (
     <React.Fragment>
       <div hidden={value !== index || view === 1}>
@@ -32,7 +34,9 @@ function Gender({ genderList, value, view, index }) {
                     <TableCell align="right">{row.count}</TableCell>
                     <TableCell align="right">${row.avg_salary}</TableCell>
                     <TableCell align="right">${row.avg_bonus}</TableCell>
-                    <TableCell align="right">${row.avg_stock}</TableCell>
+                    <TableCell align="right">
+                      ${row.avg_stock_options}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
