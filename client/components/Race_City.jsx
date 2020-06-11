@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Table,
   TableBody,
@@ -7,7 +7,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from "@material-ui/core";
+} from '@material-ui/core';
+import RaceChart from './RaceChart.js';
 
 function RaceCity(props) {
   const sliced = props.raceList;
@@ -42,6 +43,7 @@ function RaceCity(props) {
             </Table>
           </TableContainer>
         </div>
+        <RaceChart raceList={props.raceList} />
       </div>
     </React.Fragment>
   );

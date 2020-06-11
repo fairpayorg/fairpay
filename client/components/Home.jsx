@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   AppBar,
@@ -7,10 +7,10 @@ import {
   Typography,
   Container,
   withStyles,
-} from "@material-ui/core";
-import CompanyComparison from "./CompanyComparison.jsx";
-import IndividualComparison from "./IndividualComparison.jsx";
-import CityComparison from "./CityComparison.jsx";
+} from '@material-ui/core';
+import CompanyComparison from './CompanyComparison.jsx';
+import IndividualComparison from './IndividualComparison.jsx';
+import CityComparison from './CityComparison.jsx';
 
 // const styles = {
 //   tabBar: {
@@ -103,11 +103,11 @@ function Home(props) {
   useEffect(() => {
     let user_linkedin_id = document.cookie;
     user_linkedin_id = user_linkedin_id
-      .split("; ")
-      .find((row) => row.startsWith("userId"))
-      .split("=")[1];
+      .split('; ')
+      .find((row) => row.startsWith('userId'))
+      .split('=')[1];
     setLoading(true);
-    console.log("Data about to be fetch and wait.");
+    console.log('Data about to be fetch and wait.');
     const asyncDataFetch = async () => {
       try {
         let response = await fetch(`/api/company/${user_linkedin_id}`);
@@ -115,7 +115,7 @@ function Home(props) {
         const current = data.currentUser;
 
         // server added middlewares that grab city wide comparisons, have to parse that from data variable and store in new states
-        console.log("this is data from fetch in home component", data);
+        console.log('this is data from fetch in home component', data);
 
         // setting state for current logged in user
         setName(current.name);
