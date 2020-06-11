@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Container,
   Table,
@@ -9,22 +9,12 @@ import {
   TableHead,
   TableRow,
 } from '@material-ui/core';
+import { UserContext } from './contexts/userContext';
 
-function IndividualComparison({
-  view,
-  index,
-  allNames,
-  allAges,
-  allBaseSalary,
-  allGenders,
-  allTypes,
-  allSexes,
-  allYrsCompany,
-  allYrsExperience,
-}) {
+function IndividualComparison({ view, index }) {
   // need to write logic that loops through the data we get back from the fetch request and renders
   // all the employee data who work at the same company with the same title
-
+  const { companyList } = useContext(UserContext);
   return (
     <React.Fragment>
       <Container>
@@ -44,20 +34,32 @@ function IndividualComparison({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {allNames.map((key, i) => {
-                  return (
+                {companyList.map(
+                  (
+                    {
+                      name,
+                      age,
+                      base_salary,
+                      gender,
+                      job_title,
+                      sexuality,
+                      years_at_company,
+                      years_of_experience,
+                    },
+                    i
+                  ) => (
                     <TableRow key={i}>
-                      <TableCell>{key}</TableCell>
-                      <TableCell align="right">{allAges[i]}</TableCell>
-                      <TableCell align="right">${allBaseSalary[i]}</TableCell>
-                      <TableCell align="right">{allGenders[i]}</TableCell>
-                      <TableCell align="right">{allTypes[i]}</TableCell>
-                      <TableCell align="right">{allSexes[i]}</TableCell>
-                      <TableCell align="right">{allYrsCompany[i]}</TableCell>
-                      <TableCell align="right">{allYrsExperience[i]}</TableCell>
+                      <TableCell>{name}</TableCell>
+                      <TableCell align="right">{age}</TableCell>
+                      <TableCell align="right">${base_salary}</TableCell>
+                      <TableCell align="right">{gender}</TableCell>
+                      <TableCell align="right">{job_title}</TableCell>
+                      <TableCell align="right">{sexuality}</TableCell>
+                      <TableCell align="right">{years_at_company}</TableCell>
+                      <TableCell align="right">{years_of_experience}</TableCell>
                     </TableRow>
-                  );
-                })}
+                  )
+                )}
               </TableBody>
             </Table>
           </TableContainer>

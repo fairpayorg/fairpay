@@ -1,20 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Container, Tabs, Tab, Box } from '@material-ui/core';
 import Race_Company from './Race_Company.jsx';
 import Age_Company from './Age_Company.jsx';
 import Gender_Company from './Gender_Company.jsx';
 import Total_Company from './Total_Company.jsx';
 
-function CompanyComparison({
-  view,
-  index,
-  allNames,
-  aggregateList,
-  raceList,
-  ageList,
-  genderList,
-}) {
-  const [value, setValue] = useState(3);
+function CompanyComparison({ view, index }) {
+  const [value, setValue] = useState(0);
 
   const changeGraph = (e, newValue) => {
     setValue(newValue);
@@ -40,27 +32,16 @@ function CompanyComparison({
       </Container>
 
       <Box>
-        <Total_Company
-          allNames={allNames}
-          aggregateList={aggregateList}
-          view={view}
-          value={value}
-          index={0}
-        />
+        <Total_Company view={view} value={value} index={0} />
       </Box>
       <Box>
-        <Race_Company raceList={raceList} view={view} value={value} index={1} />
+        <Race_Company view={view} value={value} index={1} />
       </Box>
       <Box>
-        <Age_Company view={view} value={value} index={2} ageList={ageList} />
+        <Age_Company view={view} value={value} index={2} />
       </Box>
       <Box>
-        <Gender_Company
-          view={view}
-          value={value}
-          index={3}
-          genderList={genderList}
-        />
+        <Gender_Company view={view} value={value} index={3} />
       </Box>
     </React.Fragment>
   );
