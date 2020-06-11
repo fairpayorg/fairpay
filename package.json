@@ -21,6 +21,7 @@
   "dependencies": {
     "@material-ui/core": "^4.10.1",
     "@material-ui/icons": "^4.9.1",
+    "chart.js": "^2.9.3",
     "cookie-parser": "^1.4.5",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
@@ -32,6 +33,7 @@
     "passport-linkedin-oauth2": "^2.0.0",
     "pg": "^8.2.1",
     "react": "^16.13.1",
+    "react-chartjs-2": "^2.9.0",
     "react-dom": "^16.13.1",
     "react-hooks": "^1.0.1",
     "react-router-dom": "^5.2.0"
@@ -43,9 +45,9 @@
     "babel-core": "^6.26.3",
     "babel-loader": "^8.1.0",
     "concurrently": "^5.2.0",
-    "nodemon": "^2.0.4",
     "css-loader": "^3.5.3",
     "node-sass": "^4.14.1",
+    "nodemon": "^2.0.4",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.2.1",
     "webpack": "^4.43.0",

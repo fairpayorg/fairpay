@@ -65,6 +65,13 @@ function Home(props) {
     aggregateList: [],
   });
 
+  const [averages, setAverages] = useState({
+    ageStats: [],
+    jobStats: [],
+    raceStats: [],
+    genderStats: []
+  })
+
   // state for whether fetch call is finished
   const [loading, setLoading] = useState(false);
 
@@ -99,6 +106,13 @@ function Home(props) {
           stockOptions: current.stock_options,
           signingBonus: current.signing_bonus,
           ftStatus: current.full_time_status,
+        })
+
+        setAverages({
+          ageStats: data.ageStats,
+          jobStats: data.jobStats,
+          raceStats: data.raceStats,
+          genderStats: data.genderStats
         })
 
         const newRaceList = data.raceStats.reduce((acc, curVal) => {
@@ -234,7 +248,7 @@ function Home(props) {
               <CompanyComparison
                 view={view}
                 index={0}
-
+                averages={averages}
                 raceList={companyAggregate.raceList}
                 genderList={companyAggregate.genderList}
                 ageList={companyAggregate.ageList}
@@ -244,7 +258,7 @@ function Home(props) {
               <IndividualComparison
                 view={view}
                 index={1}
-
+                averages={averages}
                 currentUser={currentUser}
                 aggregate={companyAggregate}
               />

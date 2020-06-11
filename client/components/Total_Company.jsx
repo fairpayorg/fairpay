@@ -1,4 +1,7 @@
 import React from "react";
+import BarChart_title from './charts/bar/BarChart_title.js'
+import DoughnutChart_title from "./charts/doughnut/DoughnutChart_title.js";
+import LineChart_title from './charts/line/LineChart_title.js'
 import {
   Table,
   TableBody,
@@ -9,7 +12,9 @@ import {
   TableRow,
 } from "@material-ui/core";
 
+
 function Total(props) {
+  const { averages } = props;
   return (
     <React.Fragment>
       <div hidden={props.value !== props.index || props.view === 1}>
@@ -35,6 +40,9 @@ function Total(props) {
                 ))}
               </TableBody>
             </Table>
+            <BarChart_title averages={averages}/>
+            <DoughnutChart_title averages={averages}/>
+            <LineChart_title averages={averages}/>
           </TableContainer>
         </div>
       </div>
