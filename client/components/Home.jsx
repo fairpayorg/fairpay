@@ -224,7 +224,7 @@ function Home(props) {
           id="company_individual_toggle"
           position="static"
         >
-          <Tabs view={view} onChange={handleComparison} centered>
+          <Tabs value={view} onChange={handleComparison} centered>
             <Tab label="Company Wide Comparison" />
             <Tab label="Individual Comparison" />
           </Tabs>
