@@ -3,7 +3,7 @@
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   background-color: #eeeeee;
   color: #424242;
 }
@@ -42,7 +42,6 @@ body {
   align-items: center;
 }
 
-
 #current_user_name {
   font-weight: 100;
   font-size: 2.5rem;
@@ -73,4 +72,19 @@ body {
 #appBar {
   background-color: #ff8f00;
   justify-content: space-between;
+}
+
+.legend_average {
+  display: flex;
+  height: 15px !important;
+  width: 15px !important;
+  background-color: navy;
+  border-radius: 50%;
+}
+.legend_user {
+  display: flex;
+  height: 15px;
+  width: 15px;
+  background-color: green;
+  border-radius: 50%;
 }
