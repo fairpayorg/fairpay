@@ -1,13 +1,11 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-
+import UserContextProvider from './components/contexts/userContext.js';
 import Home from './components/Home.jsx';
 import Login from './components/Login.jsx';
 import GetStarted from './components/GetStarted.jsx';
 import Header from './components/layout/Header.jsx';
-
 import './stylesheets/styles.css';
-import UserContextProvider from './components/contexts/userContext.js';
 
 const App = () => {
   return (
