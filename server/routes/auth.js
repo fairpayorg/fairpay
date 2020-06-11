@@ -27,7 +27,7 @@ router.get(
       linkedin_id: req.user.id,
       name: req.user.displayName,
       email: req.user.emails[0].value,
-      image_url: req.user.photos[0].value,
+      image_url: req.user.photos[0] ? req.user.photos[0].value : null,
     };
     console.log('in the call back')
     if (process.env.NODE_ENV === 'development') {
