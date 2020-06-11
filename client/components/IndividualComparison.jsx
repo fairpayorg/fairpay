@@ -11,10 +11,9 @@ import {
 } from '@material-ui/core';
 import { UserContext } from './contexts/userContext';
 
-function IndividualComparison({ view, index }) {
-  // need to write logic that loops through the data we get back from the fetch request and renders
-  // all the employee data who work at the same company with the same title
+const IndividualComparison = ({ view, index }) => {
   const { companyList } = useContext(UserContext);
+
   return (
     <React.Fragment>
       <Container>
@@ -33,6 +32,7 @@ function IndividualComparison({ view, index }) {
                   <TableCell align="right">Years of Experience</TableCell>
                 </TableRow>
               </TableHead>
+
               <TableBody>
                 {companyList.map(
                   (
@@ -67,6 +67,6 @@ function IndividualComparison({ view, index }) {
       </Container>
     </React.Fragment>
   );
-}
+};
 
 export default IndividualComparison;

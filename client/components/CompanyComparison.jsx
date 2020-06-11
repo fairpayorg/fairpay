@@ -1,11 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Container, Tabs, Tab, Box } from '@material-ui/core';
 import Race_Company from './Race_Company.jsx';
 import Age_Company from './Age_Company.jsx';
 import Gender_Company from './Gender_Company.jsx';
 import Total_Company from './Total_Company.jsx';
 
-function CompanyComparison({ view, index }) {
+const CompanyComparison = ({ view, index }) => {
   const [value, setValue] = useState(0);
 
   const changeGraph = (e, newValue) => {
@@ -45,6 +45,6 @@ function CompanyComparison({ view, index }) {
       </Box>
     </React.Fragment>
   );
-}
+};
 
 export default CompanyComparison;
