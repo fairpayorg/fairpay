@@ -1,11 +1,8 @@
-import React, { Component, useRef } from "react";
-import AggregateBarChart from "./AggregateBarChart.js";
-import { scaleLinear } from "d3-scale";
-import { max } from "d3-array";
-import { select } from "d3-selection";
-import * as d3 from "d3";
 
-class ChartWrapper extends Component {
+import React, { Component, useRef } from 'react';
+import * as d3 from 'd3';
+
+class CompanyChart extends Component {
   constructor(props) {
     super(props);
     // this.createChartWrapper = this.createChartWrapper.bind(this);
@@ -26,12 +23,13 @@ class ChartWrapper extends Component {
       totalCompanyData.push(userArray[i]);
     }
 
+    // Use 3 instead of 6 labels
     const textArray = [
-      "Salary",
+      'Salary',
       `Salary`,
-      "Annual Bonus",
+      'Annual Bonus',
       `Annual Bonus`,
-      "Stock Options",
+      'Stock Options',
       `Stock Options`,
     ];
 
@@ -40,10 +38,10 @@ class ChartWrapper extends Component {
 
     const svg = d3
       .select(this.refs.chart)
-      .append("svg")
-      .attr("width", width + "px")
-      .attr("height", height + "px")
-      .attr("class", "bar");
+      .append('svg')
+      .attr('width', width + 'px')
+      .attr('height', height + 'px')
+      .attr('class', 'bar');
 
     // making the table legend
     // svg
@@ -78,32 +76,32 @@ class ChartWrapper extends Component {
 
     // creating initial bars, then transition handles the height and widths
     svg
-      .selectAll("rect")
+      .selectAll('rect')
       .data(totalCompanyData)
       .enter()
-      .append("rect")
-      .attr("fill", (d, i) => {
+      .append('rect')
+      .attr('fill', (d, i) => {
         if (i % 2 === 0) {
-          return "navy";
+          return 'navy';
         }
-        return "green";
+        return 'green';
       })
-      .attr("class", "sBar")
-      .attr("x", (d, i) => 20 + i * 150)
-      .attr("y", 0)
-      .attr("width", 50)
-      .attr("height", 0)
-      .append("title")
+      .attr('class', 'sBar')
+      .attr('x', (d, i) => 20 + i * 150)
+      .attr('y', 0)
+      .attr('width', 50)
+      .attr('height', 0)
+      .append('title')
       .text((d) => d);
 
     svg
-      .selectAll("rect")
+      .selectAll('rect')
       .data(totalCompanyData)
       .enter()
-      .append("text")
-      .style("font-size", 14)
-      .attr("x", (d, i) => 20 + i * 150)
-      .attr("y", (d, i) => {
+      .append('text')
+      .style('font-size', 14)
+      .attr('x', (d, i) => 20 + i * 150)
+      .attr('y', (d, i) => {
         if (d > 1000) {
           return 400 - d / 1000 - 20;
         }
@@ -111,19 +109,17 @@ class ChartWrapper extends Component {
       })
       .text((d) => d);
 
-    var y = d3.scaleLinear().domain([0, 13000]).range([height, 0]);
-
     svg
-      .selectAll("rect")
+      .selectAll('rect')
       .transition()
       .duration(800)
-      .attr("y", (d, i) => {
+      .attr('y', (d, i) => {
         if (d > 1000) {
           return 400 - d / 1000;
         }
         return 400 - d / 90;
       })
-      .attr("height", (d, i) => {
+      .attr('height', (d, i) => {
         if (d > 1000) {
           return d / 1000;
         }
@@ -134,32 +130,32 @@ class ChartWrapper extends Component {
         return i * 400;
       });
 
-    let texts = svg.selectAll("text");
+    let texts = svg.selectAll('text');
 
     // Salary labels
     texts
       .data(totalCompanyData)
       .enter()
-      .append("text")
-      .attr("x", (d, i) => 10 + i * 152)
-      .attr("y", (d, i) => {
+      .append('text')
+      .attr('x', (d, i) => 10 + i * 152)
+      .attr('y', (d, i) => {
         if (d > 1000) {
           return 380 - d / 1000;
         }
         return 380 - d / 90;
       })
       .text((d, i) => {
-        return "$" + totalCompanyData[i];
+        return '$' + totalCompanyData[i];
       });
     // X labels
     texts
       .data(textArray)
       .enter()
-      .append("text")
-      .style("font-size", 14)
-      .attr("dy", "0em")
-      .attr("x", (d, i) => 20 + i * 150)
-      .attr("y", (d, i) => {
+      .append('text')
+      .style('font-size', 14)
+      .attr('dy', '0em')
+      .attr('x', (d, i) => 20 + i * 150)
+      .attr('y', (d, i) => {
         return 450;
       })
       .text((d) => d);
@@ -184,4 +180,5 @@ class ChartWrapper extends Component {
   // }
 }
 
-export default ChartWrapper;
+export default CompanyChart;
+
