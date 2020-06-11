@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Container, Tabs, Tab, Box, AppBar, RadioGroup, Radio, FormControlLabel, FormControl, FormLabel } from "@material-ui/core";
-import Race_Company from "./Race_Company.jsx";
-import Age_Company from "./Age_Company.jsx";
-import Gender_Company from "./Gender_Company.jsx";
-import Total_Company from "./Total_Company.jsx";
+import { Container, Tabs, Tab, Box, AppBar } from "@material-ui/core";
+import Race_City from "./Race_City.jsx";
+import Age_City from "./Age_City.jsx";
+import Gender_City from "./Gender_City.jsx";
+import Total_City from "./Total_City.jsx";
 
 function CompanyComparison(props) {
   const [value, setValue] = useState(0);
@@ -14,7 +14,7 @@ function CompanyComparison(props) {
 
   return (
     <React.Fragment>
-      <div hidden={props.view !== props.index} >
+      <div hidden={props.view !== props.index}>
         <Container>
           <div className="category_container">
             <div className="category_comparison_div">
@@ -30,13 +30,12 @@ function CompanyComparison(props) {
                 <Tab label="Age"></Tab>
                 <Tab label="Gender"></Tab>
               </Tabs>
-              
             </div>
           </div>
         </Container>
   
         <Box>
-          <Total_Company
+          <Total_City
             allNames={props.allNames}
             userSalary={props.baseSalary}
             userAnnualBonus={props.annualBonus}
@@ -48,7 +47,7 @@ function CompanyComparison(props) {
           />
         </Box>
         <Box>
-          <Race_Company
+          <Race_City
             raceList={props.raceList}
             view={props.view}
             value={value}
@@ -56,7 +55,7 @@ function CompanyComparison(props) {
           />
         </Box>
         <Box>
-          <Age_Company
+          <Age_City
             view={props.view}
             value={value}
             index={2}
@@ -64,7 +63,7 @@ function CompanyComparison(props) {
           />
         </Box>
         <Box>
-          <Gender_Company
+          <Gender_City
             view={props.view}
             value={value}
             index={3}
