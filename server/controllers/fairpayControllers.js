@@ -94,7 +94,10 @@ fairpayController.getCurrentUser = (req, res, next) => {
   console.log(linkedin_user_id);
   let queryString = `
     SELECT 
-      u.name, s.job_title, c.linkedin_id, u.sexuality, u.age, u.gender, u.race, s.employee_type, s.years_at_company, s.years_of_experience, s.base_salary, s.full_time_status, s.annual_bonus, s.stock_options, s.signing_bonus 
+      u.name, s.job_title, c.linkedin_id, c.name as company_name, u.sexuality, u.age, u.gender, 
+      u.race, s.employee_type, s.years_at_company, s.years_of_experience, 
+      s.base_salary, s.full_time_status, s.annual_bonus, s.stock_options, 
+      s.signing_bonus
     FROM salary s 
     INNER JOIN company c on s.company_id = c._id 
     INNER JOIN users u on s._id = u.salary_id where u.linkedin_user_id = '${linkedin_user_id}';`;
@@ -121,21 +124,22 @@ fairpayController.getAllCompanyNames = async (req, res, next) => {
 }
 
 fairpayController.getCompanyData = (req, res, next) => {
-  console.log('controller: get compnay data');
-  const { job_title, linkedin_id } = res.locals.currentUser;
+  const { job_title, company_name } = res.locals.currentUser;
   // console.log(
   //   'inside getcompanydata, res.locals.currentUser is',
   //   res.locals.currentUser
   // );
-  const params = [job_title, linkedin_id];
+  const params = [job_title, company_name];
   //console.log("params is", params);
   let queryString = `
-      SELECT u.name, s.job_title, c.linkedin_id, u.sexuality, u.age, u.gender, u.race, s.
-         employee_type, s.years_at_company, s.years_of_experience, s.base_salary, s.full_time_status, s.annual_bonus, s.stock_options, s.signing_bonus 
+      SELECT u.name, c.name, s.job_title, c.linkedin_id, u.sexuality, 
+      u.age, u.gender, u.race, s.employee_type, s.years_at_company, 
+      s.years_of_experience, s.base_salary, s.full_time_status, 
+      s.annual_bonus, s.stock_options, s.signing_bonus 
       FROM salary s 
       INNER JOIN company c 
           ON s.job_title = $1 
-          AND c.linkedin_id = $2 
+          AND c.name = $2 
           AND s.company_id = c._id 
       INNER JOIN users u 
           ON s._id = u.salary_id`;
@@ -158,9 +162,20 @@ fairpayController.getCompanyData = (req, res, next) => {
 fairpayController.getJobStats = (req, res, next) => {
   console.log('controller: get job stats');
 
-  const { linkedin_id, job_title } = res.locals.currentUser;
-  const queryString = `select s.job_title, round(avg(s.base_salary), 0) as avg_salary, round(avg(s.annual_bonus), 0) as avg_bonus, round(avg(s.stock_options), 0) as avg_stock_options, count(*) from salary s left join users u on s._id = u.salary_id left join company c on c._id = s.company_id where c.linkedin_id = '${linkedin_id}' and s.active = 'true' and s.job_title = '${job_title}' group by s.job_title order by s.job_title`;
-  db.query(queryString, (err, response) => {
+  const { company_name, job_title } = res.locals.currentUser;
+  const queryString = `select s.job_title, round(avg(s.base_salary), 0) as avg_salary, 
+  round(avg(s.annual_bonus), 0) as avg_bonus, 
+  round(avg(s.stock_options), 0) as avg_stock_options, 
+  count(*) from salary s 
+  left join users u on s._id = u.salary_id 
+  left join company c on c._id = s.company_id 
+  where c.name = $1 and s.active = 'true' 
+  and s.job_title = $2 
+  group by s.job_title 
+  order by s.job_title`;
+
+  const params = [company_name, job_title]
+  db.query(queryString, params, (err, response) => {
     if (err) {
       return next({
         log: `fairpayController.getJobStats: ERROR: ${err}`,
@@ -179,9 +194,20 @@ fairpayController.getJobStats = (req, res, next) => {
 fairpayController.getRaceStats = (req, res, next) => {
   console.log('controller: get race stats');
 
-  const { linkedin_id, job_title } = res.locals.currentUser;
-  const queryString = `select u.race, round(avg(s.base_salary), 0) as avg_salary, round(avg(s.annual_bonus), 0) as avg_bonus, round(avg(s.stock_options), 0) as avg_stock_options, count(*) from salary s left join users u on s._id = u.salary_id left join company c on c._id = s.company_id where c.linkedin_id = '${linkedin_id}' and s.active = 'true' and s.job_title = '${job_title}' group by u.race order by u.race`;
-  db.query(queryString, (err, response) => {
+  const { company_name, job_title } = res.locals.currentUser;
+  const queryString = `select u.race, round(avg(s.base_salary), 0) as avg_salary, 
+  round(avg(s.annual_bonus), 0) as avg_bonus, 
+  round(avg(s.stock_options), 0) as avg_stock_options, 
+  count(*) from salary s 
+  left join users u on s._id = u.salary_id 
+  left join company c on c._id = s.company_id 
+  where c.name = $1 
+  and s.active = 'true' and s.job_title = $2 
+  group by u.race 
+  order by u.race`;
+
+  const params = [company_name, job_title];
+  db.query(queryString, params, (err, response) => {
     if (err) {
       return next({
         log: `fairpayController.getRaceStats: ERROR: ${err}`,
@@ -200,9 +226,19 @@ fairpayController.getRaceStats = (req, res, next) => {
 fairpayController.getAgeStats = (req, res, next) => {
   console.log('controller: get age stats');
 
-  const { linkedin_id, job_title } = res.locals.currentUser;
-  const queryString = `select u.age, round(avg(s.base_salary), 0) as avg_salary, round(avg(s.annual_bonus), 0) as avg_bonus, round(avg(s.stock_options), 0) as avg_stock_options, count(*) from salary s left join users u on s._id = u.salary_id left join company c on c._id = s.company_id where c.linkedin_id = '${linkedin_id}' and s.active = 'true' and s.job_title = '${job_title}' group by u.age order by u.age`;
-  db.query(queryString, (err, response) => {
+  const { company_name, job_title } = res.locals.currentUser;
+  const queryString = `select u.age, round(avg(s.base_salary), 0) as avg_salary, 
+  round(avg(s.annual_bonus), 0) as avg_bonus, 
+  round(avg(s.stock_options), 0) as avg_stock_options, 
+  count(*) from salary s 
+  left join users u on s._id = u.salary_id 
+  left join company c on c._id = s.company_id 
+  where c.name = $1 and 
+  s.active = 'true' and s.job_title = $2 
+  group by u.age 
+  order by u.age`;
+  const params = [company_name, job_title];
+  db.query(queryString, params, (err, response) => {
     if (err) {
       return next({
         log: `fairpayController.getAgeStats: ERROR: ${err}`,
@@ -221,9 +257,19 @@ fairpayController.getAgeStats = (req, res, next) => {
 fairpayController.getGenderStats = (req, res, next) => {
   console.log('controller: get gender stats');
 
-  const { linkedin_id, job_title } = res.locals.currentUser;
-  const queryString = `select u.gender, round(avg(s.base_salary), 0) as avg_salary, round(avg(s.annual_bonus), 0) as avg_bonus, round(avg(s.stock_options), 0) as avg_stock_options, count(*) from salary s left join users u on s._id = u.salary_id left join company c on c._id = s.company_id where c.linkedin_id = '${linkedin_id}' and s.job_title = '${job_title}' and s.active = 'true' group by u.gender order by u.gender`;
-  db.query(queryString, (err, response) => {
+  const { company_name, job_title } = res.locals.currentUser;
+  const queryString = `select u.gender, round(avg(s.base_salary), 0) as avg_salary, 
+  round(avg(s.annual_bonus), 0) as avg_bonus, 
+  round(avg(s.stock_options), 0) as avg_stock_options, count(*) from salary
+   s left join users u on s._id = u.salary_id left 
+   join company c on c._id = s.company_id 
+   where c.name = $1 and s.job_title = $2 
+   and s.active = 'true' 
+   group by u.gender 
+   order by u.gender`;
+  
+  const params = [company_name, job_title];
+  db.query(queryString, params, (err, response) => {
     if (err) {
       return next({
         log: `fairpayController.getGenderStats: ERROR: ${err}`,
