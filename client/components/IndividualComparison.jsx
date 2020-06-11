@@ -40,7 +40,7 @@ function IndividualComparison(props) {
         <div hidden={props.view !== props.index} id="individual_comparison_div">
           <TableContainer component={Paper}>
             <Table>
-              <TableHead>
+              <TableHead className="TableHead">
                 <TableRow>
                   <TableCell>Name</TableCell>
                   <TableCell align="right">Age</TableCell>

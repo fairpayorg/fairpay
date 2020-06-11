@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   AppBar,
@@ -7,17 +7,17 @@ import {
   Typography,
   Container,
   withStyles,
-} from "@material-ui/core";
-import CompanyComparison from "./CompanyComparison.jsx";
-import IndividualComparison from "./IndividualComparison.jsx";
-import CityComparison from "./CityComparison.jsx";
+} from '@material-ui/core';
+import CompanyComparison from './CompanyComparison.jsx';
+import IndividualComparison from './IndividualComparison.jsx';
+import CityComparison from './CityComparison.jsx';
 
-const styles = {
-  tabBar: {
-    backgroundColor: "#ffe082",
-    color: "rgb(102, 102, 102)",
-  },
-};
+// const styles = {
+//   tabBar: {
+//     backgroundColor: '#ffe082',
+//     color: 'rgb(102, 102, 102)',
+//   },
+// };
 function Home(props) {
   // this is the hook that toggles the different comparison views
   // defaults to company comparison view
@@ -103,9 +103,9 @@ function Home(props) {
   useEffect(() => {
     let user_linkedin_id = document.cookie;
     user_linkedin_id = user_linkedin_id
-      .split("; ")
-      .find((row) => row.startsWith("userId"))
-      .split("=")[1];
+      .split('; ')
+      .find((row) => row.startsWith('userId'))
+      .split('=')[1];
     setLoading(true);
     console.log("Data about to be fetch and wait.");
     const asyncDataFetch = async () => {
@@ -114,7 +114,7 @@ function Home(props) {
       const current = data.currentUser;
 
       // server added middlewares that grab city wide comparisons, have to parse that from data variable and store in new states
-      console.log("this is data from fetch in home component", data);
+      console.log('this is data from fetch in home component', data);
 
       // setting state for current logged in user
       setName(current.name);
@@ -278,15 +278,11 @@ function Home(props) {
         </div>
       )}
       <Container id="comparison_tabs">
-        <AppBar
-          className={classes.tabBar}
-          id="company_individual_toggle"
-          position="static"
-        >
+        <AppBar id="company_individual_toggle" position="static">
           <Tabs value={view} view={view} onChange={handleComparison} centered>
-            <Tab label="Company-Wide" />
-            <Tab label="City-Wide" />
-            <Tab label="Individual" />
+            <Tab label="Company Wide Comparison" />
+            <Tab label="Regional Comparison" />
+            <Tab label="Individual Comparison" />
           </Tabs>
         </AppBar>
       </Container>
@@ -380,4 +376,5 @@ function Home(props) {
   );
 }
 
-export default withStyles(styles)(Home);
+export default Home;
+// export default withStyles(styles)(Home);
