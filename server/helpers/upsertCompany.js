@@ -17,7 +17,7 @@ upsertCompany.upsert = (req, res) => {
   // upsert company into company table
   let queryString = `INSERT INTO company (linkedin_id, name, city, industry, region, zipcode) 
                       VALUES($1, $2, $3, $4, $5, $6) 
-                      ON CONFLICT (linkedin_id) 
+                      ON CONFLICT (name) 
                       DO UPDATE SET 
                         name=EXCLUDED.name
                       RETURNING _id as key`;
