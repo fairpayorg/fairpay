@@ -6,7 +6,7 @@ class RaceChart extends Component {
     super(props);
   }
   componentDidMount() {
-    const color = ['green', 'yellow', 'blue', 'red'];
+    const color = ['#1eab4e', '#0c5f7a', '#a5e350', 'red'];
     const totalRaceData = [];
     const numberOfRaces = this.props.raceList.length;
     // console.log('this is the raceList in chart     ', this.props);
@@ -33,12 +33,19 @@ class RaceChart extends Component {
       .attr('class', 'bar');
 
     // making the table legend
-    // svg
-    //   .append("circle")
-    //   .attr("cx", 370)
-    //   .attr("cy", 20)
-    //   .attr("r", 8)
-    //   .style("fill", "navy");
+    svg
+      .append('circle')
+      .attr('cx', 370)
+      .attr('cy', 20)
+      .attr('r', 8)
+      .style('fill', 'navy');
+
+    svg
+      .append('circle')
+      .attr('cx', 370)
+      .attr('cy', 50)
+      .attr('r', 8)
+      .style('fill', 'green');
 
     // // svg
     // //   .append("p")
@@ -47,13 +54,6 @@ class RaceChart extends Component {
     // //   .text("Average")
     // //   .style("font-size", 14)
     // //   .attr("alignment-baseline", "middle");
-
-    // // svg
-    // //   .append("circle")
-    // //   .attr("cx", 370)
-    // //   .attr("cy", 50)
-    // //   .attr("r", 8)
-    // //   .style("fill", "green");
 
     // // svg
     // //   .append("p")
