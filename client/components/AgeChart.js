@@ -190,11 +190,7 @@ class AgeChart extends Component {
           <div className='legend_box'>
             {legendBullets}
           </div>
-          {/* <h1>This is the bar chart</h1> */}
-          {/* <span className='legend_average'> </span>
-          <span> Average</span>
-          <span className='legend_user'> </span>
-          <span> User</span> */}
+          
         </div>
       </React.Fragment>
     );
