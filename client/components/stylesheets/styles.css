@@ -8,16 +8,17 @@ body {
   color: #424242;
 }
 
-#company_container {
+.category_container {
   width: 15em;
   display: flex;
   float: left;
   justify-content: flex-start;
 }
 
-#company_comparison_div {
+.category_comparison_div {
   width: 13em;
 }
+
 
 .vertical_tab_bar {
   background-color: #ffe082;
@@ -29,6 +30,7 @@ body {
 .data_display_div {
   display: flex;
   flex-wrap: wrap;
+  margin-top: 2rem;
 }
 
 #linkedinButton {
@@ -53,7 +55,7 @@ body {
 }
 
 #tables_div {
-  margin-top: 3rem;
+  margin-top: 1rem;
 }
 
 .table_displays {
