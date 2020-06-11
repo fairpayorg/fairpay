@@ -39,23 +39,22 @@ function GetStarted(props) {
   }
 
   // returns array of counts for each title at a given company
-  function getRoleCount(company) {
+  async function getRoleCount(company) {
     const data = { company_name: company };
 
-    fetch("/api/jobTitles", {
+    const result = await fetch("/api/jobTitles", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    })
-      .then((data) => {
-        return data.json();
-      })
-      .then((res) => setTitleCount(res))
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    });
+    try {
+      const data = await result.json();
+      setTitleCount(data);
+    } catch (err) {
+      return err;
+    }
   }
 
   // called each time an input changes
@@ -150,7 +149,7 @@ function GetStarted(props) {
     history.push("/home");
   }
 
-  function postUserUpdates() {
+  async function postUserUpdates() {
     console.log(inputs);
     let data = {
       job_title: inputs.title,
@@ -175,17 +174,19 @@ function GetStarted(props) {
     };
     console.log(data);
 
-    fetch("/api/onboardUser", {
+    const result = await fetch("/api/onboardUser", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    })
-      .then(() => console.log("Successful post"))
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    });
+    try {
+      const data = await result.json();
+      console.log(data);
+    } catch (err) {
+      return err;
+    }
   }
 
   function renderIncomeQuestions() {
