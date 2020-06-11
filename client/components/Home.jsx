@@ -207,7 +207,7 @@ function Home(props) {
     <React.Fragment>
       {loading ? null : (
         <div className="current_user_header">
-          <h2 id="current_user_name">Hello {name}</h2>
+          <h2 id="current_user_name">Hello {currentUser.name}</h2>
           <label id="current_user_label">
             {currentUser.jobTitle} at {currentUser.company}
           </label>
