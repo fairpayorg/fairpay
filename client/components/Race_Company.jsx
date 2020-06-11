@@ -23,7 +23,7 @@ function Race(props) {
 
     const h = 800;
     const w = 800;
-    const padding = 100;
+    const padding = 150;
 
     const xScale = d3.scaleBand().range ([0, w]);
     const yScale = d3.scaleLinear().range ([h, 0]);
@@ -65,24 +65,7 @@ function Race(props) {
     .attr("width", barWidth)
     .attr("height", (d) => h - yScale(d.salary))
     .attr("fill", "tomato")
-
-    // accessToD3Ref.selectAll("rect")
-    // .data(data)
-    // .enter()
-    // .append("rect")
-    // .attr("x", (d, i) => i * 70)
-    // .attr("y", (d, i) => h - (d.salary * scaleFactor))
-    // .attr("width", 65)
-    // .attr("height", (d, i) => d.salary * scaleFactor)
-    // .attr("fill", "tomato")
-
-    // accessToD3Ref.selectAll("text")
-    // .data(data)
-    // .enter()
-    // .append("text")
-    // .text((d) => `${d.race} ${d.salary}`)
-    // .attr("x", (d, i) => i * 70)
-    // .attr("y", (d, i) => h - (d.salary * scaleFactor))
+    
   }, [])
 
   return (

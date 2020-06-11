@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 function Login(props) {
   //   console.log("props vs index", props.value, props.index);
 
+  //NEEDS RESTYLING!!
   return (
     <div>
       <h1>Be an agent of change</h1>
@@ -11,7 +12,7 @@ function Login(props) {
         Securely submit your salary information to understand if you or your
         coworkers are being discriminated against
       </h2>
-      {/* TODO: link to LinkedIn OAuth*/}
+      {/* link to linkedin oauth */}
       <a href="/auth/linkedin">
         <img
           src="https://taggbox.com/blog/wp-content/uploads/2018/09/Signin-with-LinkedIn.png"
