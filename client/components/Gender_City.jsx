@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Table,
   TableBody,
@@ -7,7 +7,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from "@material-ui/core";
+} from '@material-ui/core';
+import GenderChart from './GenderChart.js';
 
 function GenderCity(props) {
   return (
@@ -39,6 +40,7 @@ function GenderCity(props) {
             </Table>
           </TableContainer>
         </div>
+        <GenderChart genderList={props.genderList} />
       </div>
     </React.Fragment>
   );

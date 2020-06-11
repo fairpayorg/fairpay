@@ -1,37 +1,22 @@
-
 import React, { Component, useRef } from 'react';
 import * as d3 from 'd3';
 
-class CompanyChart extends Component {
+class GenderChart extends Component {
   constructor(props) {
     super(props);
-    // this.createChartWrapper = this.createChartWrapper.bind(this);
-    // const svgRef = useRef()
   }
   componentDidMount() {
-    // new AggregateBarChart(refs.chart);
-    // this.createChartWrapper();
-    const userArray = [
-      this.props.userSalary,
-      this.props.userAnnualBonus,
-      this.props.userStockOptions,
-    ];
-    let result = Object.values(this.props.aggregateList[0]).slice(0, 3);
-    const totalCompanyData = [];
-    for (let i = 0; i < userArray.length; i++) {
-      totalCompanyData.push(result[i]);
-      totalCompanyData.push(userArray[i]);
+    const color = ['green', 'yelow', 'blue'];
+    const totalGenderData = [];
+    const numberOfGenders = this.props.genderList.length;
+    // console.log('this is the raceList in chart     ', this.props);
+    for (let i = 0; i < this.props.genderList.length; i++) {
+      totalGenderData.push(this.props.genderList[i].avg_salary);
+      totalGenderData.push(this.props.genderList[i].avg_bonus);
+      totalGenderData.push(this.props.genderList[i].avg_stock);
     }
 
-    // Use 3 instead of 6 labels
-    const textArray = [
-      'Salary',
-      `Salary`,
-      'Annual Bonus',
-      `Annual Bonus`,
-      'Stock Options',
-      `Stock Options`,
-    ];
+    const textArray = ['Salary', 'Annual Bonus', 'Stock Options'];
 
     const width = 1000;
     const height = 700;
@@ -51,40 +36,38 @@ class CompanyChart extends Component {
     //   .attr("r", 8)
     //   .style("fill", "navy");
 
-    // svg
-    //   .append("p")
-    //   .attr("x", 390)
-    //   .attr("y", 20)
-    //   .text("Average")
-    //   .style("font-size", 14)
-    //   .attr("alignment-baseline", "middle");
+    // // svg
+    // //   .append("p")
+    // //   .attr("x", 390)
+    // //   .attr("y", 20)
+    // //   .text("Average")
+    // //   .style("font-size", 14)
+    // //   .attr("alignment-baseline", "middle");
 
-    // svg
-    //   .append("circle")
-    //   .attr("cx", 370)
-    //   .attr("cy", 50)
-    //   .attr("r", 8)
-    //   .style("fill", "green");
+    // // svg
+    // //   .append("circle")
+    // //   .attr("cx", 370)
+    // //   .attr("cy", 50)
+    // //   .attr("r", 8)
+    // //   .style("fill", "green");
 
-    // svg
-    //   .append("p")
-    //   .attr("x", 390)
-    //   .attr("y", 50)
-    //   .text("User")
-    //   .style("font-size", 14)
-    //   .attr("alignment-baseline", "middle");
+    // // svg
+    // //   .append("p")
+    // //   .attr("x", 390)
+    // //   .attr("y", 50)
+    // //   .text("User")
+    // //   .style("font-size", 14)
+    // //   .attr("alignment-baseline", "middle");
 
+    // const color = ['red', 'blue', 'green', 'yelow'];
     // creating initial bars, then transition handles the height and widths
     svg
       .selectAll('rect')
-      .data(totalCompanyData)
+      .data(totalGenderData)
       .enter()
       .append('rect')
       .attr('fill', (d, i) => {
-        if (i % 2 === 0) {
-          return 'navy';
-        }
-        return 'green';
+        return color[i % numberOfGenders];
       })
       .attr('class', 'sBar')
       .attr('x', (d, i) => 20 + i * 150)
@@ -96,7 +79,7 @@ class CompanyChart extends Component {
 
     svg
       .selectAll('rect')
-      .data(totalCompanyData)
+      .data(totalGenderData)
       .enter()
       .append('text')
       .style('font-size', 14)
@@ -132,9 +115,9 @@ class CompanyChart extends Component {
 
     let texts = svg.selectAll('text');
 
-    // Salary labels
+    // // Salary labels
     texts
-      .data(totalCompanyData)
+      .data(totalGenderData)
       .enter()
       .append('text')
       .attr('x', (d, i) => 10 + i * 152)
@@ -145,7 +128,7 @@ class CompanyChart extends Component {
         return 380 - d / 90;
       })
       .text((d, i) => {
-        return '$' + totalCompanyData[i];
+        return '$' + totalGenderData[i];
       });
     // X labels
     texts
@@ -164,21 +147,10 @@ class CompanyChart extends Component {
   render() {
     return (
       <React.Fragment>
-        {/* <div ref="chart" width={500} height={500}>
-          {" "}
-        </div> */}
-        <div ref="chart">
-          {/* <h1>This is the bar chart</h1> */}
-          <span className="legend_average"> </span>
-          <span> Average</span>
-          <span className="legend_user"> </span>
-          <span> User</span>
-        </div>
+        <div ref="chart"></div>
       </React.Fragment>
     );
   }
-  // }
 }
 
-export default CompanyChart;
-
+export default GenderChart;
