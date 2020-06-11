@@ -3,9 +3,16 @@ import Home from './Home.jsx'
 import { render } from 'react-dom';
 import {Redirect ,useHistory} from 'react-router-dom'
 import TitleCount from './TitleCount.jsx';
+import SalaryForm  from './FormsOnboarding/SalaryForm.jsx';
+import HourlyForm from './FormsOnboarding/HourlyForm.jsx';
+import RaceForm from './FormsOnboarding/RaceForm.jsx';
+
 import {
+  Box,
   Button,
   Container,
+  CssBaseline,
+  Typography,
   TextField,
   Radio,
   RadioGroup,
@@ -15,14 +22,19 @@ import {
   InputAdornment,
 } from '@material-ui/core';
 
+export const InputContext = React.createContext({});
+export const ErrorContext = React.createContext({});
+
 function GetStarted(props) {
   const history = useHistory()
   // the "step" control defines which part of the three step flow the user is on
   const [step, setStep] = useState('intro');
   // initialize inputs as an empty object
-  // every time we udpate inputs, we'll use the setInput functio
+  // every time we udpate inputs, we'll use the setInput function
+
   const [inputs, setInputs] = useState({});
   const [errors, setErrors] = useState({});
+
   const [titleCount, setTitleCount] = useState(null);
   const [currentStepComplete, updateStepCompletionStatus] = useState(false);
 
@@ -60,6 +72,7 @@ function GetStarted(props) {
   // called each time an input changes
   // updates state, checks for validation errors, and updates disable status of button
   function handleChange(event) {
+    console.log("Change event triggered in GetStarted");
     const { name, value } = event.target;
     setInputs((prevState) => ({ ...prevState, [name]: value }));
     handleError(name, value);
@@ -68,6 +81,7 @@ function GetStarted(props) {
 
   function handleError(name, value) {
     // for every change in the input, we're going to check whether that passes our validation requirements
+    console.log("error name is:", name);
     let error;
     const numberFields = [
       'annualIncome',
@@ -189,118 +203,15 @@ function GetStarted(props) {
   function renderIncomeQuestions() {
     if (inputs.employeeType === 'Salary') {
       return (
-        <React.Fragment>
-          {/* Text input for annual salary*/}
-          <br />
-          <br />
-          <TextField
-            required
-            error={errors.hasOwnProperty('annualIncome') ? true : false}
-            helperText={
-              errors.hasOwnProperty('annualIncome')
-                ? errors['annualIncome']
-                : ''
-            }
-            id="annual-income-input"
-            label="Annual Income (pre-tax)"
-            variant="outlined"
-            name="annualIncome"
-            // prepends $ at the beginning of the input
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">$</InputAdornment>
-              ),
-            }}
-            onChange={handleChange}
-          />
-          <br />
-          <br />
-          {/* TODO: allow a N/A option for the annual bonus input */}
-          <TextField
-            required
-            id="bonus-input"
-            label="Last annual bonus"
-            error={errors.hasOwnProperty('annualBonus') ? true : false}
-            helperText={
-              errors.hasOwnProperty('annualBonus') ? errors['annualBonus'] : ''
-            }
-            // helperText="Incorrect entry."
-            variant="outlined"
-            name="annualBonus"
-            // prepends $ at the beginning of the input
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">$</InputAdornment>
-              ),
-            }}
-            onChange={handleChange}
-          />
-          <br />
-          <br />
-          {/* TODO: allow a N/A option for the stock options input */}
-          <TextField
-            required
-            id="stock-options-input"
-            label="Total stock options "
-            // helperText="Incorrect entry."
-            error={errors.hasOwnProperty('stockOptions') ? true : false}
-            helperText={
-              errors.hasOwnProperty('stockOptions')
-                ? errors['stockOptions']
-                : ''
-            }
-            variant="outlined"
-            name="stockOptions"
-            onChange={handleChange}
-          />
-        </React.Fragment>
+        <ErrorContext.Provider value={{...errors, handleChange: handleChange}}>
+          <SalaryForm/>
+        </ErrorContext.Provider>
       );
     } else if (inputs.employeeType === 'Hourly') {
       return (
-        <React.Fragment>
-          <br />
-          <br />
-          <TextField
-            required
-            id="hourly-wage-input"
-            label="Hourly wage (pre-tax)"
-            // helperText="Incorrect entry."
-            variant="outlined"
-            name="hourlyWage"
-            // prepends $ at the beginning of the input
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">$</InputAdornment>
-              ),
-            }}
-            onChange={handleChange}
-            error={errors.hasOwnProperty('hourlyWage') ? true : false}
-            helperText={
-              errors.hasOwnProperty('hourlyWage') ? errors['hourlyWage'] : ''
-            }
-          />
-          <br />
-          <br />
-          <FormControl component="fieldset">
-            <FormLabel component="legend"></FormLabel>
-            <RadioGroup
-              aria-label="Part time or full time?"
-              name="ftStatus"
-              onChange={handleChange}
-            >
-              <FormControlLabel
-                value="Part Time"
-                control={<Radio />}
-                label="Part Time"
-              />
-              <FormControlLabel
-                value="Full Time"
-                control={<Radio />}
-                label="Part Time"
-              />
-            </RadioGroup>
-          </FormControl>
-        </React.Fragment>
+        <ErrorContext.Provider value={{...errors, handleChange: handleChange}}>
+          <HourlyForm/>
+        </ErrorContext.Provider>
       );
     }
   }
@@ -310,10 +221,13 @@ function GetStarted(props) {
     if (step === 'intro') {
       return (
         <React.Fragment>
-          <h1>How this works</h1>
-          <h3>
+          <Box display="flex" flexDirection="column" alignItems="center" width={550}>
+          <Typography variant="h3">How this works</Typography>
+          <br/>
+          <br/>
+          <Typography variant="h6" align="center">
             We're about to ask you for deeply personal information, including
-            your income, gender, race, and sexuality <br />
+            your income, gender, race, and sexuality<br />
             <br />
             All data is encrypted and will only be viewable by individuals at
             your company with your same title <br />
@@ -323,7 +237,9 @@ function GetStarted(props) {
             <br />
             Accurate and complete information is essential for ending workplace
             discrimination <br />
-          </h3>
+            <br />
+          </Typography>
+          </Box>
           <Button
             // {inputs.keys.length > 0 ? disabled : color="primary"}
             color="primary"
@@ -497,117 +413,32 @@ function GetStarted(props) {
       );
     } else if (step === 'personal') {
       return (
-        <React.Fragment>
-          <FormControl component="fieldset">
-            <FormLabel component="legend">
-              What race your identify with?
-            </FormLabel>
-            <RadioGroup aria-label="race" name="race" onChange={handleChange}>
-              <FormControlLabel
-                value="White"
-                control={<Radio />}
-                label="White"
-              />
-              <FormControlLabel
-                value="Black"
-                control={<Radio />}
-                label="Black"
-              />
-              <FormControlLabel
-                value="Latino"
-                control={<Radio />}
-                label="Latino"
-              />
-              <FormControlLabel
-                value="Asian"
-                control={<Radio />}
-                label="Asian"
-              />
-            </RadioGroup>
-          </FormControl>
-          <br />
-          <br />
-          <FormControl component="fieldset">
-            <FormLabel component="legend">
-              What gender do you identify with?
-            </FormLabel>
-            <RadioGroup
-              aria-label="gender"
-              name="gender"
-              onChange={handleChange}
-              // value={inputs.employeeType}
-            >
-              <FormControlLabel value="Male" control={<Radio />} label="Male" />
-              <FormControlLabel
-                value="Female"
-                control={<Radio />}
-                label="Female"
-              />
-              <FormControlLabel
-                value="Other"
-                control={<Radio />}
-                label="Other"
-              />
-            </RadioGroup>
-          </FormControl>
-          <br />
-          <br />
-          <FormControl component="fieldset">
-            <FormLabel component="legend">
-              Do you consider yourself a member of the LGBTQ community?
-            </FormLabel>
-            <RadioGroup
-              aria-label="sexuality"
-              name="sexuality"
-              onChange={handleChange}
-              // value={inputs.employeeType}
-            >
-              <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
-              <FormControlLabel value="No" control={<Radio />} label="No" />
-            </RadioGroup>
-          </FormControl>
-          <br />
-          <br />
-          <FormControl component="fieldset">
-            <FormLabel component="legend">Age</FormLabel>
-            <RadioGroup aria-label="age" name="age" onChange={handleChange}>
-              <FormControlLabel
-                value="18 - 35"
-                control={<Radio />}
-                label="18 - 35"
-              />
-              <FormControlLabel
-                value="36 - 50"
-                control={<Radio />}
-                label="36 - 50"
-              />
-              <FormControlLabel value="51 +" control={<Radio />} label="51 +" />
-            </RadioGroup>
-          </FormControl>
-          <br />
-          <br />
+        <>
+          <ErrorContext.Provider value={{...errors, handleChange: handleChange}}>
+            <RaceForm/>
+          </ErrorContext.Provider>
           <Button
-            // {...inputs.keys.length > 0 ? ' ': disabled}
-            disabled={!currentStepComplete}
-            // disabled
-            color="primary"
-            variant="contained"
-            onClick={submitForm}
-          >
-            Complete
+          // {...inputs.keys.length > 0 ? ' ': disabled}
+          disabled={!currentStepComplete}
+          // disabled
+          color="primary"
+          variant="contained"
+          onClick={submitForm}
+        >
+          Complete
           </Button>
-        </React.Fragment>
+        </>
       );
     }
   }
 
   return (
-    <Container maxWidth="sm">
+    <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
       <br />
       <br />
       {renderNextStep()}
       {/* if on the final step of the form, render a "See results" button that submits the form responses to the DB */}
-    </Container>
+    </Box>
   );
 }
 
