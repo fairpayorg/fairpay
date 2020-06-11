@@ -182,7 +182,8 @@ function GetStarted(props) {
       body: JSON.stringify(data),
     });
     try {
-      console.log("Succesful post");
+      const data = await result.json();
+      console.log(data);
     } catch (err) {
       return err;
     }
