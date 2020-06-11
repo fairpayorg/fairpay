@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, AppBar, Tabs, Tab, Typography, Container, withStyles } from '@material-ui/core';
 import CompanyComparison from './CompanyComparison.jsx';
 import IndividualComparison from './IndividualComparison.jsx';
+import BarChart from './BarChart.jsx';
 
 const styles = {
   tabBar: {
@@ -10,7 +11,7 @@ const styles = {
   },
 };
 function Home(props) {
-  console.log('The props => ', props);
+  // console.log('The props => ', props);
   // this is the hook that toggles the different comparison views
   // defaults to company comparison view
   const [view, setView] = useState(0);
@@ -95,7 +96,7 @@ function Home(props) {
       .then(res => res.json())
       .then(data => {
         // with this data, setState for each hook and prop drill to appropriate components
-        console.log('data from fetch', data);
+        // console.log('data from fetch', data);
         const current = data.currentUser;
 
         // setting state for current logged in user
@@ -198,10 +199,15 @@ function Home(props) {
       })
       .catch(err => console.log(err));
   }, []);
-
+ 
   const { classes } = props;
-  console.log('PROPS => ', props);
-  console.log('what are classes:', classes);
+  // console.log('PROPS => ', props);
+  // console.log('what are classes:', classes);
+
+
+
+  const [selectedFocus, setselectedFocus] = useState("Race");
+
   return (
     <React.Fragment>
       {/* Header STARTS here */}
@@ -215,24 +221,39 @@ function Home(props) {
       )}
       {/* Header ENDS here */}
 
-      {/* Bar that has the individual comparisons */}
-      <Container id="comparison_tabs">
-        <AppBar className={classes.tabBar} id="company_individual_toggle" position="static">
-          <Tabs view={view} onChange={handleComparison} centered>
-            <Tab label="Company Wide Comparison" />
-            <Tab label="Individual Comparison" />
-          </Tabs>
-        </AppBar>
-      </Container>
-      {/* End of bar */}
-
-      {/* CURRENT BUG, since there is an error in the fetch req-res, the loading state never hits the end of the useEffect hook and loading is never flipped to false*/}
       {loading ? (
         <h2 className="current_user_header">Loading Data...</h2>
       ) : (
         <div id="tables_div">
-          <Container>
-            <CompanyComparison
+          <Container>         
+            <svg viewBox="-2 0 500 500" preserveAspectRatio="xMidYMid meet">
+              <BarChart positionX={35} 
+                        positionY={50} 
+                        width={80} 
+                        height={100} 
+                        index={0}
+                        selectedFocus={selectedFocus}
+                        jobTitle={jobTitle}
+                        race={race}
+                        gender={gender}
+                        baseSalary={baseSalary}
+                        yrsExperience={yrsExperience}
+                        raceList={raceList}
+                        genderList={genderList}
+                        ageList={ageList}
+                        />
+            </svg>
+          </Container>
+        </div>
+      )}
+    </React.Fragment>
+  );
+}
+
+export default withStyles(styles)(Home);
+
+
+            {/* <CompanyComparison
               view={view}
               index={0}
               name={name}
@@ -282,12 +303,18 @@ function Home(props) {
               allYrsExperience={allYrsExperience}
               allYrsCompany={allYrsCompany}
               allBaseSalary={allBaseSalary}
-            />
-          </Container>
-        </div>
-      )}
-    </React.Fragment>
-  );
-}
+            /> */}
 
-export default withStyles(styles)(Home);
+
+
+    //   {/* Bar that has the individual comparisons */}
+    //   <Container id="comparison_tabs">
+    //   <AppBar className={classes.tabBar} id="company_individual_toggle" position="static">
+    //     <Tabs view={view} onChange={handleComparison} centered>
+    //       <Tab label="Company Wide Comparison" />
+    //       <Tab label="Individual Comparison" />
+    //     </Tabs>
+    //   </AppBar>
+    // </Container>
+    // {/* End of bar */}
+
