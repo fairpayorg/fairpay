@@ -57,9 +57,6 @@ export default function Age(props) {
         </div>
         <AgeChartWrapper
           ageList={props.ageList}
-          userSalary={props.userSalary}
-          serAnnualBonus={props.userAnnualBonus}
-          serStockOptions={props.userStockOptions}
         />
       </div>
     </React.Fragment>

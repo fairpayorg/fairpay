@@ -1,5 +1,5 @@
 import React from "react";
-import ChartWrapper from "./ChartWrapper.js";
+import ChartWrapper from "./CompanyChart.js";
 import {
   Table,
   TableBody,
