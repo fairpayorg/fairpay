@@ -9,7 +9,9 @@ import {
   TableRow,
 } from "@material-ui/core";
 
-function Gender(props) {
+function RaceCity(props) {
+  const sliced = props.raceList;
+  console.log(sliced);
   return (
     <React.Fragment>
       <div hidden={props.value !== props.index}>
@@ -18,17 +20,18 @@ function Gender(props) {
             <Table className="table_displays">
               <TableHead>
                 <TableRow>
-                  <TableCell>Gender</TableCell>
-                  <TableCell align="right">People in Company</TableCell>
+                  <TableCell>Race</TableCell>
+
+                  <TableCell align="right">People in City</TableCell>
                   <TableCell align="right">Average Salary</TableCell>
                   <TableCell align="right">Average Annual Bonus</TableCell>
                   <TableCell align="right">Average Stock Options</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {props.genderList.map((row) => (
-                  <TableRow key={row.gender}>
-                    <TableCell>{row.gender}</TableCell>
+                {sliced.map((row) => (
+                  <TableRow key={row.race}>
+                    <TableCell>{row.race}</TableCell>
                     <TableCell align="right">{row.count}</TableCell>
                     <TableCell align="right">${row.avg_salary}</TableCell>
                     <TableCell align="right">${row.avg_bonus}</TableCell>
@@ -44,4 +47,4 @@ function Gender(props) {
   );
 }
 
-export default Gender;
+export default RaceCity;

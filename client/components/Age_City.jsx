@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@material-ui/core";
 
-function Gender(props) {
+export default function AgeCity(props) {
   return (
     <React.Fragment>
       <div hidden={props.value !== props.index}>
@@ -18,17 +18,17 @@ function Gender(props) {
             <Table className="table_displays">
               <TableHead>
                 <TableRow>
-                  <TableCell>Gender</TableCell>
-                  <TableCell align="right">People in Company</TableCell>
+                  <TableCell>Age</TableCell>
+                  <TableCell align="right">People in City</TableCell>
                   <TableCell align="right">Average Salary</TableCell>
                   <TableCell align="right">Average Annual Bonus</TableCell>
                   <TableCell align="right">Average Stock Options</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {props.genderList.map((row) => (
-                  <TableRow key={row.gender}>
-                    <TableCell>{row.gender}</TableCell>
+                {props.ageList.map((row) => (
+                  <TableRow key={row.age}>
+                    <TableCell>{row.age}</TableCell>
                     <TableCell align="right">{row.count}</TableCell>
                     <TableCell align="right">${row.avg_salary}</TableCell>
                     <TableCell align="right">${row.avg_bonus}</TableCell>
@@ -43,5 +43,3 @@ function Gender(props) {
     </React.Fragment>
   );
 }
-
-export default Gender;
