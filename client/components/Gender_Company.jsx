@@ -8,6 +8,7 @@ import {
   TableHead,
   TableRow,
 } from '@material-ui/core';
+import GenderChart from './GenderChart.js';
 
 function Gender(props) {
   return (
@@ -53,6 +54,7 @@ function Gender(props) {
             </Table>
           </TableContainer>
         </div>
+        <GenderChart genderList={props.genderList} />
       </div>
     </React.Fragment>
   );

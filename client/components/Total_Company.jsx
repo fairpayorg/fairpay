@@ -1,5 +1,5 @@
-import React from "react";
-import ChartWrapper from "./ChartWrapper.js";
+import React from 'react';
+import CompanyChart from './CompanyChart.js';
 import {
   Table,
   TableBody,
@@ -8,7 +8,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
 function Total(props) {
   return (
@@ -51,7 +51,7 @@ function Total(props) {
             </Table>
           </TableContainer>
         </div>
-        <ChartWrapper
+        <CompanyChart
           aggregateList={props.aggregateList}
           userSalary={props.userSalary}
           userAnnualBonus={props.userAnnualBonus}
