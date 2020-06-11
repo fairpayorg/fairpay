@@ -75,7 +75,7 @@ function Home(props) {
   const [aggregateByCityList, setAggregateByCityList] = useState([]);
 
   // state for whether fetch call is finished
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // used for prop drilling into child components
   const employeesNames = [];
@@ -107,7 +107,7 @@ function Home(props) {
       .find((row) => row.startsWith('userId'))
       .split('=')[1];
     setLoading(true);
-
+    console.log("Data about to be fetch and wait.");
     const asyncDataFetch = async () => {
       let response = await fetch(`/api/company/${user_linkedin_id}`);
       let data = await response.json();
@@ -315,6 +315,7 @@ function Home(props) {
                 ageList={ageList}
                 aggregateList={aggregateList}
                 allNames={allNames}
+                loading={loading}
               />
               <CityComparison
                 view={view}

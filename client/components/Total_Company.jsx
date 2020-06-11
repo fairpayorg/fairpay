@@ -56,6 +56,7 @@ function Total(props) {
           userSalary={props.userSalary}
           userAnnualBonus={props.userAnnualBonus}
           userStockOptions={props.userStockOptions}
+          loading={props.loading}
         />
       </div>
     </React.Fragment>
