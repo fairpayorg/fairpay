@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from 'react';
 import {
   Table,
   TableBody,
@@ -7,12 +7,15 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from "@material-ui/core";
+} from '@material-ui/core';
+import { UserContext } from './contexts/userContext';
 
-export default function Age(props) {
+export default function Age({ value, view, index }) {
+  const { ageList } = useContext(UserContext);
+
   return (
     <React.Fragment>
-      <div hidden={props.value !== props.index || props.view === 1}>
+      <div hidden={value !== index || view === 1}>
         <div className="data_display_div">
           <TableContainer component={Paper}>
             <Table className="table_displays">
@@ -26,13 +29,15 @@ export default function Age(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {props.ageList.map((row) => (
-                  <TableRow key={row.age}>
+                {ageList.map((row, i) => (
+                  <TableRow key={i}>
                     <TableCell>{row.age}</TableCell>
                     <TableCell align="right">{row.count}</TableCell>
                     <TableCell align="right">${row.avg_salary}</TableCell>
                     <TableCell align="right">${row.avg_bonus}</TableCell>
-                    <TableCell align="right">${row.avg_stock}</TableCell>
+                    <TableCell align="right">
+                      ${row.avg_stock_options}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

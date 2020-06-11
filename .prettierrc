@@ -1,5 +1,7 @@
 {
   "singleQuote": true,
   "useTabs": false,
-  "endOfLine": "auto"
+  "endOfLine": "auto",
+  "arrowParens": "avoid",
+  "printWidth": 80
 }

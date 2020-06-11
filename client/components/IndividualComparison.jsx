@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from 'react';
 import {
   Container,
   Table,
@@ -8,36 +8,16 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from "@material-ui/core";
+} from '@material-ui/core';
+import { UserContext } from './contexts/userContext';
 
-function IndividualComparison(props) {
-  // need to write logic that loops through the data we get back from the fetch request and renders
-  // all the employee data who work at the same company with the same title
-
-  const [name, setName] = useState(props.name);
-  const [company, setCompany] = useState(props.company);
-  const [jobTitle, setJobTitle] = useState(props.jobTitle);
-  const [sexuality, setSexuality] = useState(null);
-  const [age, setAge] = useState(null);
-  const [gender, setGender] = useState();
-  const [race, setRace] = useState();
-  // salary vs hourly employee
-  const [employeeType, setEmployeeType] = useState();
-  // years of experience in field/position
-  const [yrsExperience, setYrsExperience] = useState();
-  // years at current company
-  const [yrsCompany, setYrsCompany] = useState();
-  const [baseSalary, setBaseSalary] = useState();
-  const [annualBonus, setAnnualBonus] = useState();
-  // total invested and uninvested
-  const [stockOptions, setStockOptions] = useState();
-  const [signingBonus, setSigningBonus] = useState();
-  const [ftStatus, setFtStatus] = useState();
+const IndividualComparison = ({ view, index }) => {
+  const { companyList } = useContext(UserContext);
 
   return (
     <React.Fragment>
       <Container>
-        <div hidden={props.view !== props.index} id="individual_comparison_div">
+        <div hidden={view !== index} id="individual_comparison_div">
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
@@ -52,27 +32,34 @@ function IndividualComparison(props) {
                   <TableCell align="right">Years of Experience</TableCell>
                 </TableRow>
               </TableHead>
+
               <TableBody>
-                {props.allNames.map((key, i) => {
-                  return (
-                    <TableRow>
-                      <TableCell>{key}</TableCell>
-                      <TableCell align="right">{props.allAges[i]}</TableCell>
-                      <TableCell align="right">
-                        ${props.allBaseSalary[i]}
-                      </TableCell>
-                      <TableCell align="right">{props.allGenders[i]}</TableCell>
-                      <TableCell align="right">{props.allTypes[i]}</TableCell>
-                      <TableCell align="right">{props.allSexes[i]}</TableCell>
-                      <TableCell align="right">
-                        {props.allYrsCompany[i]}
-                      </TableCell>
-                      <TableCell align="right">
-                        {props.allYrsExperience[i]}
-                      </TableCell>
+                {companyList.map(
+                  (
+                    {
+                      name,
+                      age,
+                      base_salary,
+                      gender,
+                      job_title,
+                      sexuality,
+                      years_at_company,
+                      years_of_experience,
+                    },
+                    i
+                  ) => (
+                    <TableRow key={i}>
+                      <TableCell>{name}</TableCell>
+                      <TableCell align="right">{age}</TableCell>
+                      <TableCell align="right">${base_salary}</TableCell>
+                      <TableCell align="right">{gender}</TableCell>
+                      <TableCell align="right">{job_title}</TableCell>
+                      <TableCell align="right">{sexuality}</TableCell>
+                      <TableCell align="right">{years_at_company}</TableCell>
+                      <TableCell align="right">{years_of_experience}</TableCell>
                     </TableRow>
-                  );
-                })}
+                  )
+                )}
               </TableBody>
             </Table>
           </TableContainer>
@@ -80,6 +67,6 @@ function IndividualComparison(props) {
       </Container>
     </React.Fragment>
   );
-}
+};
 
 export default IndividualComparison;

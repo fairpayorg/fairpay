@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from 'react';
 import {
   Table,
   TableBody,
@@ -7,14 +7,14 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from "@material-ui/core";
+} from '@material-ui/core';
+import { UserContext } from './contexts/userContext';
 
-function Race(props) {
-  const sliced = props.raceList;
-  console.log(sliced);
+function Race({ value, view, index }) {
+  const { raceList } = useContext(UserContext);
   return (
     <React.Fragment>
-      <div hidden={props.value !== props.index || props.view === 1}>
+      <div hidden={value !== index || view === 1}>
         <div className="data_display_div">
           <TableContainer component={Paper}>
             <Table className="table_displays">
@@ -29,13 +29,15 @@ function Race(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {sliced.map((row) => (
-                  <TableRow key={row.race}>
+                {raceList.map((row, i) => (
+                  <TableRow key={i}>
                     <TableCell>{row.race}</TableCell>
                     <TableCell align="right">{row.count}</TableCell>
                     <TableCell align="right">${row.avg_salary}</TableCell>
                     <TableCell align="right">${row.avg_bonus}</TableCell>
-                    <TableCell align="right">${row.avg_stock}</TableCell>
+                    <TableCell align="right">
+                      ${row.avg_stock_options}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
