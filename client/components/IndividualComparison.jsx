@@ -13,13 +13,8 @@ import {
 function IndividualComparison(props) {
   // need to write logic that loops through the data we get back from the fetch request and renders
   // all the employee data who work at the same company with the same title
-<<<<<<< HEAD
-  const currentUser = props.currentUser;
-  const aggregate = props.aggregate;
-=======
   const { aggregate, currentUser, averages } = props;
 
->>>>>>> bee933b2ba67e1c59bb9a4878c31b6315fc1d01a
   return (
     <React.Fragment>
       <Container>
