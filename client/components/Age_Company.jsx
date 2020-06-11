@@ -9,7 +9,7 @@ import {
   TableRow,
 } from '@material-ui/core';
 
-import AgeChartWrapper from './AgeChartWrapper.js';
+import AgeChart from './AgeChart.js';
 
 export default function Age(props) {
   return (
