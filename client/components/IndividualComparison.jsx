@@ -15,16 +15,14 @@ function IndividualComparison(props) {
   // all the employee data who work at the same company with the same title
   const currentUser = props.currentUser;
   const aggregate = props.aggregate;
-
   return (
     <React.Fragment>
       <Container>
         <div hidden={props.view !== props.index}id="individual_comparison_div">
           <TableContainer component={Paper}>
-            <Table>
+            <Table className="table_displays">
               <TableHead>
                 <TableRow>
-                  <TableCell>Employee</TableCell>
                   <TableCell align="right">Age</TableCell>
                   <TableCell align="right">Base Salary</TableCell>
                   <TableCell align="right">Gender</TableCell>
@@ -35,10 +33,9 @@ function IndividualComparison(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {aggregate.allNames.map((key, i) => {
+                {aggregate.allAges.map((key, i) => {
                   return (
                     <TableRow>
-                      <TableCell>{''}</TableCell>
                       <TableCell align="right">{aggregate.allAges[i]}</TableCell>
                       <TableCell align="right">
                         ${aggregate.allBaseSalary[i]}

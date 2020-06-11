@@ -16,18 +16,18 @@ function Total(props) {
         <div className="data_display_div">
           <TableContainer component={Paper}>
             <Table className="table_displays">
-              <TableHead>
-                <TableRow>
-                  <TableCell>All Employees</TableCell>
+              <TableHead className="table_head">
+                <TableRow >
+                  <TableCell className="MuiTableCell-root">All Employees</TableCell>
                   <TableCell align="right">Average Salary</TableCell>
                   <TableCell align="right">Average Annual Bonus</TableCell>
                   <TableCell align="right">Average Stock Options</TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>
+              <TableBody className="MuiTableCell-body">
                 {props.aggregateList.map((row) => (
                   <TableRow>
-                    <TableCell>{row.count}</TableCell>
+                    <TableCell >{row.count}</TableCell>
                     <TableCell align="right">${row.avg_salary}</TableCell>
                     <TableCell align="right">${row.avg_bonus}</TableCell>
                     <TableCell align="right">${row.avg_stock}</TableCell>

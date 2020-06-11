@@ -79,7 +79,7 @@ function Home(props) {
       .then((data) => {
 
         // with this data, setState for each hook and prop drill to appropriate components
-        console.log("data from fetch", data);
+        // console.log("data from fetch", data);
         const current = data.currentUser;
 
         // setting state for current logged in user
@@ -123,7 +123,6 @@ function Home(props) {
           return acc;
         }, []);
 
-        // setGenderList(genderAvg);
 
         const newAgeList = data.ageStats.reduce((acc, curVal) => {
           acc.push({
@@ -190,7 +189,6 @@ function Home(props) {
           allStockOptions: employeesStockOptions,
           allSigningBonuses: employeesSigningBonus,
           allFtStatuses: employeesFtStatus,
-
           raceList: newRaceList,
           genderList: newGenderList,
           ageList: newAgeList,
@@ -207,7 +205,7 @@ function Home(props) {
     <React.Fragment>
       {loading ? null : (
         <div className="current_user_header">
-          <h2 id="current_user_name">Hello {name}</h2>
+          <h2 id="current_user_name">Hello {currentUser.name}</h2>
           <label id="current_user_label">
             {currentUser.jobTitle} at {currentUser.company}
           </label>
@@ -219,7 +217,7 @@ function Home(props) {
           id="company_individual_toggle"
           position="static"
         >
-          <Tabs value={view} onChange={handleComparison} centered>
+          <Tabs value={view} onChange={handleComparison} centered className="companyVsIndividualTabs">
             <Tab label="Company Wide Comparison" />
             <Tab label="Individual Comparison" />
           </Tabs>
@@ -228,30 +226,30 @@ function Home(props) {
       {loading ? (
         <h2 className="current_user_header">Loading Data...</h2>
       ) : (
-        <div>
-          <div id="tables_div">
-            <Container>
-              <CompanyComparison
-                view={view}
-                index={0}
+          <div>
+            <div id="tables_div">
+              <Container>
+                <CompanyComparison
+                  view={view}
+                  index={0}
 
-                raceList={companyAggregate.raceList}
-                genderList={companyAggregate.genderList}
-                ageList={companyAggregate.ageList}
-                aggregateList={companyAggregate.aggregateList}
-                allNames={companyAggregate.allNames}
-              />
-              <IndividualComparison
-                view={view}
-                index={1}
+                  raceList={companyAggregate.raceList}
+                  genderList={companyAggregate.genderList}
+                  ageList={companyAggregate.ageList}
+                  aggregateList={companyAggregate.aggregateList}
+                  allNames={companyAggregate.allNames}
+                />
+                <IndividualComparison
+                  view={view}
+                  index={1}
 
-                currentUser={currentUser}
-                aggregate={companyAggregate}
-              />
-            </Container>
+                  currentUser={currentUser}
+                  aggregate={companyAggregate}
+                />
+              </Container>
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </React.Fragment>
   );
 }
