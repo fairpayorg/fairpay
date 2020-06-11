@@ -8,6 +8,7 @@ import {
   TableHead,
   TableRow,
 } from '@material-ui/core';
+import RaceChart from './RaceChart.js';
 
 function Race(props) {
   const sliced = props.raceList;
@@ -57,6 +58,7 @@ function Race(props) {
             </Table>
           </TableContainer>
         </div>
+        <RaceChart raceList={props.raceList} />
       </div>
     </React.Fragment>
   );
