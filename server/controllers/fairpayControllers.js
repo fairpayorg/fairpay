@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const getCommonJobTitles = require('../helpers/getCommonJobTitles');
 const upsertCompany = require('../helpers/upsertCompany');
 const insertSalary = require('../helpers/insertSalary');
+const getAllCompanyNames = require('../helpers/getAllCompanyNames');
 
 const fairpayController = {};
 
@@ -113,6 +114,11 @@ fairpayController.getCurrentUser = (req, res, next) => {
 };
 
 // second middleware to fire after get to /api/company/:linkedin_user_id; sends company data of users with all same job titles at same company of user
+
+fairpayController.getAllCompanyNames = async (req, res, next) => {
+  res.locals.companyNames = await getAllCompanyNames.get();
+  next();
+}
 
 fairpayController.getCompanyData = (req, res, next) => {
   console.log('controller: get compnay data');
