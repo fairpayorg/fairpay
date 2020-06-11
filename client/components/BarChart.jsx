@@ -7,13 +7,15 @@ import { scaleLinear, max, select } from "d3";
     Bar        
 /* **********************************************************************************/
 
-const animateRect = (rectRef, height, countTextRef) => {
+const animateRect = (rectRef, countTextRef, height) => {
+  // select is D3 function that returns a handle to first DOM element matching specified selector string
+  // In this case we give it a ref to an instance of a Bar component 
   const rect = select(rectRef.current);
   rect
     .transition()
     .duration(1000)
     .attr("height", height + 0.5)
-    .attr("fill", "green")
+    // .attr("fill", "green")
   const text = select(countTextRef.current);
   text
     .transition()
@@ -22,19 +24,19 @@ const animateRect = (rectRef, height, countTextRef) => {
 };
 
 const Bar = props => {
-  // Allow us to access this dom element from elsewhere I think? TBD...
+  // Allows us to access this dom element from elsewhere I think? TBD...
   const rectRef = React.createRef();
   const countTextRef = React.createRef();
   const { x, y, width, height, value } = props;
   
-  
+  // Transition takes time so place in useEffect
   useEffect(() => {
-    animateRect(rectRef, height, countTextRef);
+    animateRect(rectRef, countTextRef, height);
   }); 
  
   return (
     <g>
-      <rect x={x + 5} y={y + 5} width={width} ref={rectRef} />
+      <rect x={x + 5} y={y + 5} width={width} ref={rectRef} fill="green" fill-opacity="60%"/>
       <text
         x={x + 40}
         transform="scale(1, -1)"
@@ -60,16 +62,36 @@ const BarChart = props => {
   const { user } = useContext(UserContext);  
   console.log("user", user)
 
-  const margin = { top: 20, right: 20, bottom: 30, left: 45 };
+  // Not using left/right margins currently
+  const margin = { top: 20, right: 20, bottom: 20, left: 20 };
   const barChartHeight = height - margin.top - margin.bottom;
 
+  // Choose a list based on current user selection
   let selectedList = null;
   if(selectedFocus === "gender") selectedList = genderList;
   else if(selectedFocus === "age") selectedList = ageList;
   else selectedList = raceList;
   const numCategories = selectedList.length;
   
-  // Generate array of svg text elements to put below bars
+  // Returns a new continuous scale that maps from space given in domain to space given in range
+  // max takes an array, and optional accessor function that works like map
+  const barScale = scaleLinear()
+    .domain([0, max(selectedList, row => row.avg_salary)])
+    .range([barChartHeight, 0]);
+  
+  // Generate array of Bars
+  const allBars = selectedList.map((row, i) => (
+    <Bar
+      key={i}
+      x={i * 80}
+      y={0}
+      width={75}
+      height={ ( barChartHeight - barScale(row.avg_salary) ) }
+      value={row.avg_salary}
+    />
+  ));
+
+  // Generate Category Labels as an array of svg text elems
   const categoriesLabel = selectedList.map((row, i) => (
     <text
       key={i}
@@ -82,37 +104,16 @@ const BarChart = props => {
       {capitalize(row[selectedFocus])}
     </text>
   ));
-  
-  // d3 function that sizes the bar heights according to data range
-  const y = scaleLinear()
-    .domain([0, max(selectedList, data => data.avg_salary)])
-    .range([barChartHeight, 0]);
-  
-  // Generate array of Bar components
-  const allBars = selectedList.map((data, i) => (
-    <Bar
-      key={i}
-      x={i * 80}
-      y={0}
-      width={75}
-      height={ ( barChartHeight - y(data.avg_salary) ) / 2 }
-      value={data.avg_salary}
-    />
-  ));
 
-  
   return (
-    // <g fill="none">
-    //   <rect x="0" y="0" width="100%" height="100%"/>
       <g transform={`translate(${positionX}, ${positionY}) scale(1, -1)`}>
-      {/* // <g transform={`translate(35, 400) scale(3, -3)`}> */}
       {allBars}
       {categoriesLabel}
-      <line x1="0" y1="80" x2="100" y2="20" stroke="black" />
+      <line x1="0" y1="150" x2="325" y2="150" stroke="black" stroke-width="0.3" stroke-opacity="70%" stroke-linecap="round" stroke-dasharray="5,5" fill="none"/>
     </g>
-    // </g>
   );
 }
+
 
 /* ***********************************************************************************
     HELPERS       

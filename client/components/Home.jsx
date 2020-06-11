@@ -36,9 +36,9 @@ const Home = () => {
             <svg viewBox="-2 0 500 500" preserveAspectRatio="xMidYMid meet">
               <BarChart 
                 positionX={30} 
-                positionY={300} 
+                positionY={320} 
                 width={500} 
-                height={500}    
+                height={300}    
                 index={0}
                 selectedFocus={selectedFocus}
               />
