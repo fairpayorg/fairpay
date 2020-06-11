@@ -176,3 +176,26 @@ h2 {
   background-color: green;
   border-radius: 50%;
 }
+
+#gender_green {
+  background-color: green;
+  display: flex;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+}
+
+#gender_yellow {
+  display: flex;
+  height: 15px;
+  width: 15px;
+  background-color: yellow;
+  border-radius: 50%;
+}
+#gender_blue {
+  display: flex;
+  height: 15px;
+  width: 15px;
+  background-color: blue;
+  border-radius: 50%;
+}
