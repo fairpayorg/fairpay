@@ -1,11 +1,12 @@
-import React from 'react';
-import {BrowserRouter} from 'react-router-dom';
-import {render} from 'react-dom';
-import App from './App.jsx'
+import React from "react";
+import { BrowserRouter } from "react-router-dom";
+import { render } from "react-dom";
+import App from "./App.jsx";
+import "regenerator-runtime/runtime";
 
 render(
   <BrowserRouter>
-    <App/>
+    <App />
   </BrowserRouter>,
-  document.getElementById('root')
+  document.getElementById("root")
 );

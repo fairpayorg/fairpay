@@ -12,7 +12,7 @@ import {
 function Gender(props) {
   return (
     <React.Fragment>
-      <div hidden={props.value !== props.index || props.view === 1}>
+      <div hidden={props.value !== props.index}>
         <div className="data_display_div">
           <TableContainer component={Paper}>
             <Table className="table_displays">

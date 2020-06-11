@@ -86,14 +86,14 @@ h2 {
   border: solid 1px #114b26;
 }
 
-#company_container {
+.category_container {
   width: 15em;
   display: flex;
   float: left;
   justify-content: flex-start;
 }
 
-#company_comparison_div {
+.category_comparison_div {
   width: 13em;
   /* background-color: #51d07c; */
 }
@@ -110,6 +110,7 @@ h2 {
 .data_display_div {
   display: flex;
   flex-wrap: wrap;
+  margin-top: 2rem;
 }
 
 #linkedinButton {
@@ -135,7 +136,7 @@ h2 {
 }
 
 #tables_div {
-  margin-top: 3rem;
+  margin-top: 1rem;
 }
 
 .table_displays {

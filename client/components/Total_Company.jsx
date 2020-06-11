@@ -1,4 +1,5 @@
-import React from 'react';
+import React from "react";
+import ChartWrapper from "./ChartWrapper.js";
 import {
   Table,
   TableBody,
@@ -7,12 +8,12 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
 function Total(props) {
   return (
     <React.Fragment>
-      <div hidden={props.value !== props.index || props.view === 1}>
+      <div hidden={props.value !== props.index}>
         <div className="data_display_div">
           <TableContainer component={Paper}>
             <Table className="table_displays" color="primary">
@@ -50,6 +51,12 @@ function Total(props) {
             </Table>
           </TableContainer>
         </div>
+        <ChartWrapper
+          aggregateList={props.aggregateList}
+          userSalary={props.userSalary}
+          userAnnualBonus={props.userAnnualBonus}
+          userStockOptions={props.userStockOptions}
+        />
       </div>
     </React.Fragment>
   );
