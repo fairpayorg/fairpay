@@ -31,7 +31,7 @@ const CompanyForm = () => {
             onChange={errors.handleChange}
             onBlur={errors.handleChange}
             onFocus={errors.handleChange}
-            onClick={errors.handleChange}
+            on={errors.handleChange}
             error={errors.hasOwnProperty('company') ? true : false}
             helperText={
               errors.hasOwnProperty('company') ? errors['company'] : ''
@@ -80,25 +80,6 @@ const CompanyForm = () => {
         console.error('Error fetching company names:', error);
       });
   }
-
-  /*
-  function getRoleCount(company) {
-    const data = { company_name: company };
-    fetch('/api/jobTitles', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then((data) => {
-        return data.json();
-      })
-      .then((res) => setTitleCount(res))
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  }*/
 };
 
 export default CompanyForm;
