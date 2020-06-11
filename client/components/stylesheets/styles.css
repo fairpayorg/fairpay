@@ -125,6 +125,49 @@ h2 {
   align-items: center;
 }
 
+#tables_div svg {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.legend_box {
+  padding-left: 20px;
+  padding-right: 25px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  bottom: 130px;
+  position: absolute;
+  border-radius: 8px;
+  left: 5%;
+}
+
+.legend_box p {
+  font-size: 14px;
+}
+
+.bullet {
+  display: inline-block;
+  vertical-align: middle;
+  width: 12px;
+  height: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(black, 0.25);
+}
+
+.legend-orange {
+  background-color: orange;
+}
+
+.legend-yellow {
+  background-color: yellow;
+}
+
+.legend-brown {
+  background-color: brown;
+}
+
 #current_user_name {
   font-weight: 100;
   font-size: 2.5rem;

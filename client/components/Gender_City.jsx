@@ -17,7 +17,7 @@ function GenderCity(props) {
         <div className="data_display_div">
           <TableContainer component={Paper}>
             <Table className="table_displays">
-              <TableHead>
+              <TableHead className='TableHead'>
                 <TableRow>
                   <TableCell>Gender</TableCell>
                   <TableCell align="right">People in City</TableCell>

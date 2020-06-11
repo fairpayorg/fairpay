@@ -10,15 +10,20 @@ class AgeChart extends Component {
     // this.createChartWrapper = this.createChartWrapper.bind(this);
     // const svgRef = useRef()
   }
+
+  
+
   componentDidMount() {
     const totalAgeData = [];
 
     let chartAgeList = this.props.ageList;
+    const barColors = ['orange', 'yellow', 'brown'];
+    let categories = ['avg_salary', 'avg_bonus', 'avg_stock'];
 
-    for (let i = 0; i < chartAgeList.length; i++) {
-      totalAgeData.push(chartAgeList[i].avg_salary);
-      totalAgeData.push(chartAgeList[i].avg_bonus);
-      totalAgeData.push(chartAgeList[i].avg_stock);
+    for (let i = 0; i < categories.length; i++) {
+      for (let j=0; j < chartAgeList.length; j++) {
+        totalAgeData.push(chartAgeList[j][categories[i]]);
+      }
     }
 
     const textArray = ['Salary', 'Annual Bonus', 'Stock Options'];
@@ -64,9 +69,11 @@ class AgeChart extends Component {
     //   .style("font-size", 14)
     //   .attr("alignment-baseline", "middle");
 
-    const barColors = ['orange', 'yellow', 'brown'];
+    
     const numberOfRanges = chartAgeList.length;
 
+    let barGap = 0;
+   
     // creating initial bars, then transition handles the height and widths
     svg
       .selectAll('rect')
@@ -77,7 +84,12 @@ class AgeChart extends Component {
         return barColors[i % numberOfRanges];
       })
       .attr('class', 'sBar')
-      .attr('x', (d, i) => 20 + i * 150)
+      .attr('x', (d, i) => {
+        if (i % numberOfRanges === 0) {
+          barGap += 175;
+        }
+        return barGap + i * 50;
+      })
       .attr('y', 0)
       .attr('width', 50)
       .attr('height', 0)
@@ -121,13 +133,20 @@ class AgeChart extends Component {
       });
 
     let texts = svg.selectAll('text');
+    let salaryGap = 0;
 
     // Salary labels
     texts
       .data(totalAgeData)
       .enter()
       .append('text')
-      .attr('x', (d, i) => 10 + i * 152)
+      .style('font-size', 12)
+      .attr('x', (d, i) => {
+        if (i % numberOfRanges === 0) {
+          salaryGap += 175;
+        }
+        return salaryGap + i * 50;
+      })
       .attr('y', (d, i) => {
         if (d > 1000) {
           return 380 - d / 1000;
@@ -143,27 +162,35 @@ class AgeChart extends Component {
       .data(textArray)
       .enter()
       .append('text')
-      .style('font-size', 14)
+      .style('font-size', 12)
       .attr('dy', '0em')
-      .attr('x', (d, i) => 20 + i * 150)
+      .attr('x', (d, i) => 185 + i * 275)
       .attr('y', (d, i) => {
-        return 450;
+        return 435;
       })
       .text((d) => d);
+
+      
   }
 
+
   render() {
+    const ranges = ['18-35', '36-50', '51+'];
+    const barColors = ['orange', 'yellow', 'brown'];
+    const legendBullets = ranges.map((elem, index) => {
+      return (
+        <p><span className={'bullet legend-'+barColors[index]}></span>&nbsp;{ranges[index]}</p>
+      )
+    })
+    console.log(legendBullets);
     return (
       <React.Fragment>
-        {/* <div ref="chart" width={500} height={500}>
-          {" "}
-        </div> */}
+        
         <div ref='chart'>
-          {/* <h1>This is the bar chart</h1> */}
-          {/* <span className='legend_average'> </span>
-          <span> Average</span>
-          <span className='legend_user'> </span>
-          <span> User</span> */}
+          <div className='legend_box'>
+            {legendBullets}
+          </div>
+          
         </div>
       </React.Fragment>
     );
