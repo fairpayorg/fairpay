@@ -1,11 +1,10 @@
 import React, { Component, useRef } from 'react';
-import AggregateBarChart from './AggregateBarChart.js';
 import { scaleLinear } from 'd3-scale';
 import { max } from 'd3-array';
 import { select } from 'd3-selection';
 import * as d3 from 'd3';
 
-class AgeChartWrapper extends Component {
+class AgeChart extends Component {
   constructor(props) {
     super(props);
     // this.createChartWrapper = this.createChartWrapper.bind(this);
@@ -172,4 +171,4 @@ class AgeChartWrapper extends Component {
   // }
 }
 
-export default AgeChartWrapper;
+export default AgeChart;
