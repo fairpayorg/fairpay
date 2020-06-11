@@ -17,6 +17,7 @@ const styles = {
     color: "rgb(102, 102, 102)",
   },
 };
+
 function Home(props) {
   // this is the hook that toggles the different comparison views
   // defaults to company comparison view
@@ -24,11 +25,11 @@ function Home(props) {
   const handleComparison = (e, view) => {
     setView(view);
   };
-
+  
+/////////////////////////////////////////////////
   // this is name of employee
   const [name, setName] = useState(null);
   const [company, setCompany] = useState(null);
-
   // this is job title
   const [jobTitle, setJobTitle] = useState(null);
   // this is sexual orientation
@@ -48,7 +49,10 @@ function Home(props) {
   const [stockOptions, setStockOptions] = useState();
   const [signingBonus, setSigningBonus] = useState();
   const [ftStatus, setFtStatus] = useState();
+/////////////////////////////////////////////////////
 
+
+  
   // this section is for individual comparison component
   const [allNames, setAllNames] = useState([]);
   const [allSexes, setAllSexes] = useState([]);
@@ -100,7 +104,8 @@ function Home(props) {
         // with this data, setState for each hook and prop drill to appropriate components
         console.log("data from fetch", data);
         const current = data.currentUser;
-
+        
+//////////////////////////////////////////////////////////////////////////////
         // setting state for current logged in user
         setName(current.name);
         setCompany(current.linkedin_id);
@@ -117,6 +122,7 @@ function Home(props) {
         setStockOptions(current.stock_options);
         setSigningBonus(current.signing_bonus);
         setFtStatus(current.full_time_status);
+//////////////////////////////////////////////////////////////////////////////
 
         //grabbing race averages
         const raceList = data.raceStats;
