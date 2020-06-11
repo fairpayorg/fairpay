@@ -16,7 +16,7 @@ function Total(props) {
         <div className="data_display_div">
           <TableContainer component={Paper}>
             <Table className="table_displays" color="primary">
-              <TableHead>
+              <TableHead className="TableHead">
                 <TableRow>
                   <TableCell>All Employees</TableCell>
                   <TableCell align="right">Average Salary</TableCell>
@@ -25,14 +25,27 @@ function Total(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {props.aggregateList.map((row) => (
-                  <TableRow key={row}>
-                    <TableCell>{row.count}</TableCell>
-                    <TableCell align="right">${row.avg_salary}</TableCell>
-                    <TableCell align="right">${row.avg_bonus}</TableCell>
-                    <TableCell align="right">${row.avg_stock}</TableCell>
-                  </TableRow>
-                ))}
+                {props.aggregateList.map((row, index) => {
+                  if (index % 2 === 1) {
+                    return (
+                      <TableRow className="table-row" key={row}>
+                        <TableCell>{row.count}</TableCell>
+                        <TableCell align="right">${row.avg_salary}</TableCell>
+                        <TableCell align="right">${row.avg_bonus}</TableCell>
+                        <TableCell align="right">${row.avg_stock}</TableCell>
+                      </TableRow>
+                    );
+                  } else {
+                    return (
+                      <TableRow key={row}>
+                        <TableCell>{row.count}</TableCell>
+                        <TableCell align="right">${row.avg_salary}</TableCell>
+                        <TableCell align="right">${row.avg_bonus}</TableCell>
+                        <TableCell align="right">${row.avg_stock}</TableCell>
+                      </TableRow>
+                    );
+                  }
+                })}
               </TableBody>
             </Table>
           </TableContainer>

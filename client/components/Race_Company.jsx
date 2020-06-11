@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Table,
   TableBody,
@@ -7,18 +7,43 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
 function Race(props) {
   const sliced = props.raceList;
   console.log(sliced);
+
+  let slicedRaceList = [];
+  for (let i = 0; i < sliced.length; i++) {
+    if (i % 2 === 1) {
+      slicedRaceList.push(
+        <TableRow className="table-row" key={sliced[i].race}>
+          <TableCell>{sliced[i].race}</TableCell>
+          <TableCell align="right">{sliced[i].count}</TableCell>
+          <TableCell align="right">${sliced[i].avg_salary}</TableCell>
+          <TableCell align="right">${sliced[i].avg_bonus}</TableCell>
+          <TableCell align="right">${sliced[i].avg_stock}</TableCell>
+        </TableRow>
+      );
+    } else {
+      slicedRaceList.push(
+        <TableRow key={sliced[i].race}>
+          <TableCell>{sliced[i].race}</TableCell>
+          <TableCell align="right">{sliced[i].count}</TableCell>
+          <TableCell align="right">${sliced[i].avg_salary}</TableCell>
+          <TableCell align="right">${sliced[i].avg_bonus}</TableCell>
+          <TableCell align="right">${sliced[i].avg_stock}</TableCell>
+        </TableRow>
+      );
+    }
+  }
   return (
     <React.Fragment>
       <div hidden={props.value !== props.index || props.view === 1}>
         <div className="data_display_div">
           <TableContainer component={Paper}>
             <Table className="table_displays">
-              <TableHead>
+              <TableHead className="TableHead">
                 <TableRow>
                   <TableCell>Race</TableCell>
 
@@ -28,17 +53,7 @@ function Race(props) {
                   <TableCell align="right">Average Stock Options</TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>
-                {sliced.map((row) => (
-                  <TableRow key={row.race}>
-                    <TableCell>{row.race}</TableCell>
-                    <TableCell align="right">{row.count}</TableCell>
-                    <TableCell align="right">${row.avg_salary}</TableCell>
-                    <TableCell align="right">${row.avg_bonus}</TableCell>
-                    <TableCell align="right">${row.avg_stock}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
+              <TableBody>{slicedRaceList}</TableBody>
             </Table>
           </TableContainer>
         </div>

@@ -28,10 +28,16 @@ import './components/stylesheets/styles.css';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#004d40',
+      light: '#56cf7F',
+      main: '#2CC45F',
+      dark: '#1E8942',
+      contrastText: '#ffffff',
     },
     secondary: {
-      main: '#b2dfdb',
+      light: '#4ba06a',
+      main: '#1E8945',
+      dark: '#155f30',
+      contrastText: '#000',
     },
   },
 });

@@ -6,7 +6,7 @@ function Login(props) {
 
   return (
     <div className="welcome">
-      <h1>Be an agent of change</h1>
+      <h1>Be an agent of change.</h1>
       <h2>
         Securely submit your salary information to understand if you or your
         coworkers are being discriminated against.

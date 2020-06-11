@@ -216,14 +216,10 @@ function Home(props) {
         </div>
       )}
       <Container id="comparison_tabs">
-        <AppBar
-          // className={classes.tabBar}
-          id="company_individual_toggle"
-          position="static"
-        >
+        <AppBar id="company_individual_toggle" position="static">
           <Tabs value={view} view={view} onChange={handleComparison} centered>
             <Tab label="Company Wide Comparison" />
-            {/* <Tab label="Regional Comparison" /> */}
+            <Tab label="Regional Comparison" />
             <Tab label="Individual Comparison" />
           </Tabs>
         </AppBar>
