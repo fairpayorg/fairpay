@@ -9,6 +9,8 @@ import {
   TableRow,
 } from "@material-ui/core";
 
+import AgeChart from './AgeChart.js';
+
 export default function AgeCity(props) {
   return (
     <React.Fragment>
@@ -16,7 +18,7 @@ export default function AgeCity(props) {
         <div className="data_display_div">
           <TableContainer component={Paper}>
             <Table className="table_displays">
-              <TableHead>
+              <TableHead className='TableHead'>
                 <TableRow>
                   <TableCell>Age</TableCell>
                   <TableCell align="right">People in City</TableCell>
@@ -39,6 +41,9 @@ export default function AgeCity(props) {
             </Table>
           </TableContainer>
         </div>
+        <AgeChart
+          ageList={props.ageList}
+        />
       </div>
     </React.Fragment>
   );
