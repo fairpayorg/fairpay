@@ -1,6 +1,6 @@
 /* eslint-disable no-prototype-builtins */
 import React, { useContext, useState } from 'react';
-import { TextField } from '@material-ui/core';
+import { TextField, Typography } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { ErrorContext } from './../GetStarted.jsx';
 
@@ -61,9 +61,9 @@ const JobTitleForm = () => {
         id="listJobTitles"
         disableClearable
         options={jobTitles}
-        getOptionLabel={(option) =>
-          option.job_title + ' -- (' + option.total + ') users'
-        }
+        getOptionLabel={(option) => option.job_title }
+        renderOption={(option) =>
+          <Typography>{option.job_title + ' -- (' + option.total + ') users'}</Typography>}
         style={{ width: 300 }}
         renderInput={(params) => (
           <TextField

@@ -31,7 +31,7 @@ const CompanyForm = () => {
             onChange={errors.handleChange}
             onBlur={errors.handleChange}
             onFocus={errors.handleChange}
-            on={errors.handleChange}
+            onClick={errors.handleChange}
             error={errors.hasOwnProperty('company') ? true : false}
             helperText={
               errors.hasOwnProperty('company') ? errors['company'] : ''
