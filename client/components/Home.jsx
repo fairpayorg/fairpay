@@ -109,159 +109,163 @@ function Home(props) {
     setLoading(true);
     console.log("Data about to be fetch and wait.");
     const asyncDataFetch = async () => {
-      let response = await fetch(`/api/company/${user_linkedin_id}`);
-      let data = await response.json();
-      const current = data.currentUser;
+      try {
+        let response = await fetch(`/api/company/${user_linkedin_id}`);
+        let data = await response.json();
+        const current = data.currentUser;
 
-      // server added middlewares that grab city wide comparisons, have to parse that from data variable and store in new states
-      console.log("this is data from fetch in home component", data);
+        // server added middlewares that grab city wide comparisons, have to parse that from data variable and store in new states
+        console.log("this is data from fetch in home component", data);
 
-      // setting state for current logged in user
-      setName(current.name);
-      setCompany(current.linkedin_id);
-      setJobTitle(current.job_title);
-      setCity(current.city);
-      setSexuality(current.sexuality);
-      setAge(current.age);
-      setGender(current.gender);
-      setRace(current.race);
-      setEmployeeType(current.employee_type);
-      setYrsExperience(current.years_of_experience);
-      setYrsCompany(current.years_at_company);
-      setBaseSalary(current.base_salary);
-      setAnnualBonus(current.annual_bonus);
-      setStockOptions(current.stock_options);
-      setSigningBonus(current.signing_bonus);
-      setFtStatus(current.full_time_status);
+        // setting state for current logged in user
+        setName(current.name);
+        setCompany(current.linkedin_id);
+        setJobTitle(current.job_title);
+        setCity(current.city);
+        setSexuality(current.sexuality);
+        setAge(current.age);
+        setGender(current.gender);
+        setRace(current.race);
+        setEmployeeType(current.employee_type);
+        setYrsExperience(current.years_of_experience);
+        setYrsCompany(current.years_at_company);
+        setBaseSalary(current.base_salary);
+        setAnnualBonus(current.annual_bonus);
+        setStockOptions(current.stock_options);
+        setSigningBonus(current.signing_bonus);
+        setFtStatus(current.full_time_status);
 
-      //grabbing race averages
-      const raceList = data.raceStats;
-      raceList.forEach((race) => {
-        raceAvg.push({
-          race: race.race,
-          avg_bonus: race.avg_bonus,
-          avg_salary: race.avg_salary,
-          avg_stock: race.avg_stock_options,
-          count: race.count,
+        //grabbing race averages
+        const raceList = data.raceStats;
+        raceList.forEach((race) => {
+          raceAvg.push({
+            race: race.race,
+            avg_bonus: race.avg_bonus,
+            avg_salary: race.avg_salary,
+            avg_stock: race.avg_stock_options,
+            count: race.count,
+          });
         });
-      });
-      setRaceList(raceAvg);
+        setRaceList(raceAvg);
 
-      //grabbing race by city averages
-      data.raceStatsByCity.forEach((race) => {
-        raceByCityAvg.push({
-          race: race.race,
-          avg_bonus: race.avg_bonus,
-          avg_salary: race.avg_salary,
-          avg_stock: race.avg_stock_options,
-          count: race.count,
+        //grabbing race by city averages
+        data.raceStatsByCity.forEach((race) => {
+          raceByCityAvg.push({
+            race: race.race,
+            avg_bonus: race.avg_bonus,
+            avg_salary: race.avg_salary,
+            avg_stock: race.avg_stock_options,
+            count: race.count,
+          });
         });
-      });
-      setRaceByCityList(raceByCityAvg);
+        setRaceByCityList(raceByCityAvg);
 
-      // grabbing gender averages
-      const genderList = data.genderStats;
-      genderList.forEach((gender) => {
-        genderAvg.push({
-          gender: gender.gender,
-          avg_bonus: gender.avg_bonus,
-          avg_salary: gender.avg_salary,
-          avg_stock: gender.avg_stock_options,
-          count: gender.count,
+        // grabbing gender averages
+        const genderList = data.genderStats;
+        genderList.forEach((gender) => {
+          genderAvg.push({
+            gender: gender.gender,
+            avg_bonus: gender.avg_bonus,
+            avg_salary: gender.avg_salary,
+            avg_stock: gender.avg_stock_options,
+            count: gender.count,
+          });
         });
-      });
-      setGenderList(genderAvg);
+        setGenderList(genderAvg);
 
-      // grabbing gender by city averages
-      data.genderStatsByCity.forEach((gender) => {
-        genderByCityAvg.push({
-          gender: gender.gender,
-          avg_bonus: gender.avg_bonus,
-          avg_salary: gender.avg_salary,
-          avg_stock: gender.avg_stock_options,
-          count: gender.count,
+        // grabbing gender by city averages
+        data.genderStatsByCity.forEach((gender) => {
+          genderByCityAvg.push({
+            gender: gender.gender,
+            avg_bonus: gender.avg_bonus,
+            avg_salary: gender.avg_salary,
+            avg_stock: gender.avg_stock_options,
+            count: gender.count,
+          });
         });
-      });
-      setGenderByCityList(genderByCityAvg);
+        setGenderByCityList(genderByCityAvg);
 
-      //grabbing age averages
-      const ageList = data.ageStats;
-      ageList.forEach((age) => {
-        ageAvg.push({
-          age: age.age,
-          avg_salary: age.avg_salary,
-          avg_bonus: age.avg_bonus,
-          avg_stock: age.avg_stock_options,
-          count: age.count,
+        //grabbing age averages
+        const ageList = data.ageStats;
+        ageList.forEach((age) => {
+          ageAvg.push({
+            age: age.age,
+            avg_salary: age.avg_salary,
+            avg_bonus: age.avg_bonus,
+            avg_stock: age.avg_stock_options,
+            count: age.count,
+          });
         });
-      });
-      setAgeList(ageAvg);
+        setAgeList(ageAvg);
 
-      //grabbing age averages by city
-      data.ageStatsByCity.forEach((age) => {
-        ageByCityAvg.push({
-          age: age.age,
-          avg_salary: age.avg_salary,
-          avg_bonus: age.avg_bonus,
-          avg_stock: age.avg_stock_options,
-          count: age.count,
+        //grabbing age averages by city
+        data.ageStatsByCity.forEach((age) => {
+          ageByCityAvg.push({
+            age: age.age,
+            avg_salary: age.avg_salary,
+            avg_bonus: age.avg_bonus,
+            avg_stock: age.avg_stock_options,
+            count: age.count,
+          });
         });
-      });
-      setAgeByCityList(ageByCityAvg);
+        setAgeByCityList(ageByCityAvg);
 
-      // calculating values for aggregate view
-      const aggregateList = data.jobStats;
-      aggregateList.forEach((item) => {
-        aggregateAvg.push({
-          avg_salary: item.avg_salary,
-          avg_bonus: item.avg_bonus,
-          avg_stock: item.avg_stock_options,
-          title: item.job_title,
-          count: item.count,
+        // calculating values for aggregate view
+        const aggregateList = data.jobStats;
+        aggregateList.forEach((item) => {
+          aggregateAvg.push({
+            avg_salary: item.avg_salary,
+            avg_bonus: item.avg_bonus,
+            avg_stock: item.avg_stock_options,
+            title: item.job_title,
+            count: item.count,
+          });
         });
-      });
-      setAggregateList(aggregateAvg);
+        setAggregateList(aggregateAvg);
 
-      // calculating values for aggregate by city view
-      data.jobStatsByCity.forEach((item) => {
-        aggregateByCityAvg.push({
-          avg_salary: item.avg_salary,
-          avg_bonus: item.avg_bonus,
-          avg_stock: item.avg_stock_options,
-          title: item.job_title,
-          count: item.count,
+        // calculating values for aggregate by city view
+        data.jobStatsByCity.forEach((item) => {
+          aggregateByCityAvg.push({
+            avg_salary: item.avg_salary,
+            avg_bonus: item.avg_bonus,
+            avg_stock: item.avg_stock_options,
+            title: item.job_title,
+            count: item.count,
+          });
         });
-      });
-      setAggregateByCityList(aggregateByCityAvg);
+        setAggregateByCityList(aggregateByCityAvg);
 
-      // setting state for individual comparisons
-      const list = data.companyData;
-      list.forEach((employee) => {
-        employeesNames.push(employee.name);
-        employeesAge.push(employee.age);
-        employeesGender.push(employee.gender);
-        employeesSexuality.push(employee.sexuality);
-        employeesType.push(employee.employee_type);
-        employeesYrsExperience.push(employee.years_of_experience);
-        employeesYrsCompany.push(employee.years_at_company);
-        employeesBaseSalary.push(employee.base_salary);
-        employeesAnnualBonus.push(employee.annual_bonus);
-        employeesStockOptions.push(employee.stock_options);
-        employeesSigningBonus.push(employee.signing_bonus);
-        employeesFtStatus.push(employee.full_time_status);
-      });
-      setAllNames(employeesNames);
-      setAllGenders(employeesGender);
-      setAllAges(employeesAge);
-      setAllSexes(employeesSexuality);
-      setAllTypes(employeesType);
-      setAllYrsExperience(employeesYrsExperience);
-      setAllYrsCompany(employeesYrsCompany);
-      setAllBaseSalary(employeesBaseSalary);
-      setAllFtStatuses(employeesFtStatus);
+        // setting state for individual comparisons
+        const list = data.companyData;
+        list.forEach((employee) => {
+          employeesNames.push(employee.name);
+          employeesAge.push(employee.age);
+          employeesGender.push(employee.gender);
+          employeesSexuality.push(employee.sexuality);
+          employeesType.push(employee.employee_type);
+          employeesYrsExperience.push(employee.years_of_experience);
+          employeesYrsCompany.push(employee.years_at_company);
+          employeesBaseSalary.push(employee.base_salary);
+          employeesAnnualBonus.push(employee.annual_bonus);
+          employeesStockOptions.push(employee.stock_options);
+          employeesSigningBonus.push(employee.signing_bonus);
+          employeesFtStatus.push(employee.full_time_status);
+        });
+        setAllNames(employeesNames);
+        setAllGenders(employeesGender);
+        setAllAges(employeesAge);
+        setAllSexes(employeesSexuality);
+        setAllTypes(employeesType);
+        setAllYrsExperience(employeesYrsExperience);
+        setAllYrsCompany(employeesYrsCompany);
+        setAllBaseSalary(employeesBaseSalary);
+        setAllFtStatuses(employeesFtStatus);
 
-      // after finishing this execution, set loading to false
-      setLoading(false);
+        // after finishing this execution, set loading to false
+        setLoading(false);
+      } catch (err) {
+        return err;
+      }
     };
     asyncDataFetch();
   }, []);
