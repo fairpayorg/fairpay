@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Container, Tabs, Tab, Box, AppBar, RadioGroup, Radio, FormControlLabel, FormControl, FormLabel } from "@material-ui/core";
+import {
+  Container,
+  Tabs,
+  Tab,
+  Box,
+  AppBar,
+  RadioGroup,
+  Radio,
+  FormControlLabel,
+  FormControl,
+  FormLabel,
+} from "@material-ui/core";
 import Race_Company from "./Race_Company.jsx";
 import Age_Company from "./Age_Company.jsx";
 import Gender_Company from "./Gender_Company.jsx";
@@ -14,7 +25,7 @@ function CompanyComparison(props) {
 
   return (
     <React.Fragment>
-      <div hidden={props.view !== props.index} >
+      <div hidden={props.view !== props.index}>
         <Container>
           <div className="category_container">
             <div className="category_comparison_div">
@@ -30,11 +41,10 @@ function CompanyComparison(props) {
                 <Tab label="Age"></Tab>
                 <Tab label="Gender"></Tab>
               </Tabs>
-              
             </div>
           </div>
         </Container>
-  
+
         <Box>
           <Total_Company
             allNames={props.allNames}
