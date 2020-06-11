@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Table,
   TableBody,
@@ -7,16 +7,16 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
 export default function Age(props) {
   return (
     <React.Fragment>
-      <div hidden={props.value !== props.index || props.view === 1}>
+      <div hidden={props.value !== props.index}>
         <div className="data_display_div">
           <TableContainer component={Paper}>
             <Table className="table_displays">
-              <TableHead>
+              <TableHead className="TableHead">
                 <TableRow>
                   <TableCell>Age</TableCell>
                   <TableCell align="right">People in Company</TableCell>
@@ -26,15 +26,29 @@ export default function Age(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {props.ageList.map((row) => (
-                  <TableRow key={row.age}>
-                    <TableCell>{row.age}</TableCell>
-                    <TableCell align="right">{row.count}</TableCell>
-                    <TableCell align="right">${row.avg_salary}</TableCell>
-                    <TableCell align="right">${row.avg_bonus}</TableCell>
-                    <TableCell align="right">${row.avg_stock}</TableCell>
-                  </TableRow>
-                ))}
+                {props.ageList.map((row, index) => {
+                  if (index % 2 === 1) {
+                    return (
+                      <TableRow className="table-row" key={row.age}>
+                        <TableCell>{row.age}</TableCell>
+                        <TableCell align="right">{row.count}</TableCell>
+                        <TableCell align="right">${row.avg_salary}</TableCell>
+                        <TableCell align="right">${row.avg_bonus}</TableCell>
+                        <TableCell align="right">${row.avg_stock}</TableCell>
+                      </TableRow>
+                    );
+                  } else {
+                    return (
+                      <TableRow key={row.age}>
+                        <TableCell>{row.age}</TableCell>
+                        <TableCell align="right">{row.count}</TableCell>
+                        <TableCell align="right">${row.avg_salary}</TableCell>
+                        <TableCell align="right">${row.avg_bonus}</TableCell>
+                        <TableCell align="right">${row.avg_stock}</TableCell>
+                      </TableRow>
+                    );
+                  }
+                })}
               </TableBody>
             </Table>
           </TableContainer>

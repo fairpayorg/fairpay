@@ -13,11 +13,11 @@ import {
 function Total(props) {
   return (
     <React.Fragment>
-      <div hidden={props.value !== props.index || props.view === 1}>
+      <div hidden={props.value !== props.index}>
         <div className="data_display_div">
           <TableContainer component={Paper}>
-            <Table className="table_displays">
-              <TableHead>
+            <Table className="table_displays" color="primary">
+              <TableHead className="TableHead">
                 <TableRow>
                   <TableCell>All Employees</TableCell>
                   <TableCell align="right">Average Salary</TableCell>
@@ -26,14 +26,27 @@ function Total(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {props.aggregateList.map((row) => (
-                  <TableRow key={row}>
-                    <TableCell>{row.count}</TableCell>
-                    <TableCell align="right">${row.avg_salary}</TableCell>
-                    <TableCell align="right">${row.avg_bonus}</TableCell>
-                    <TableCell align="right">${row.avg_stock}</TableCell>
-                  </TableRow>
-                ))}
+                {props.aggregateList.map((row, index) => {
+                  if (index % 2 === 1) {
+                    return (
+                      <TableRow className="table-row" key={row}>
+                        <TableCell>{row.count}</TableCell>
+                        <TableCell align="right">${row.avg_salary}</TableCell>
+                        <TableCell align="right">${row.avg_bonus}</TableCell>
+                        <TableCell align="right">${row.avg_stock}</TableCell>
+                      </TableRow>
+                    );
+                  } else {
+                    return (
+                      <TableRow key={row}>
+                        <TableCell>{row.count}</TableCell>
+                        <TableCell align="right">${row.avg_salary}</TableCell>
+                        <TableCell align="right">${row.avg_bonus}</TableCell>
+                        <TableCell align="right">${row.avg_stock}</TableCell>
+                      </TableRow>
+                    );
+                  }
+                })}
               </TableBody>
             </Table>
           </TableContainer>
@@ -43,6 +56,7 @@ function Total(props) {
           userSalary={props.userSalary}
           userAnnualBonus={props.userAnnualBonus}
           userStockOptions={props.userStockOptions}
+          loading={props.loading}
         />
       </div>
     </React.Fragment>

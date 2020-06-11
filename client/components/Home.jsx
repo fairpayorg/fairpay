@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   AppBar,
@@ -7,16 +7,17 @@ import {
   Typography,
   Container,
   withStyles,
-} from "@material-ui/core";
-import CompanyComparison from "./CompanyComparison.jsx";
-import IndividualComparison from "./IndividualComparison.jsx";
+} from '@material-ui/core';
+import CompanyComparison from './CompanyComparison.jsx';
+import IndividualComparison from './IndividualComparison.jsx';
+import CityComparison from './CityComparison.jsx';
 
-const styles = {
-  tabBar: {
-    backgroundColor: "#ffe082",
-    color: "rgb(102, 102, 102)",
-  },
-};
+// const styles = {
+//   tabBar: {
+//     backgroundColor: '#ffe082',
+//     color: 'rgb(102, 102, 102)',
+//   },
+// };
 function Home(props) {
   // this is the hook that toggles the different comparison views
   // defaults to company comparison view
@@ -29,6 +30,7 @@ function Home(props) {
   const [name, setName] = useState(null);
   const [company, setCompany] = useState(null);
 
+  const [city, setCity] = useState(null);
   // this is job title
   const [jobTitle, setJobTitle] = useState(null);
   // this is sexual orientation
@@ -67,8 +69,13 @@ function Home(props) {
   const [ageList, setAgeList] = useState([]);
   const [aggregateList, setAggregateList] = useState([]);
 
+  const [raceByCityList, setRaceByCityList] = useState([]);
+  const [genderByCityList, setGenderByCityList] = useState([]);
+  const [ageByCityList, setAgeByCityList] = useState([]);
+  const [aggregateByCityList, setAggregateByCityList] = useState([]);
+
   // state for whether fetch call is finished
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // used for prop drilling into child components
   const employeesNames = [];
@@ -87,27 +94,33 @@ function Home(props) {
   const genderAvg = [];
   const ageAvg = [];
   const aggregateAvg = [];
+  // new citywide averages
+  const raceByCityAvg = [];
+  const genderByCityAvg = [];
+  const ageByCityAvg = [];
+  const aggregateByCityAvg = [];
 
   useEffect(() => {
     let user_linkedin_id = document.cookie;
     user_linkedin_id = user_linkedin_id
-      .split("; ")
-      .find((row) => row.startsWith("userId"))
-      .split("=")[1];
+      .split('; ')
+      .find((row) => row.startsWith('userId'))
+      .split('=')[1];
     setLoading(true);
-
+    console.log("Data about to be fetch and wait.");
     const asyncDataFetch = async () => {
       let response = await fetch(`/api/company/${user_linkedin_id}`);
       let data = await response.json();
       const current = data.currentUser;
 
       // server added middlewares that grab city wide comparisons, have to parse that from data variable and store in new states
-      console.log("this is data from fetch in home component", data);
+      console.log('this is data from fetch in home component', data);
 
       // setting state for current logged in user
       setName(current.name);
       setCompany(current.linkedin_id);
       setJobTitle(current.job_title);
+      setCity(current.city);
       setSexuality(current.sexuality);
       setAge(current.age);
       setGender(current.gender);
@@ -134,6 +147,18 @@ function Home(props) {
       });
       setRaceList(raceAvg);
 
+      //grabbing race by city averages
+      data.raceStatsByCity.forEach((race) => {
+        raceByCityAvg.push({
+          race: race.race,
+          avg_bonus: race.avg_bonus,
+          avg_salary: race.avg_salary,
+          avg_stock: race.avg_stock_options,
+          count: race.count,
+        });
+      });
+      setRaceByCityList(raceByCityAvg);
+
       // grabbing gender averages
       const genderList = data.genderStats;
       genderList.forEach((gender) => {
@@ -146,6 +171,18 @@ function Home(props) {
         });
       });
       setGenderList(genderAvg);
+
+      // grabbing gender by city averages
+      data.genderStatsByCity.forEach((gender) => {
+        genderByCityAvg.push({
+          gender: gender.gender,
+          avg_bonus: gender.avg_bonus,
+          avg_salary: gender.avg_salary,
+          avg_stock: gender.avg_stock_options,
+          count: gender.count,
+        });
+      });
+      setGenderByCityList(genderByCityAvg);
 
       //grabbing age averages
       const ageList = data.ageStats;
@@ -160,6 +197,18 @@ function Home(props) {
       });
       setAgeList(ageAvg);
 
+      //grabbing age averages by city
+      data.ageStatsByCity.forEach((age) => {
+        ageByCityAvg.push({
+          age: age.age,
+          avg_salary: age.avg_salary,
+          avg_bonus: age.avg_bonus,
+          avg_stock: age.avg_stock_options,
+          count: age.count,
+        });
+      });
+      setAgeByCityList(ageByCityAvg);
+
       // calculating values for aggregate view
       const aggregateList = data.jobStats;
       aggregateList.forEach((item) => {
@@ -172,6 +221,18 @@ function Home(props) {
         });
       });
       setAggregateList(aggregateAvg);
+
+      // calculating values for aggregate by city view
+      data.jobStatsByCity.forEach((item) => {
+        aggregateByCityAvg.push({
+          avg_salary: item.avg_salary,
+          avg_bonus: item.avg_bonus,
+          avg_stock: item.avg_stock_options,
+          title: item.job_title,
+          count: item.count,
+        });
+      });
+      setAggregateByCityList(aggregateByCityAvg);
 
       // setting state for individual comparisons
       const list = data.companyData;
@@ -212,18 +273,15 @@ function Home(props) {
         <div className="current_user_header">
           <h2 id="current_user_name">Hello {name}</h2>
           <label id="current_user_label">
-            {jobTitle} at {company}
+            {jobTitle} at {company} in {city}
           </label>
         </div>
       )}
       <Container id="comparison_tabs">
-        <AppBar
-          className={classes.tabBar}
-          id="company_individual_toggle"
-          position="static"
-        >
+        <AppBar id="company_individual_toggle" position="static">
           <Tabs value={view} view={view} onChange={handleComparison} centered>
             <Tab label="Company Wide Comparison" />
+            <Tab label="Regional Comparison" />
             <Tab label="Individual Comparison" />
           </Tabs>
         </AppBar>
@@ -257,10 +315,35 @@ function Home(props) {
                 ageList={ageList}
                 aggregateList={aggregateList}
                 allNames={allNames}
+                loading={loading}
+              />
+              <CityComparison
+                view={view}
+                index={1}
+                name={name}
+                company={company}
+                jobTitle={jobTitle}
+                sexuality={sexuality}
+                age={age}
+                gender={gender}
+                race={race}
+                employeeType={employeeType}
+                yrsExperience={yrsExperience}
+                yrsCompany={yrsCompany}
+                baseSalary={baseSalary}
+                annualBonus={annualBonus}
+                stockOptions={stockOptions}
+                signingBonus={signingBonus}
+                ftStatus={ftStatus}
+                raceList={raceByCityList}
+                genderList={genderByCityList}
+                ageList={ageByCityList}
+                aggregateList={aggregateByCityList}
+                allNames={allNames}
               />
               <IndividualComparison
                 view={view}
-                index={1}
+                index={2}
                 name={name}
                 company={company}
                 jobTitle={jobTitle}
@@ -293,4 +376,5 @@ function Home(props) {
   );
 }
 
-export default withStyles(styles)(Home);
+export default Home;
+// export default withStyles(styles)(Home);
