@@ -280,9 +280,9 @@ function Home(props) {
       <Container id="comparison_tabs">
         <AppBar id="company_individual_toggle" position="static">
           <Tabs value={view} view={view} onChange={handleComparison} centered>
-            <Tab label="Company Wide Comparison" />
-            <Tab label="Regional Comparison" />
-            <Tab label="Individual Comparison" />
+            <Tab label="Company-Wide" />
+            <Tab label="City-Wide" />
+            <Tab label="Individual" />
           </Tabs>
         </AppBar>
       </Container>
