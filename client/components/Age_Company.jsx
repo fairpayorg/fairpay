@@ -1,4 +1,7 @@
 import React from "react";
+import BarChart_age from './charts/bar/BarChart_age.js';
+import DoughnutChart_age from './charts/doughnut/DoughnutChart_age.js';
+import LineChart_age from './charts/line/LineChart_age.js';
 import {
   Table,
   TableBody,
@@ -10,6 +13,7 @@ import {
 } from "@material-ui/core";
 
 export default function Age(props) {
+  const { averages } = props;
   return (
     <React.Fragment>
       <div hidden={props.value !== props.index || props.view === 1}>
@@ -37,6 +41,9 @@ export default function Age(props) {
                 ))}
               </TableBody>
             </Table>
+            <BarChart_age averages={averages}/>
+            <DoughnutChart_age averages={averages}/>
+            <LineChart_age averages={averages}/>
           </TableContainer>
         </div>
       </div>
