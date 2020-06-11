@@ -4,8 +4,8 @@ const TitleCount = ({ titles }) => {
   return (
     <React.Fragment>
       {titles
-        ? titles.map(({ job_title, total }) => (
-            <p>
+        ? titles.map(({ job_title, total }, i) => (
+            <p key={i}>
               {job_title}: {total} submissions
             </p>
           ))
