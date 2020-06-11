@@ -55,9 +55,7 @@ export default function Age(props) {
             </Table>
           </TableContainer>
         </div>
-        <AgeChartWrapper
-          ageList={props.ageList}
-        />
+        <AgeChart ageList={props.ageList} />
       </div>
     </React.Fragment>
   );
