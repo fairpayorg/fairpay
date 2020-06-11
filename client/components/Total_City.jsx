@@ -18,7 +18,7 @@ function TotalCity(props) {
         <div className="data_display_div">
           <TableContainer component={Paper}>
             <Table className="table_displays">
-              <TableHead>
+              <TableHead className='TableHead'>
                 <TableRow>
                   <TableCell>All Employees</TableCell>
                   <TableCell align="right">Average Salary</TableCell>
