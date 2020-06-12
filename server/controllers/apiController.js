@@ -2,6 +2,7 @@ const request = require('request');
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, './../../.env') });
 
+// get your own api keys from usaJobs site and add it to the .env file
 const host = process.env.HOST;
 const userAgent = process.env.USER_AGENT;
 const authKey = process.env.AUTH_KEY;
