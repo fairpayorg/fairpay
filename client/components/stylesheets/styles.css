@@ -129,3 +129,20 @@ body {
   width: 500px;
   text-align: center;
 }
+
+#jelly{
+  height: 200px;
+  -webkit-box-shadow: 7px 11px 16px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 7px 11px 16px 0px rgba(0,0,0,0.75);
+box-shadow: 7px 11px 16px 0px rgba(0,0,0,0.75);
+}
+
+#jellyfp {
+  color: hotpink;
+}
+
+#fairp {
+  font-size: 3em;
+  margin: 0;
+  color: #ea0255;
+}

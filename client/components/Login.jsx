@@ -5,7 +5,11 @@ function Login(props) {
   return (
     <div className="loginContainer">
       <div className="loginBox">
-        <h1>Be an agent of change</h1>
+        
+        <img id='jelly' src='https://i.pinimg.com/474x/30/3a/c6/303ac6dc3697b44947dece34ffc03226.jpg'></img>
+        <h2 id='jellyfp'>Jelly inc.</h2>
+        <h1 id='fairp'>FAIRPAY</h1>
+        <h2>Be an agent of change</h2>
         <h2>
           Securely submit your salary information to understand if you or your
           coworkers are being discriminated against
