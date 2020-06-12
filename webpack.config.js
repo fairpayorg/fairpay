@@ -15,6 +15,7 @@ module.exports = {
     proxy: {
       "/api": "http://localhost:3000",
       "/auth": "http://localhost:3000",
+      "/graphql": "http://localhost:3000",
     },
   },
   module: {

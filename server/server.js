@@ -6,6 +6,12 @@ const apiRouter = require('./routes/apiSalaryRoutes.js')
 const fairpayController = require('./controllers/fairpayControllers');
 const cookieSession = require('cookie-session');
 const cookieParser = require('cookie-parser');
+
+// graphql modules
+const graphqlHttp = require('express-graphql');
+const graphqlSchema = require('./graphql/schema.js');
+const graphqlResolver = require('./graphql/resolver.js');
+
 require('./passport-setup');
 
 const app = express();
@@ -13,6 +19,17 @@ const PORT = 3000;
 
 app.use(express.json());
 app.use(cookieParser());
+
+/* 
+  GRAPHQL ROUTE
+*/
+app.use('/graphql', graphqlHttp({
+  schema: graphqlSchema,
+
+  // this is where logic is written when a query comes in, these need to be functions
+  rootValue: graphqlResolver,
+  graphiql: true
+}))
 
 /* 
   Set up session cookies
