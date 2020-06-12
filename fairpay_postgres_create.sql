@@ -58,6 +58,16 @@ CREATE TABLE public.company (
   OIDS=FALSE
 );
 
+CREATE TABLE public.usaJobsSalary (
+  "_id" serial,
+  "minSalary" varchar, 
+  "maxSalary" varchar,
+  "salary" varchar,
+  CONSTRAINT "job_id_pk" PRIMARY KEY ("_id")
+) WITH (
+  OIDS=FALSE
+);
+
 -- 
 ALTER TABLE public.users ADD CONSTRAINT "users_fk0" FOREIGN KEY ("company_id") REFERENCES public.company("_id");
 ALTER TABLE public.users ADD CONSTRAINT "users_fk1" FOREIGN KEY ("salary") REFERENCES public.salary("_id");
