@@ -8,6 +8,8 @@ function Login(props) {
         
         <img id='jelly' src='https://i.pinimg.com/474x/30/3a/c6/303ac6dc3697b44947dece34ffc03226.jpg'></img>
         <h2 id='jellyfp'>Jelly inc.</h2>
+        <p id='wunder'>w/ The Wonderpus Team</p> 
+        <p>~presents~</p>
         <h1 id='fairp'>FAIRPAY</h1>
         <h2>Be an agent of change</h2>
         <h2>
