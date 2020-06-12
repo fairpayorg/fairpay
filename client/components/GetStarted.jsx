@@ -23,7 +23,7 @@ import {
   FormLabel,
   InputAdornment,
 } from '@material-ui/core';
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 function GetStarted(props) {
   const history = useHistory()
   // the "step" control defines which part of the three step flow the user is on
@@ -36,13 +36,13 @@ function GetStarted(props) {
   const [currentStepComplete, updateStepCompletionStatus] = useState(false);
 
   const steps = ['intro', 'company', 'title', 'income', 'personal', 'complete'];
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
   // function is called each time user clicks  'next'
   function moveToNextStep() {
     if (step === 'company') getRoleCount(inputs.company);
     setStep(steps[steps.indexOf(step) + 1]);
   }
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
   // returns array of counts for each title at a given company
   function getRoleCount(company) {
     const data = { company_name: company };
@@ -62,7 +62,7 @@ function GetStarted(props) {
         console.error('Error:', error);
       });
   }
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
   // called each time an input changes
   // updates state, checks for validation errors, and updates disable status of button
   function handleChange(event) {
@@ -71,7 +71,7 @@ function GetStarted(props) {
     handleError(name, value);
     determineIfStepComplete();
   }
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
   function handleError(name, value) {
     // for every change in the input, we're going to check whether that passes our validation requirements
     let error;
@@ -93,7 +93,7 @@ function GetStarted(props) {
     // if there is an error in the error object but the input has passed all tests, remove the error from error object
     else if (errors.hasOwnProperty(name)) delete errors[name];
   }
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
   // this function determines whether the next button is disabled
   function determineIfStepComplete() {
     let hasError = false;
@@ -142,13 +142,13 @@ function GetStarted(props) {
       updateStepCompletionStatus(true);
     }
   }
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
   function submitForm(e) {
     e.preventDefault()
     postUserUpdates();
     console.log('in the submit form');
   }
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
   function postUserUpdates() {
     console.log(inputs);
     let data = {
@@ -187,7 +187,7 @@ function GetStarted(props) {
         console.error('Error:', error);
       });
   }
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   function renderIncomeQuestions() {
     if (inputs.employeeType === 'Salary') {
       return (
@@ -200,7 +200,7 @@ function GetStarted(props) {
       );
     }
   }
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
   function renderNextStep() {
     // Intro step is basic user education about what this app does
@@ -254,7 +254,7 @@ function GetStarted(props) {
     }
   }
 
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
 
   return (
     <Container maxWidth="sm">

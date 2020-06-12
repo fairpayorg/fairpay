@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import * as d3 from "d3";
+import BarChart_race from './charts/bar/BarChart_race.js';
+import DoughnutChart_race from './charts/doughnut/DoughnutChart_race.js';
+import LineChart_race from './charts/line/LineChart_race.js';
 import {
   Table,
   TableBody,
@@ -21,8 +24,8 @@ function Race(props) {
       return {race: row.race || '', salary: row.avg_salary}
     })
 
-    const h = 800;
-    const w = 800;
+    const h = 400;
+    const w = 600;
     const padding = 150;
 
     const xScale = d3.scaleBand().range ([0, w]);
@@ -68,6 +71,8 @@ function Race(props) {
     
   }, [])
 
+  // console.log(sliced);
+  const { averages } = props;
   return (
     <React.Fragment>
       <div hidden={props.value !== props.index || props.view === 1}>
@@ -95,6 +100,9 @@ function Race(props) {
                 ))}
               </TableBody>
             </Table>
+            <BarChart_race averages={averages}/>
+            <DoughnutChart_race averages={averages}/>
+            <LineChart_race averages={averages}/>
             <div className="d3-graph" ref={d3Ref} />
           </TableContainer>
         </div>
