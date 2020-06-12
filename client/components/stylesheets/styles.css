@@ -4,8 +4,8 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: #eeeeee;
-  color: #424242;
+  background-color: #34333d;
+  color: #ffffff;
 }
 
 #company_container {
@@ -20,9 +20,9 @@ body {
 }
 
 .vertical_tab_bar {
-  background-color: #ffe082;
-  color: rgb(102, 102, 102);
-  border: 1px solid #f5f5f5;
+  background-color: #373841;
+  color: #ffffff;
+  /* border: 1px solid #f5f5f5; */
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -40,8 +40,13 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  /* background-color: #373841; */
 }
 
+.Home-tabBar-1 {
+  color: rgb(102, 102, 102);
+  background-color: #373841;
+}
 
 #current_user_name {
   font-weight: 100;
@@ -59,6 +64,13 @@ body {
 
 .table_displays {
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  /* background-color: #373841; */
+  color: white;
+  border-bottom: 'none' !important;
+}
+
+.table_head {
+  color: #ffffff;
 }
 
 #comparison_tabs {
@@ -71,6 +83,71 @@ body {
 }
 
 #appBar {
-  background-color: #ff8f00;
+  background-color: #373841;
   justify-content: space-between;
+}
+
+.companyVsIndividualTabs {
+  background-color: #373841;
+  color: #ffffff;
+}
+
+.MuiTableCell-body {
+  color: #ffffff;
+  border-bottom: none;
+}
+
+.MuiTableCell-root {
+  display: table-cell;
+  padding: 16px;
+  font-size: 0.875rem;
+  text-align: left;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  line-height: 1.43;
+  border-bottom: 'none' !important;
+  letter-spacing: 0.01071em;
+  vertical-align: inherit;
+}
+
+.loginContainer {
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  /* justify-items: center; */
+  /* flex-direction: column; */
+  /* width: 400px; */
+  height: 800px;
+}
+
+.loginBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  flex-direction: column;
+  width: 500px;
+  text-align: center;
+}
+
+#jelly{
+  height: 200px;
+  -webkit-box-shadow: 7px 11px 16px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 7px 11px 16px 0px rgba(0,0,0,0.75);
+box-shadow: 7px 11px 16px 0px rgba(0,0,0,0.75);
+}
+
+#jellyfp {
+  color: hotpink;
+}
+
+#fairp {
+  font-size: 3em;
+  margin: 0;
+  color: #ea0255;
+}
+
+#wunder {
+  margin: 0;
+  color: goldenrod;
 }

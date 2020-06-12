@@ -38,6 +38,7 @@ function CompanyComparison(props) {
           view={props.view}
           value={value}
           index={0}
+          averages={props.averages}
         />
       </Box>
       <Box>
@@ -46,6 +47,7 @@ function CompanyComparison(props) {
           view={props.view}
           value={value}
           index={1}
+          averages={props.averages}
         />
       </Box>
       <Box>
@@ -54,6 +56,7 @@ function CompanyComparison(props) {
           value={value}
           index={2}
           ageList={props.ageList}
+          averages={props.averages}
         />
       </Box>
       <Box>
@@ -62,6 +65,7 @@ function CompanyComparison(props) {
           value={value}
           index={3}
           genderList={props.genderList}
+          averages={props.averages}
         />
       </Box>
     </React.Fragment>
