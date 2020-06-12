@@ -1,4 +1,7 @@
 import React from "react";
+import BarChart_gender from './charts/bar/BarChart_gender.js';
+import DoughnutChart_gender from './charts/doughnut/DoughnutChart_gender.js';
+import LineChart_gender from './charts/line/LineChart_gender';
 import {
   Table,
   TableBody,
@@ -10,6 +13,7 @@ import {
 } from "@material-ui/core";
 
 function Gender(props) {
+  const { averages } = props;
   return (
     <React.Fragment>
       <div hidden={props.value !== props.index || props.view === 1}>
@@ -37,6 +41,9 @@ function Gender(props) {
                 ))}
               </TableBody>
             </Table>
+            <BarChart_gender averages={averages}/>
+            <DoughnutChart_gender averages={averages}/>
+            <LineChart_gender averages={averages}/>
           </TableContainer>
         </div>
       </div>

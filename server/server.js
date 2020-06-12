@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const passport = require('passport');
 const authRouter = require('./routes/auth.js');
+const apiRouter = require('./routes/apiSalaryRoutes.js')
 const fairpayController = require('./controllers/fairpayControllers');
 const cookieSession = require('cookie-session');
 const cookieParser = require('cookie-parser');
@@ -97,6 +98,12 @@ app.use(
     });
   }
 );
+
+// repopulates usaJobs db with data from UsaJobs external API
+// is not currently being used by front-end
+// I populated the db using Postman
+app.use('/api/salary', apiRouter);
+
 
 // route error handler
 app.use('*', (req, res) => res.sendStatus(404));
